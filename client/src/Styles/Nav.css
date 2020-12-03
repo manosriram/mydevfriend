@@ -1,5 +1,12 @@
+#navtext {
+    transition: 0.1s;
+}
+
 #navtext:hover {
-    text-decoration: underline;
     cursor: pointer;
-    text-decoration-color: white;
+    border-bottom: 2px solid black;
+}
+
+#avatar:hover {
+    cursor: pointer;
 }

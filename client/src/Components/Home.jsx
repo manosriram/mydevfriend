@@ -64,7 +64,7 @@ function Home() {
                         </Button>
                         <hr />
                         <Button name="signup" intent="success">
-                            Create an account
+                            Create a free account
                         </Button>
                     </form>
                 </Pane>
