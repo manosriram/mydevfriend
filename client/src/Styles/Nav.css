@@ -1,0 +1,5 @@
+#navtext:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    text-decoration-color: white;
+}
