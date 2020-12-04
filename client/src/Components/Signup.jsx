@@ -1,7 +1,10 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import { AddIcon, Select, Button, TextInput } from "evergreen-ui";
+import { Text, AddIcon, Select, Button, TextInput } from "evergreen-ui";
 import "../Styles/App.css";
+import { NavLink } from "react-router-dom";
+
+const submitForm = data => {};
 
 function Signup() {
     return (
@@ -18,10 +21,10 @@ function Signup() {
                     username: "",
                     password: ""
                 }}
-                onSubmit={(data, { setSubmitting, resetForm }) => {
+                onSubmit={async (data, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
                     // async submission here.
-                    console.log(data);
+                    await submitForm(data);
                     setSubmitting(false);
                     // resetForm();
                 }}
@@ -88,7 +91,11 @@ function Signup() {
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </Select>
+                        <br />
+                        <br />
+                        <Text>Date of Birth</Text>
                         {"  "}
+                        <br />
                         <input
                             type="date"
                             onChange={handleChange}
@@ -107,6 +114,11 @@ function Signup() {
                         >
                             Create free account
                         </Button>
+                        <br />
+                        <br />
+                        <NavLink to="/" style={{ color: "blue" }}>
+                            Back to Login
+                        </NavLink>
                     </Form>
                 )}
             </Formik>
