@@ -4,6 +4,15 @@ const PORT = process.env.PORT || 5454;
 const helmet = require("helmet");
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
+var mysql = require("mysql");
+
+var connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "password",
+    database: "meetwith"
+});
+connection.connect();
 
 app.use(helmet());
 app.use(morgan("dev"));
