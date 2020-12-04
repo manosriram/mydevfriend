@@ -7,6 +7,7 @@ import {
     Pane,
     Text
 } from "evergreen-ui";
+import { NavLink } from "react-router-dom";
 
 function Home() {
     return (
@@ -63,9 +64,14 @@ function Home() {
                             Login
                         </Button>
                         <hr />
-                        <Button name="signup" intent="success">
-                            Create a free account
-                        </Button>
+                        <NavLink
+                            to="/create"
+                            style={{ textDecoration: "none" }}
+                        >
+                            <Button intent="success">
+                                Create a free account
+                            </Button>
+                        </NavLink>
                     </form>
                 </Pane>
             </Pane>
