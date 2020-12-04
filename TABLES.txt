@@ -1,13 +1,14 @@
 CREATE TABLE user (
     userid SERIAL,
-    fullname VARCHAR(32),
+    firstName VARCHAR(32),
+    lastName VARCHAR(32),
     username VARCHAR(32),
     email VARCHAR(32),
     password VARCHAR(64),
     location VARCHAR(32),
     dob DATE,
     profilePic VARCHAR(64),
-    created TIMESTAMP,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     primary key (username)
 );
 

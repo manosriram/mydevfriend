@@ -6,9 +6,11 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 
 const submitForm = async data => {
-    console.log(data);
-    axios.post("/auth/signup", { data }).then(data => {
-        console.log(data);
+    const res = axios.post("/auth/signup", { data });
+    res.then(result => {
+        console.log(result);
+    }).catch(err => {
+        console.log(err.response);
     });
 };
 

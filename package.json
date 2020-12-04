@@ -24,6 +24,7 @@
         "helmet": "^4.2.0",
         "morgan": "^1.10.0",
         "mysql": "^2.18.1",
+        "util": "^0.12.3",
         "yup": "^0.32.0"
     },
     "devDependencies": {

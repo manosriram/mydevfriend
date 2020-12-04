@@ -33,7 +33,7 @@ const signUpSchema = yup.object().shape({
     dob: yup.string().required()
 });
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", async (req, res, next) => {
     try {
         const {
             username,
@@ -53,11 +53,46 @@ router.post("/signup", async (req, res) => {
             lastName,
             dob
         });
+        const connection = req.connection;
 
-        console.log(validSchema);
-        res.send("asdas");
+        await connection.query(
+            "select * from user where username = ?",
+            username,
+            async (err, rows) => {
+                if (rows[0]) {
+                    return res.status(409).json({
+                        success: false,
+                        message: "User already exists"
+                    });
+                } else {
+                    await connection.query(
+                        "INSERT INTO user(username, email, password, location, dob, firstName, lastName) values(?, ?, ?, ?, ?, ?, ?)",
+                        [
+                            username,
+                            email,
+                            password,
+                            location,
+                            dob,
+                            firstName,
+                            lastName
+                        ],
+                        (err, resl) => {
+                            if (err) throw new Error(err);
+                            else {
+                                return res.status(201).json({
+                                    success: true,
+                                    message: "User created"
+                                });
+                            }
+                        }
+                    );
+                }
+            }
+        );
+
+        // console.log(validSchema);
     } catch (err) {
-        console.log(err);
+        next(err);
     }
 });
 
