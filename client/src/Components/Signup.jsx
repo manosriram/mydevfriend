@@ -3,8 +3,14 @@ import { Form, Formik } from "formik";
 import { Text, AddIcon, Select, Button, TextInput } from "evergreen-ui";
 import "../Styles/App.css";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
-const submitForm = data => {};
+const submitForm = async data => {
+    console.log(data);
+    axios.post("/auth/signup", { data }).then(data => {
+        console.log(data);
+    });
+};
 
 function Signup() {
     return (
