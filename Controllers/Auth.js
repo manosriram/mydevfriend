@@ -117,14 +117,6 @@ router.post("/login", (req, res, next) => {
     console.log(req.body);
     const { username, password } = req.body.data;
 
-    if (req.session.user) {
-        return res.status(200).json({
-            success: true,
-            message: "Logged-In successfully",
-            user: req.session.user
-        });
-    }
-
     loginSchema.validateSync({ username, password });
 
     const connection = req.connection;
@@ -137,10 +129,25 @@ router.post("/login", (req, res, next) => {
                 req.session.user = rows[0];
                 var hour = 3600000;
                 req.session.cookie.maxAge = 14 * 24 * hour; //2 weeks
+                const {
+                    username,
+                    email,
+                    firstName,
+                    lastName,
+                    location,
+                    dob
+                } = rows[0];
                 return res.status(200).json({
                     success: true,
                     message: "Logged-In successfully",
-                    user: rows[0]
+                    user: {
+                        username,
+                        email,
+                        firstName,
+                        lastName,
+                        location,
+                        dob
+                    }
                 });
             } else {
                 return res

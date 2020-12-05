@@ -1,6 +1,6 @@
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { NotFound, Signup, Home, Navbar } from "./Components";
+import { UserHome, NotFound, Signup, Home, Navbar } from "./Components";
 
 function App() {
     return (
@@ -12,6 +12,9 @@ function App() {
                     </Route>
                     <Route path="/create" exact>
                         <Signup />
+                    </Route>
+                    <Route path="/home" exact>
+                        <UserHome />
                     </Route>
                     <Route path="/">
                         <NotFound />

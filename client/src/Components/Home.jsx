@@ -8,19 +8,21 @@ import {
     Pane,
     Text
 } from "evergreen-ui";
-import { NavLink } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import { Form, Formik } from "formik";
 import axios from "axios";
 
 const forbiddenToast = { id: "forbidden-action" };
 
-function Home() {
+function Home(props) {
     const submitForm = data => {
-        console.log(data);
         const res = axios.post("/auth/login", { data });
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
-            // props.history.push("/home");
+            props.history.push({
+                pathname: "/home",
+                state: { user: result.data.user }
+            });
         }).catch(err => {
             if (err.response && err.response.data)
                 toaster.danger(err.response.data.message, forbiddenToast);
@@ -78,7 +80,7 @@ function Home() {
                             handleSubmit,
                             handleBlur
                         }) => (
-                            <Form>
+                            <Form onSubmit={handleSubmit}>
                                 <TextInput
                                     name="username"
                                     placeholder="username"
@@ -122,4 +124,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default withRouter(Home);
