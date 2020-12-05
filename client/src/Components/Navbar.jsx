@@ -23,10 +23,10 @@ function Navbar(props) {
         <div style={customDefaultStyles}>
             <Pane height="5vh" width="100%" border="none">
                 <Text id="navtext" size={500} padding="10px">
-                    Logo Here
+                    CodeBuddy
                 </Text>
                 <Text id="navtext" size={500} padding="10px">
-                    Logo Here
+                    Messages
                 </Text>
                 <Popover
                     content={
