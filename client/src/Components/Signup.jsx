@@ -1,20 +1,30 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import { Text, AddIcon, Select, Button, TextInput } from "evergreen-ui";
+import {
+    toaster,
+    Text,
+    AddIcon,
+    Select,
+    Button,
+    TextInput
+} from "evergreen-ui";
 import "../Styles/App.css";
-import { NavLink } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import axios from "axios";
 
-const submitForm = async data => {
-    const res = axios.post("/auth/signup", { data });
-    res.then(result => {
-        console.log(result);
-    }).catch(err => {
-        console.log(err.response);
-    });
-};
+const forbiddenToast = { id: "forbidden-action" };
 
-function Signup() {
+function Signup(props) {
+    const submitForm = async data => {
+        const res = axios.post("/auth/signup", { data });
+        res.then(result => {
+            toaster.success(result.data.message, forbiddenToast);
+            props.history.push("/");
+        }).catch(err => {
+            if (err.response && err.response.data)
+                toaster.danger(err.response.data.message, forbiddenToast);
+        });
+    };
     return (
         <>
             <h1>Create a free account</h1>
@@ -79,6 +89,7 @@ function Signup() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             name="password"
+                            type="password"
                             placeholder="Password"
                         />
                         <br />
@@ -134,4 +145,4 @@ function Signup() {
     );
 }
 
-export default Signup;
+export default withRouter(Signup);

@@ -9,7 +9,7 @@ CREATE TABLE user (
     dob DATE,
     profilePic VARCHAR(64),
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    primary key (username)
+    primary key (username, email)
 );
 
 CREATE TABLE user_language (

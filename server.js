@@ -4,6 +4,8 @@ const PORT = process.env.PORT || 5454;
 const helmet = require("helmet");
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
+const session = require("express-session");
+const store = new session.MemoryStore();
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
@@ -19,6 +21,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(
+    session({
+        secret: "secret",
+        cookie: { maxAge: 1000 * 3600 },
+        saveUninitialized: false,
+        store
+    })
+);
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(bodyparser.json());
@@ -32,16 +42,15 @@ app.get("/", (req, res) => {
 
 app.use((req, res, next) => {
     const error = new Error("Not Found");
-    error.status(404);
+    error.status = 404;
     next(error);
 });
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
-    res.json({
-        error: {
-            message: error.message
-        }
+    return res.json({
+        success: false,
+        message: err.message
     });
 });
 
