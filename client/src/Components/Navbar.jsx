@@ -16,6 +16,7 @@ import {
     Pane,
     Text
 } from "evergreen-ui";
+import { useEffect } from "react";
 
 const customDefaultStyles = {
     padding: "5px",
@@ -23,6 +24,10 @@ const customDefaultStyles = {
 };
 
 function Navbar(props) {
+    useEffect(() => {
+        console.log(props);
+    }, []);
+
     const [username, setUsername] = useState("");
     return (
         <div style={customDefaultStyles}>
@@ -64,17 +69,10 @@ function Navbar(props) {
                         <Avatar
                             id="avatar"
                             float="right"
-                            name={
-                                props.user.firstName + " " + props.user.lastName
-                            }
+                            name={"adsad"}
                             size={40}
                         />
                     </Popover>
-                    <SearchInput
-                        id="search"
-                        float="right"
-                        placeholder="Filter traits..."
-                    />
                 </TabNavigation>
             </Pane>
             {username}

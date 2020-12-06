@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
     toaster,
     LogInIcon,
@@ -8,37 +8,35 @@ import {
     Pane,
     Text
 } from "evergreen-ui";
-import { withRouter } from "react-router-dom";
-import { Navbar } from "./";
+import { Link, withRouter } from "react-router-dom";
+import { UserContext, Navbar } from "./";
+import getUser from "../getUser";
 
 function UserHome(props) {
     const [user, setUser] = useState({});
+
     useEffect(() => {
-        if (!props.location.state) {
-            props.history.push("/");
-        }
-        const {
-            username,
-            email,
-            firstName,
-            lastName,
-            location,
-            dob
-        } = props.location.state.user;
-        setUser({
-            username,
-            email,
-            firstName,
-            lastName,
-            location,
-            dob
-        });
+        getUser().then(res => setUser(res));
     }, []);
 
     return (
         <>
             <Navbar user={user} />
-            {user.email}
+            <Pane
+                elevation={0}
+                float="left"
+                backgroundColor="white"
+                width="100%"
+                height="auto"
+                margin={24}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
+            >
+                {JSON.stringify(user)}
+                <Link to="/match">find random user</Link>
+            </Pane>
         </>
     );
 }

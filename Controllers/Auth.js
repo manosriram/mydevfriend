@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const yup = require("yup");
+const jwt = require("jsonwebtoken");
 
 // TODO:
 // 1. Get body.
@@ -48,6 +49,15 @@ const loginSchema = yup.object().shape({
         .min(4, "Password must atleast be of length 4")
         .max(32, "Password should not exceed length 32")
         .required()
+});
+
+router.get("/user", (req, res, next) => {
+    let token = req.headers["authorization"];
+    token = token.split(" ")[1];
+    jwt.verify(token, "secret", (err, user) => {
+        if (!err) return res.json({ user: user || null });
+        else next(err);
+    });
 });
 
 router.post("/signup", async (req, res, next) => {
@@ -114,7 +124,6 @@ router.post("/signup", async (req, res, next) => {
 });
 
 router.post("/login", (req, res, next) => {
-    console.log(req.body);
     const { username, password } = req.body.data;
 
     loginSchema.validateSync({ username, password });
@@ -125,29 +134,26 @@ router.post("/login", (req, res, next) => {
         [username, password],
         async (err, rows) => {
             if (rows[0]) {
-                req.session.authenticated = true;
-                req.session.user = rows[0];
-                var hour = 3600000;
-                req.session.cookie.maxAge = 14 * 24 * hour; //2 weeks
-                const {
+                // JWT
+
+                const { firstName, lastName, email, location } = rows[0];
+                const userPayload = {
                     username,
-                    email,
-                    firstName,
-                    lastName,
-                    location,
-                    dob
-                } = rows[0];
+                    email: rows[0].email,
+                    firstName: rows[0].firstName,
+                    lastName: rows[0].lastName,
+                    location: rows[0].location,
+                    dob: rows[0].dob
+                };
+                const token = jwt.sign(userPayload, "secret", {
+                    expiresIn: "1d"
+                });
+
+                var hour = 3600000;
                 return res.status(200).json({
                     success: true,
                     message: "Logged-In successfully",
-                    user: {
-                        username,
-                        email,
-                        firstName,
-                        lastName,
-                        location,
-                        dob
-                    }
+                    token
                 });
             } else {
                 return res

@@ -11,6 +11,7 @@ import {
 import { withRouter, NavLink } from "react-router-dom";
 import { Form, Formik } from "formik";
 import axios from "axios";
+import Cookie from "js-cookie";
 
 const forbiddenToast = { id: "forbidden-action" };
 
@@ -19,9 +20,9 @@ function Home(props) {
         const res = axios.post("/auth/login", { data });
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
+            Cookie.set("jtk", result.data.token);
             props.history.push({
-                pathname: "/home",
-                state: { user: result.data.user }
+                pathname: "/home"
             });
         }).catch(err => {
             if (err.response && err.response.data)

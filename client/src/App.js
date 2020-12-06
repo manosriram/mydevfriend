@@ -1,6 +1,6 @@
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { UserHome, NotFound, Signup, Home, Navbar } from "./Components";
+import { Messages, UserHome, NotFound, Signup, Home } from "./Components";
 
 function App() {
     return (
@@ -15,6 +15,9 @@ function App() {
                     </Route>
                     <Route path="/home" exact>
                         <UserHome />
+                    </Route>
+                    <Route path="/messages" exact>
+                        <Messages />
                     </Route>
                     <Route path="/">
                         <NotFound />
