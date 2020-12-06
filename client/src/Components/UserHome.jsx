@@ -14,6 +14,9 @@ import { Navbar } from "./";
 function UserHome(props) {
     const [user, setUser] = useState({});
     useEffect(() => {
+        if (!props.location.state) {
+            props.history.push("/");
+        }
         const {
             username,
             email,

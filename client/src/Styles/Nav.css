@@ -10,3 +10,8 @@
 #avatar:hover {
     cursor: pointer;
 }
+
+#search {
+    float: right;
+    margin: 5px;
+}

@@ -71,7 +71,7 @@ function Home(props) {
                         ) => {
                             setSubmitting(true);
                             await submitForm(data);
-                            setSubmitting(true);
+                            setSubmitting(false);
                         }}
                     >
                         {({
