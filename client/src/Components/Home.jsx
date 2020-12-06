@@ -12,6 +12,8 @@ import { withRouter, NavLink } from "react-router-dom";
 import { Form, Formik } from "formik";
 import axios from "axios";
 import Cookie from "js-cookie";
+import getUser from "../getUser";
+import { useState, useEffect } from "react";
 
 const forbiddenToast = { id: "forbidden-action" };
 
@@ -29,6 +31,14 @@ function Home(props) {
                 toaster.danger(err.response.data.message, forbiddenToast);
         });
     };
+
+    useEffect(() => {
+        getUser().then(res => {
+            if (res.username) {
+                props.history.push("/home");
+            }
+        });
+    }, []);
 
     return (
         <div id="container">

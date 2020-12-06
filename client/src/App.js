@@ -1,6 +1,7 @@
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Messages, UserHome, NotFound, Signup, Home } from "./Components";
+import { PrivateRoute } from "./PrivateRoute";
 
 function App() {
     return (
@@ -13,9 +14,7 @@ function App() {
                     <Route path="/create" exact>
                         <Signup />
                     </Route>
-                    <Route path="/home" exact>
-                        <UserHome />
-                    </Route>
+                    <PrivateRoute path="/home" component={UserHome} />
                     <Route path="/messages" exact>
                         <Messages />
                     </Route>

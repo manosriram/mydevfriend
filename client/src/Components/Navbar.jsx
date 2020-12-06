@@ -17,6 +17,8 @@ import {
     Text
 } from "evergreen-ui";
 import { useEffect } from "react";
+import Cookie from "js-cookie";
+import { withRouter } from "react-router-dom";
 
 const customDefaultStyles = {
     padding: "5px",
@@ -27,6 +29,11 @@ function Navbar(props) {
     useEffect(() => {
         console.log(props);
     }, []);
+
+    const handleLogout = () => {
+        Cookie.remove("jtk");
+        props.history.push("/");
+    };
 
     const [username, setUsername] = useState("");
     return (
@@ -58,7 +65,10 @@ function Navbar(props) {
                                     </Menu.Group>
                                     <Menu.Divider />
                                     <Menu.Group>
-                                        <Menu.Item intent="danger">
+                                        <Menu.Item
+                                            intent="danger"
+                                            onClick={handleLogout}
+                                        >
                                             Logout
                                         </Menu.Item>
                                     </Menu.Group>
@@ -80,4 +90,4 @@ function Navbar(props) {
     );
 }
 
-export default Navbar;
+export default withRouter(Navbar);
