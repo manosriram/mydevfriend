@@ -11,7 +11,7 @@ import {
     Pane,
     Text
 } from "evergreen-ui";
-import "../Styles/App.css";
+import "../Styles/Messages.css";
 import { Form, Formik } from "formik";
 import { NavLink } from "react-router-dom";
 
@@ -21,6 +21,23 @@ const fakeUsers = [
     { name: "mabc" },
     { name: "manabc" }
 ];
+
+let fakeMessages = [
+    { mano: "Hi mano", you: "Hii!" },
+    { mano: "how are you?", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
+    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" }
+];
+
+window.onload = function() {
+    var messageBody = document.querySelector(".msger-chat");
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+};
 
 function Messages(props) {
     const [user, setUser] = useState({});
@@ -76,7 +93,7 @@ function Messages(props) {
                         </div>
                     </Pane>
                     <Pane
-                        elevation={4}
+                        elevation={0}
                         float="left"
                         width="60vw"
                         height="90vh"
@@ -86,7 +103,65 @@ function Messages(props) {
                         alignItems="center"
                         flexDirection="column"
                     >
-                        <h1>{selectedUser.name}</h1>
+                        <section class="msger">
+                            <header class="msger-header">
+                                <div class="msger-header-title">
+                                    <i class="fas fa-comment-alt"></i>{" "}
+                                    {selectedUser.name}
+                                </div>
+                                <div class="msger-header-options">
+                                    <span>
+                                        <i class="fas fa-cog"></i>
+                                    </span>
+                                </div>
+                            </header>
+
+                            <main class="msger-chat">
+                                {fakeMessages.map(message => {
+                                    return (
+                                        <div id="messages-list">
+                                            <div class="msg left-msg">
+                                                <div class="msg-bubble">
+                                                    <div class="msg-info">
+                                                        <div class="msg-info-time">
+                                                            12:45
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="msg-text">
+                                                        {message.mano}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="msg right-msg">
+                                                <div class="msg-bubble">
+                                                    <div class="msg-info">
+                                                        <div class="msg-info-time">
+                                                            12:46
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="msg-text">
+                                                        {message.you}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </main>
+
+                            <form class="msger-inputarea">
+                                <input
+                                    type="text"
+                                    class="msger-input"
+                                    placeholder="Enter your message..."
+                                />
+                                <button type="submit" class="msger-send-btn">
+                                    Send
+                                </button>
+                            </form>
+                        </section>
                     </Pane>
                 </Pane>
             </div>
