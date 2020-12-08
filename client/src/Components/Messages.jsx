@@ -14,6 +14,7 @@ import {
 import "../Styles/Messages.css";
 import { Form, Formik } from "formik";
 import { NavLink } from "react-router-dom";
+import { ChatFeed, Message } from "react-chat-ui";
 
 const fakeUsers = [
     { name: "mano" },
@@ -22,26 +23,100 @@ const fakeUsers = [
     { name: "manabc" }
 ];
 
-let fakeMessages = [
-    { mano: "Hi mano", you: "Hii!" },
-    { mano: "how are you?", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" },
-    { mano: "ASdasdasasdasd", you: "Asdlaishjasd" }
-];
-
-window.onload = function() {
-    var messageBody = document.querySelector(".msger-chat");
-    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-};
-
 function Messages(props) {
     const [user, setUser] = useState({});
     const [selectedUser, setSelectedUser] = useState({});
+    const [fakeMessages, setFakeMessages] = useState([
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }), // Gray bubble
+        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
+        new Message({
+            id: 1,
+            message: "I'm the recipient! (The person you're talking to)"
+        }) // Gray bubble
+    ]);
+
+    const update = () => {
+        setTimeout(() => {
+            setFakeMessages(fakeMessages.concat("new concat"));
+        }, 1500);
+    };
+
+    window.onload = function() {
+        // var messageBody = document.querySelector(".msger-chat");
+        // messageBody.scrollTop =
+        // messageBody.scrollHeight - messageBody.clientHeight;
+        // sc();
+    };
+    function sc() {
+        var el = document.querySelector(".msger-chat");
+        el.addEventListener("scroll", function() {
+            if (el.scrollTop == 0) {
+                setFakeMessages([
+                    { mano: "asdnalksndasd1111", you: "yesyesyes" },
+                    ...fakeMessages
+                ]);
+                console.log(fakeMessages);
+            }
+        });
+    }
 
     useEffect(() => {
         getUser().then(res => setUser(res));
@@ -55,7 +130,7 @@ function Messages(props) {
         <>
             <Navbar user={user} />
             <div id="container">
-                <Pane clearfix>
+                <Pane id="con" clearfix>
                     <Pane
                         elevation={4}
                         float="left"
@@ -92,78 +167,13 @@ function Messages(props) {
                             })}
                         </div>
                     </Pane>
-                    <Pane
-                        elevation={0}
-                        float="left"
-                        width="60vw"
-                        height="90vh"
-                        margin={24}
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        flexDirection="column"
-                    >
-                        <section class="msger">
-                            <header class="msger-header">
-                                <div class="msger-header-title">
-                                    <i class="fas fa-comment-alt"></i>{" "}
-                                    {selectedUser.name}
-                                </div>
-                                <div class="msger-header-options">
-                                    <span>
-                                        <i class="fas fa-cog"></i>
-                                    </span>
-                                </div>
-                            </header>
-
-                            <main class="msger-chat">
-                                {fakeMessages.map(message => {
-                                    return (
-                                        <div id="messages-list">
-                                            <div class="msg left-msg">
-                                                <div class="msg-bubble">
-                                                    <div class="msg-info">
-                                                        <div class="msg-info-time">
-                                                            12:45
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="msg-text">
-                                                        {message.mano}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="msg right-msg">
-                                                <div class="msg-bubble">
-                                                    <div class="msg-info">
-                                                        <div class="msg-info-time">
-                                                            12:46
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="msg-text">
-                                                        {message.you}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </main>
-
-                            <form class="msger-inputarea">
-                                <input
-                                    type="text"
-                                    class="msger-input"
-                                    placeholder="Enter your message..."
-                                />
-                                <button type="submit" class="msger-send-btn">
-                                    Send
-                                </button>
-                            </form>
-                        </section>
-                    </Pane>
                 </Pane>
+            </div>
+            <div id="chat-messages">
+                <TextInput
+                    name="text-input-name"
+                    placeholder="Text input placeholder..."
+                />
             </div>
         </>
     );

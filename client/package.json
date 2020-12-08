@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@livechat/ui-kit": "^0.4.0-10",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
@@ -11,8 +12,10 @@
         "formik": "^2.2.5",
         "js-cookie": "^2.2.1",
         "react": "^17.0.1",
+        "react-chat-ui": "^0.4.0",
         "react-dom": "^17.0.1",
         "react-helmet": "^6.1.0",
+        "react-infinite-scroll-component": "^5.1.0",
         "react-lottie": "^1.2.3",
         "react-router-dom": "^5.2.0",
         "react-scripts": "4.0.1",
