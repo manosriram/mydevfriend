@@ -27,70 +27,16 @@ function Messages(props) {
     const [user, setUser] = useState({});
     const [selectedUser, setSelectedUser] = useState({});
     const [fakeMessages, setFakeMessages] = useState([
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }), // Gray bubble
-        new Message({ id: 0, message: "I'm you -- the blue bubble!" }), // Blue bubble
-        new Message({
-            id: 1,
-            message: "I'm the recipient! (The person you're talking to)"
-        }) // Gray bubble
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
+        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas"
     ]);
 
     const update = () => {
@@ -167,13 +113,38 @@ function Messages(props) {
                             })}
                         </div>
                     </Pane>
+                    <Pane
+                        elevation={4}
+                        float="left"
+                        backgroundColor="white"
+                        width="60vw"
+                        height="90vh"
+                        margin={24}
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        flexDirection="column"
+                        id="ft"
+                    >
+                        <div id="msgs">
+                            {fakeMessages.map(message => {
+                                return (
+                                    <>
+                                        <Text>{message}</Text>
+                                        <br />
+                                        <br />
+                                    </>
+                                );
+                            })}
+                            <TextInput
+                                width="40vw"
+                                placeholder="Message here"
+                            />
+                            {"  "}
+                            <Button>Send</Button>
+                        </div>
+                    </Pane>
                 </Pane>
-            </div>
-            <div id="chat-messages">
-                <TextInput
-                    name="text-input-name"
-                    placeholder="Text input placeholder..."
-                />
             </div>
         </>
     );

@@ -1,7 +1,20 @@
-#chat-messages {
-    width: 60%;
-    height: 80vh;
-    overflow-y: scroll;
-    padding: 40px;
-    float: right;
+#ft {
+    position: relative;
+    width: 60vw;
+}
+
+#msgs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    min-width: auto;
+    display: inline-block;
+    color: #fff;
+    color: black;
+    text-align: left;
+    padding: 5%;
+}
+
+#msgs p {
+    min-height: 4vh;
 }
