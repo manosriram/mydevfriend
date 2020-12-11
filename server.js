@@ -5,6 +5,10 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const bodyparser = require("body-parser");
 var mysql = require("mysql");
+const socketio = require("socket.io");
+const http = require("http");
+const cors = require("cors");
+const listenMessages = require("./Controllers/Messages");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -13,6 +17,12 @@ var connection = mysql.createConnection({
     database: "meetwith"
 });
 connection.connect();
+
+app.use(cors());
+
+const server = app.listen(PORT, () => console.log(`Server at ${PORT}`));
+const io = socketio(server);
+listenMessages(io);
 
 app.use((req, res, next) => {
     req.connection = connection;
@@ -25,6 +35,7 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
 app.use("/auth", require("./Controllers/auth"));
+app.use("/message", require("./Controllers/messages"));
 
 app.get("/", (req, res) => {
     return res.send("Hi from /");
@@ -43,5 +54,3 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 });
-
-app.listen(PORT, () => console.log(`Server at ${PORT}`));

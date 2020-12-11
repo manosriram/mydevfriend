@@ -15,6 +15,10 @@ import "../Styles/Messages.css";
 import { Form, Formik } from "formik";
 import { NavLink } from "react-router-dom";
 import { ChatFeed, Message } from "react-chat-ui";
+import io from "socket.io-client";
+const socket = io("http://localhost:5454", {
+    transports: ["websocket", "polling", "flashsocket"]
+});
 
 const fakeUsers = [
     { name: "mano" },
@@ -25,6 +29,7 @@ const fakeUsers = [
 
 function Messages(props) {
     const [user, setUser] = useState({});
+    const [message, setMessage] = useState("");
     const [selectedUser, setSelectedUser] = useState({});
     const [fakeMessages, setFakeMessages] = useState([
         "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
@@ -51,6 +56,7 @@ function Messages(props) {
         // messageBody.scrollHeight - messageBody.clientHeight;
         // sc();
     };
+
     function sc() {
         var el = document.querySelector(".msger-chat");
         el.addEventListener("scroll", function() {
@@ -65,11 +71,20 @@ function Messages(props) {
     }
 
     useEffect(() => {
-        getUser().then(res => setUser(res));
+        getUser().then(res => {
+            setUser(res);
+        });
     }, []);
 
     const selectUser = user => {
         setSelectedUser(user);
+    };
+
+    const sendMessage = message => {
+        const from = user.username,
+            to = selectedUser.name;
+
+        socket.emit("message", { from, to, message });
     };
 
     return (
@@ -137,11 +152,18 @@ function Messages(props) {
                                 );
                             })}
                             <TextInput
+                                onChange={e => {
+                                    setMessage(e.target.value);
+                                    console.log(message);
+                                }}
+                                name="message"
                                 width="40vw"
                                 placeholder="Message here"
                             />
                             {"  "}
-                            <Button>Send</Button>
+                            <Button onClick={() => sendMessage(message)}>
+                                Send
+                            </Button>
                         </div>
                     </Pane>
                 </Pane>

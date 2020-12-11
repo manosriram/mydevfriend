@@ -117,7 +117,8 @@ function Home(props) {
                                 >
                                     Login
                                 </Button>
-                                <hr />
+                                <br />
+                                <br />
                                 <NavLink
                                     to="/create"
                                     style={{ textDecoration: "none" }}
