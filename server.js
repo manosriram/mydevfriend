@@ -22,7 +22,7 @@ app.use(cors());
 
 const server = app.listen(PORT, () => console.log(`Server at ${PORT}`));
 const io = socketio(server);
-listenMessages(io);
+listenMessages(io, connection);
 
 app.use((req, res, next) => {
     req.connection = connection;
@@ -36,6 +36,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 
 app.use("/auth", require("./Controllers/auth"));
 app.use("/message", require("./Controllers/messages"));
+app.use("/chat", require("./Controllers/message"));
 
 app.get("/", (req, res) => {
     return res.send("Hi from /");

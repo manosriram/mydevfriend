@@ -1,4 +1,4 @@
-const listenMessages = io => {
+const listenMessages = (io, connection) => {
     io.on("connection", socket => {
         //
         socket.on("message", ({ from, to, message }) => {

@@ -17,3 +17,24 @@ CREATE TABLE user_language (
     language varchar(32),
     primary key (username, language)
 );
+
+CREATE TABLE chatRoom (
+    id SERIAL,
+    name varchar(32),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE message (
+    id SERIAL,
+    message varchar(264),
+    sent TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    chatroomId integer,
+    FOREIGN KEY(chatroomId) REFERENCES chatRoom(chatroomId)
+);
+
+CREATE TABLE userChatRoom (
+    id SERIAL,
+    userid int,
+    FOREIGN KEY(userid) REFERENCES user(userid),
+    joined TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+);
