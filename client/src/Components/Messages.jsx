@@ -85,14 +85,23 @@ function Messages(props) {
         getMessages(user);
     };
 
-    const sendMessage = message => {
-        const from = user.username,
-            to = selectedUser.name;
-
-        socket.emit("message", { from, to, message });
-        setMessage([...message, message]);
+    const addMessage = message => {
+        const el = document.querySelector("#msgs");
+        el.insertAdjacentHTML(
+            "beforeend",
+            `<Text>${message}</Text><br /><br />`
+        );
     };
 
+    const sendMessage = message => {
+        const from = user.username,
+            to = selectedUser;
+
+        socket.emit("message", { from, to, message: message.message });
+        addMessage(message.message);
+    };
+
+    var last;
     return (
         <>
             <Navbar user={user} />
@@ -152,20 +161,34 @@ function Messages(props) {
                         id="ft"
                     >
                         <div id="msgs">
-                            {messages.map(message => {
+                            {messages.map((message, index) => {
                                 return (
                                     <>
-                                        <Heading>mano</Heading>
+                                        {last != message.sentBy && (
+                                            <Heading>
+                                                {user.username ===
+                                                message.sentBy
+                                                    ? "You"
+                                                    : message.sentBy}
+                                            </Heading>
+                                        )}
+                                        <div id="nov">
+                                            {(last = message.sentBy)}
+                                        </div>
                                         <Text>{message.message}</Text>
                                         <br />
                                         <br />
                                     </>
                                 );
                             })}
+                        </div>
+                        <div id="send">
                             <TextInput
                                 onChange={e => {
-                                    setMessage(e.target.value);
-                                    console.log(message);
+                                    setMessage({
+                                        ...message,
+                                        [e.target.name]: e.target.value
+                                    });
                                 }}
                                 name="message"
                                 width="40vw"

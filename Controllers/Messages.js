@@ -3,10 +3,10 @@ const listenMessages = (io, connection) => {
         //
         socket.on("message", ({ from, to, message }) => {
             const sentBy = from;
-            if (from.localeCompare(to) === 1) [from, to] = [to, from];
-            console.log(from, to);
+            if (from.localeCompare(to) === 1) to = [from, (from = to)][0];
+            console.log(message);
             connection.query(
-                "INSERT INTO message(chatId, message, sentBy) select chatId, ?, ? from chat where user1=? and user2=?",
+                "INSERT INTO message(chatId, message, sentBy) select chatId, ?, ? from chat c where c.user1=? and c.user2=?",
                 [message, sentBy, from, to],
                 (err, rows) => {
                     if (err) console.log(err);
