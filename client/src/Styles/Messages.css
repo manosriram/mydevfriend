@@ -13,6 +13,8 @@
     color: black;
     text-align: left;
     padding: 5%;
+    max-height: 75vh;
+    overflow: scroll;
 }
 
 #msgs p {

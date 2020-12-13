@@ -18,23 +18,18 @@ CREATE TABLE user_language (
     primary key (username, language)
 );
 
-CREATE TABLE chatRoom (
+CREATE TABLE chat (
     id SERIAL,
-    name varchar(32),
-    PRIMARY KEY(id)
+    user1 varchar(32),
+    user2 varchar(32),
+    PRIMARY KEY(user1, user2)
 );
 
 CREATE TABLE message (
-    id SERIAL,
-    message varchar(264),
+    id SERIAL NOT NULL,
+    chatId bigint unsigned NOT NULL,
+    message nvarchar(400) NOT NULL,
     sent TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    chatroomId integer,
-    FOREIGN KEY(chatroomId) REFERENCES chatRoom(chatroomId)
-);
-
-CREATE TABLE userChatRoom (
-    id SERIAL,
-    userid int,
-    FOREIGN KEY(userid) REFERENCES user(userid),
-    joined TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(chatId) REFERENCES chat(chatId),
+    PRIMARY KEY(id)
 );

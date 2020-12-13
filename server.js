@@ -35,7 +35,6 @@ app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
 app.use("/auth", require("./Controllers/auth"));
-app.use("/message", require("./Controllers/messages"));
 app.use("/chat", require("./Controllers/message"));
 
 app.get("/", (req, res) => {

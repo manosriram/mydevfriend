@@ -15,6 +15,7 @@ import "../Styles/Messages.css";
 import { Form, Formik } from "formik";
 import { NavLink } from "react-router-dom";
 import { ChatFeed, Message } from "react-chat-ui";
+import axios from "axios";
 import io from "socket.io-client";
 const socket = io("http://localhost:5454", {
     transports: ["websocket", "polling", "flashsocket"]
@@ -24,30 +25,33 @@ const fakeUsers = [
     { name: "mano" },
     { name: "abc" },
     { name: "mabc" },
-    { name: "manabc" }
+    { name: "sriram" }
 ];
 
 function Messages(props) {
     const [user, setUser] = useState({});
     const [message, setMessage] = useState("");
     const [selectedUser, setSelectedUser] = useState({});
-    const [fakeMessages, setFakeMessages] = useState([
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas",
-        "lasdjlajdlak dlajsdkajsljlaksjlkajsdj alsjdas"
-    ]);
+    const [messages, setMessages] = useState([{}]);
 
     const update = () => {
-        setTimeout(() => {
-            setFakeMessages(fakeMessages.concat("new concat"));
-        }, 1500);
+        // setTimeout(() => {
+        // setFakeMessages(messages.concat("new concat"));
+        // }, 1500);
+    };
+
+    const getMessages = async toUser => {
+        const data = {
+            from: user.username,
+            to: toUser
+        };
+        const res = axios.post("/chat/history", { data });
+        res.then(result => {
+            console.log(result.data.messages[0]);
+            setMessages(result.data.messages[0]);
+        }).catch(err => {
+            console.log(err);
+        });
     };
 
     window.onload = function() {
@@ -58,16 +62,16 @@ function Messages(props) {
     };
 
     function sc() {
-        var el = document.querySelector(".msger-chat");
-        el.addEventListener("scroll", function() {
-            if (el.scrollTop == 0) {
-                setFakeMessages([
-                    { mano: "asdnalksndasd1111", you: "yesyesyes" },
-                    ...fakeMessages
-                ]);
-                console.log(fakeMessages);
-            }
-        });
+        // var el = document.querySelector(".msger-chat");
+        // el.addEventListener("scroll", function() {
+        // if (el.scrollTop == 0) {
+        // setFakeMessages([
+        // { mano: "asdnalksndasd1111", you: "yesyesyes" },
+        // ...fakeMessages
+        // ]);
+        // console.log(fakeMessages);
+        // }
+        // });
     }
 
     useEffect(() => {
@@ -78,6 +82,7 @@ function Messages(props) {
 
     const selectUser = user => {
         setSelectedUser(user);
+        getMessages(user);
     };
 
     const sendMessage = message => {
@@ -85,6 +90,7 @@ function Messages(props) {
             to = selectedUser.name;
 
         socket.emit("message", { from, to, message });
+        setMessage([...message, message]);
     };
 
     return (
@@ -116,11 +122,15 @@ function Messages(props) {
                                             height="6vh"
                                             margin="10px"
                                             padding="8px"
-                                            onClick={() =>
-                                                setSelectedUser(fuser)
-                                            }
                                         >
-                                            <Text size={600}>{fuser.name}</Text>
+                                            <Text
+                                                size={600}
+                                                onClick={() =>
+                                                    selectUser(fuser.name)
+                                                }
+                                            >
+                                                {fuser.name}
+                                            </Text>
                                             <br />
                                         </Pane>
                                     </div>
@@ -142,10 +152,11 @@ function Messages(props) {
                         id="ft"
                     >
                         <div id="msgs">
-                            {fakeMessages.map(message => {
+                            {messages.map(message => {
                                 return (
                                     <>
-                                        <Text>{message}</Text>
+                                        <Heading>mano</Heading>
+                                        <Text>{message.message}</Text>
                                         <br />
                                         <br />
                                     </>
