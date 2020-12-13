@@ -3,7 +3,8 @@
     width: 60vw;
 }
 
-#msgs {
+#msgs,
+#send {
     position: relative;
     bottom: 0;
     left: 0;
@@ -12,7 +13,6 @@
     color: #fff;
     color: black;
     text-align: left;
-    padding: 5%;
     max-height: 75vh;
     overflow: hidden;
     overflow-y: scroll;
@@ -21,7 +21,6 @@
 #send {
     width: auto;
     height: 60px;
-    margin: 25px;
     position: relative;
     bottom: 0;
     left: 0;

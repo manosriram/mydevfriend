@@ -8,6 +8,7 @@ import {
     Button,
     TextInput,
     Heading,
+    DirectionRightIcon,
     Pane,
     Text
 } from "evergreen-ui";
@@ -31,7 +32,7 @@ const fakeUsers = [
 function Messages(props) {
     const [user, setUser] = useState({});
     const [message, setMessage] = useState("");
-    const [selectedUser, setSelectedUser] = useState({});
+    const [selectedUser, setSelectedUser] = useState("");
     const [messages, setMessages] = useState([{}]);
 
     const update = () => {
@@ -47,31 +48,18 @@ function Messages(props) {
         };
         const res = axios.post("/chat/history", { data });
         res.then(result => {
-            console.log(result.data.messages[0]);
             setMessages(result.data.messages[0]);
+            sc();
         }).catch(err => {
             console.log(err);
         });
     };
 
-    window.onload = function() {
-        // var messageBody = document.querySelector(".msger-chat");
-        // messageBody.scrollTop =
-        // messageBody.scrollHeight - messageBody.clientHeight;
-        // sc();
-    };
+    window.onload = function() {};
 
     function sc() {
-        // var el = document.querySelector(".msger-chat");
-        // el.addEventListener("scroll", function() {
-        // if (el.scrollTop == 0) {
-        // setFakeMessages([
-        // { mano: "asdnalksndasd1111", you: "yesyesyes" },
-        // ...fakeMessages
-        // ]);
-        // console.log(fakeMessages);
-        // }
-        // });
+        var objDiv = document.getElementById("msgs");
+        if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
     }
 
     useEffect(() => {
@@ -94,6 +82,7 @@ function Messages(props) {
     };
 
     const sendMessage = message => {
+        if (!message) return;
         const from = user.username,
             to = selectedUser;
 
@@ -134,9 +123,9 @@ function Messages(props) {
                                         >
                                             <Text
                                                 size={600}
-                                                onClick={() =>
-                                                    selectUser(fuser.name)
-                                                }
+                                                onClick={() => {
+                                                    selectUser(fuser.name);
+                                                }}
                                             >
                                                 {fuser.name}
                                             </Text>
@@ -147,59 +136,66 @@ function Messages(props) {
                             })}
                         </div>
                     </Pane>
-                    <Pane
-                        elevation={4}
-                        float="left"
-                        backgroundColor="white"
-                        width="60vw"
-                        height="90vh"
-                        margin={24}
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        flexDirection="column"
-                        id="ft"
-                    >
-                        <div id="msgs">
-                            {messages.map((message, index) => {
-                                return (
-                                    <>
-                                        {last != message.sentBy && (
-                                            <Heading>
-                                                {user.username ===
-                                                message.sentBy
-                                                    ? "You"
-                                                    : message.sentBy}
-                                            </Heading>
-                                        )}
-                                        <div id="nov">
-                                            {(last = message.sentBy)}
-                                        </div>
-                                        <Text>{message.message}</Text>
-                                        <br />
-                                        <br />
-                                    </>
-                                );
-                            })}
-                        </div>
-                        <div id="send">
-                            <TextInput
-                                onChange={e => {
-                                    setMessage({
-                                        ...message,
-                                        [e.target.name]: e.target.value
-                                    });
-                                }}
-                                name="message"
-                                width="40vw"
-                                placeholder="Message here"
-                            />
-                            {"  "}
-                            <Button onClick={() => sendMessage(message)}>
-                                Send
-                            </Button>
-                        </div>
-                    </Pane>
+                    {selectedUser && (
+                        <Pane
+                            elevation={4}
+                            float="left"
+                            backgroundColor="white"
+                            width="60vw"
+                            height="90vh"
+                            margin={24}
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            flexDirection="column"
+                            id="ft"
+                        >
+                            <div id="msgs">
+                                {messages.map((message, index) => {
+                                    return (
+                                        <>
+                                            {last != message.sentBy && (
+                                                <Heading size={600}>
+                                                    {user.username ===
+                                                    message.sentBy
+                                                        ? "You"
+                                                        : message.sentBy}
+                                                </Heading>
+                                            )}
+                                            <div id="nov">
+                                                {(last = message.sentBy)}
+                                            </div>
+                                            <Text>{message.message}</Text>
+                                            <br />
+                                            <br />
+                                        </>
+                                    );
+                                })}
+                            </div>
+                            <div id="send">
+                                <TextInput
+                                    onChange={e => {
+                                        setMessage({
+                                            ...message,
+                                            [e.target.name]: e.target.value
+                                        });
+                                    }}
+                                    name="message"
+                                    width="40vw"
+                                    text-align="left"
+                                    placeholder="Message here"
+                                />
+                                {"  "}
+                                <Button
+                                    intent="success"
+                                    onClick={() => sendMessage(message)}
+                                    iconAfter={DirectionRightIcon}
+                                >
+                                    Send
+                                </Button>
+                            </div>
+                        </Pane>
+                    )}
                 </Pane>
             </div>
         </>
