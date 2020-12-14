@@ -3,16 +3,10 @@ const router = express.Router();
 const yup = require("yup");
 const jwt = require("jsonwebtoken");
 
-// TODO:
-// 1. Get body.
-// 2. Validate it using YUM.
-// 3. Check if username doesn't exist.
-// 4. If not, create a row in user table and user_language table.
-
 const signUpSchema = yup.object().shape({
     username: yup
         .string()
-        .matches(/^[A-Za-z ]*$/, "Special characters not allowed")
+        .matches(/^[A-Za-z0-9]*$/, "Special characters not allowed")
         .min(4, "Username must atleast be of length 4")
         .max(32, "Username should not exceed length 32")
         .required(),
@@ -40,7 +34,7 @@ const signUpSchema = yup.object().shape({
 const loginSchema = yup.object().shape({
     username: yup
         .string()
-        .matches(/^[A-Za-z ]*$/, "Special characters not allowed")
+        .matches(/^[A-Za-z0-9]*$/, "Special characters not allowed")
         .min(4, "Username must atleast be of length 4")
         .max(32, "Username should not exceed length 32")
         .required(),
@@ -71,7 +65,8 @@ router.post("/signup", async (req, res, next) => {
             location,
             firstName,
             lastName,
-            dob
+            dob,
+            gender
         } = req.body.data;
         signUpSchema.validateSync({
             username,
@@ -80,46 +75,37 @@ router.post("/signup", async (req, res, next) => {
             location,
             firstName,
             lastName,
-            dob
+            dob,
+            gender
         });
         const connection = req.connection;
 
-        await connection.query(
-            "select * from user where username = ? or email = ?",
-            [username, email],
-            async (err, rows) => {
-                if (rows[0]) {
-                    return res.status(409).json({
-                        success: false,
-                        message: "User already exists"
+        connection
+            .query(
+                "INSERT INTO user(username, email, password, location, dob, firstName, lastName, gender) values(?, ?, ?, ?, ?, ?, ?, ?)",
+                [
+                    username,
+                    email,
+                    password,
+                    location,
+                    dob,
+                    firstName,
+                    lastName,
+                    gender
+                ]
+            )
+            .then(
+                rows => {
+                    return res.status(201).json({
+                        success: true,
+                        message: "User created"
                     });
-                } else {
-                    await connection.query(
-                        "INSERT INTO user(username, email, password, location, dob, firstName, lastName) values(?, ?, ?, ?, ?, ?, ?)",
-                        [
-                            username,
-                            email,
-                            password,
-                            location,
-                            dob,
-                            firstName,
-                            lastName
-                        ],
-                        (err, resl) => {
-                            if (err) throw new Error(err);
-                            else {
-                                return res.status(201).json({
-                                    success: true,
-                                    message: "User created"
-                                });
-                            }
-                        }
-                    );
+                },
+                err => {
+                    if (err.errno === 1062) next(new Error("username exists"));
+                    else next(new Error("some error occured"));
                 }
-            }
-        );
-
-        // console.log(validSchema);
+            );
     } catch (err) {
         next(err);
     }
@@ -131,39 +117,50 @@ router.post("/login", (req, res, next) => {
     loginSchema.validateSync({ username, password });
 
     const connection = req.connection;
-    connection.query(
-        "select * from user where username = ? and password = ?",
-        [username, password],
-        async (err, rows) => {
-            if (rows[0]) {
-                // JWT
+    connection
+        .query("select * from user where username = ? and password = ?", [
+            username,
+            password
+        ])
+        .then(
+            rows => {
+                if (rows[0]) {
+                    // JWT
 
-                const { firstName, lastName, email, location } = rows[0];
-                const userPayload = {
-                    username,
-                    email: rows[0].email,
-                    firstName: rows[0].firstName,
-                    lastName: rows[0].lastName,
-                    location: rows[0].location,
-                    dob: rows[0].dob
-                };
-                const token = jwt.sign(userPayload, "secret", {
-                    expiresIn: "1d"
-                });
+                    const {
+                        firstName,
+                        lastName,
+                        email,
+                        location,
+                        dob,
+                        gender
+                    } = rows[0];
+                    const userPayload = {
+                        username,
+                        email: email,
+                        firstName: firstName,
+                        lastName: lastName,
+                        location: location,
+                        dob: dob,
+                        gender: gender
+                    };
+                    const token = jwt.sign(userPayload, "secret", {
+                        expiresIn: "1d"
+                    });
 
-                var hour = 3600000;
-                return res.status(200).json({
-                    success: true,
-                    message: "Logged-In successfully",
-                    token
-                });
-            } else {
-                return res
-                    .status(403)
-                    .json({ success: false, message: "User doesn't exist" });
+                    return res.status(200).json({
+                        success: true,
+                        message: "Logged-In successfully",
+                        token
+                    });
+                } else {
+                    next(new Error("incorrect credentials"));
+                }
+            },
+            err => {
+                next(new Error(err));
             }
-        }
-    );
+        );
 });
 
 module.exports = router;

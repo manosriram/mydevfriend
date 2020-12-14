@@ -76,7 +76,7 @@ function Navbar(props) {
                         <Avatar
                             id="avatar"
                             float="right"
-                            name={"adsad"}
+                            name={props.user.username}
                             size={40}
                         />
                     </Popover>
