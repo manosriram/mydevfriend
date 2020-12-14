@@ -79,6 +79,7 @@ function Messages(props) {
             "beforeend",
             `<Text>${message}</Text><br /><br />`
         );
+        sc();
     };
 
     const sendMessage = message => {

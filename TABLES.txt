@@ -33,3 +33,11 @@ CREATE TABLE message (
     FOREIGN KEY(chatId) REFERENCES chat(chatId),
     PRIMARY KEY(id)
 );
+
+CREATE TABLE friendship (
+    user varchar(32),
+    friend varchar(32),
+    PRIMARY KEY(user, friend),
+    FOREIGN KEY(user) REFERENCES user(username),
+    FOREIGN KEY(friend) REFERENCES user(username)
+);

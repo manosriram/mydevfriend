@@ -35,6 +35,7 @@ function UserHome(props) {
                 flexDirection="column"
             >
                 {JSON.stringify(user)}
+                <br />
                 <Link to="/match">find random user</Link>
             </Pane>
         </>
