@@ -13,15 +13,8 @@ import { UserContext, Navbar } from "./";
 import getUser from "../getUser";
 
 function UserHome(props) {
-    const [user, setUser] = useState({});
-
-    useEffect(() => {
-        getUser().then(res => setUser(res));
-    }, []);
-
     return (
         <>
-            <Navbar user={user} />
             <Pane
                 elevation={0}
                 float="left"
@@ -34,7 +27,7 @@ function UserHome(props) {
                 alignItems="center"
                 flexDirection="column"
             >
-                {JSON.stringify(user)}
+                {JSON.stringify(props.user)}
                 <br />
                 <Link to="/match">find random user</Link>
             </Pane>

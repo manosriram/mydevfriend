@@ -50,30 +50,27 @@ function Navbar(props) {
 
                     <Popover
                         content={
-                            <Pane
-                                width={100}
-                                height="auto"
-                                display="flex"
-                                alignItems="center"
-                                justifyContent="center"
-                                flexDirection="column"
-                            >
-                                <Menu>
-                                    <Menu.Group>
-                                        <Menu.Item>Profile</Menu.Item>
-                                        <Menu.Item>Settings</Menu.Item>
-                                    </Menu.Group>
-                                    <Menu.Divider />
-                                    <Menu.Group>
-                                        <Menu.Item
-                                            intent="danger"
-                                            onClick={handleLogout}
-                                        >
-                                            Logout
-                                        </Menu.Item>
-                                    </Menu.Group>
-                                </Menu>
-                            </Pane>
+                            <Menu>
+                                <Menu.Group>
+                                    <Menu.Item
+                                        onClick={() =>
+                                            props.history.push("/profile")
+                                        }
+                                    >
+                                        Profile
+                                    </Menu.Item>
+                                    <Menu.Item>Settings</Menu.Item>
+                                </Menu.Group>
+                                <Menu.Divider />
+                                <Menu.Group>
+                                    <Menu.Item
+                                        intent="danger"
+                                        onClick={handleLogout}
+                                    >
+                                        Logout
+                                    </Menu.Item>
+                                </Menu.Group>
+                            </Menu>
                         }
                     >
                         <Avatar

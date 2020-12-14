@@ -94,7 +94,6 @@ function Messages(props) {
     var last;
     return (
         <>
-            <Navbar user={user} />
             <div id="container">
                 <Pane id="con" clearfix>
                     <Pane
