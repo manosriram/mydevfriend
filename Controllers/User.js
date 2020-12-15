@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const jwt = require("jsonwebtoken");
+const isAuth = require("../utils/isAuth");
 
-router.put("/profile", (req, res, next) => {
+router.put("/profile", isAuth, (req, res, next) => {
     const connection = req.connection;
     const {
         firstName,

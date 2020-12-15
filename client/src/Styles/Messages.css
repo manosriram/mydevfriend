@@ -1,11 +1,48 @@
+#show-chat {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    outline: none;
+}
+
+#msg-avatar {
+    padding: 4%;
+}
+
+#username-msg {
+    display: flex;
+    align-items: center;
+}
+
+#username-msg:hover {
+    cursor: pointer;
+}
+
 #ft {
     position: relative;
     width: 60vw;
 }
 
-#msgs,
-#send {
-    position: relative;
+#user {
+    min-width: 18vw;
+    width: 18vw;
+    height: 2vh;
+    margin: 5px;
+    padding: 10px;
+    border-color: black;
+}
+
+#show {
+    position: absolute;
+}
+
+#user:hover {
+    text-decoration: underline;
+}
+
+#msgs {
+    position: absolute;
     bottom: 0;
     left: 0;
     min-width: 80%;
@@ -16,14 +53,16 @@
     max-height: 75vh;
     overflow: hidden;
     overflow-y: scroll;
+    margin: 5% 5%;
 }
 
 #send {
     width: auto;
     height: 60px;
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
+    margin-left: 5%;
 }
 
 #msgs text {
@@ -37,4 +76,8 @@
 
 #nov {
     display: none;
+}
+
+#msg-listed {
+    padding: 0.2%;
 }

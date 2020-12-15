@@ -37,6 +37,7 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use("/auth", require("./Controllers/auth"));
 app.use("/chat", require("./Controllers/message"));
 app.use("/user", require("./Controllers/User"));
+app.use("/match", require("./Controllers/Match"));
 
 app.get("/", (req, res) => {
     return res.send("Hi from /");

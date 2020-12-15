@@ -120,10 +120,6 @@ li a.active {
     cursor: pointer;
 }
 
-#user:hover {
-    color: yellow;
-}
-
 #chat {
     position: absolute;
     bottom: 5vh;

@@ -1,6 +1,7 @@
 const router = require("express").Router();
+const isAuth = require("../utils/isAuth");
 
-router.post("/history", (req, res) => {
+router.post("/history", isAuth, (req, res, next) => {
     try {
         const { from, to } = req.body.data;
         let user1 = from,
@@ -11,31 +12,28 @@ router.post("/history", (req, res) => {
         const { connection } = req;
         connection.query(
             "select message, sentBy from message m inner join chat c on (m.sentBy = ? or m.sentBy = ?) and (c.chatId = m.chatId) where c.user1=? and c.user2=?",
-            [from, to, user1, user2],
-            (err, rows) => {
-                console.log(rows);
-                if (err) res.json({ success: false, messages: [] });
-                else res.json({ success: true, messages: [rows] });
-            }
-        );
+            [from, to, user1, user2]).then(rows => {
+                res.json({ success: true, messages: [rows] });
+            }, err => {
+                next(err);
+            });
     } catch (er) {
-        console.log(er);
+        next(er);
     }
 });
 
-router.post("/createChat", (req, res, next) => {
+router.post("/createChat", isAuth, (req, res, next) => {
     let { user1, user2 } = req.body;
     try {
         const connection = req.connection;
         if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
         connection.query(
             "INSERT INTO chat(user1, user2) VALUES(?, ?)",
-            [user1, user2],
-            (err, rows) => {
-                if (err) throw err;
-                return res.send("Chat initiated");
-            }
-        );
+            [user1, user2]).then(rows => {
+                return res.status(201).send("Chat initiated");
+            }, err => {
+                next(err);
+            });
     } catch (er) {
         next(er);
     }
