@@ -7,10 +7,10 @@ const listenMessages = (io, connection) => {
             console.log(message);
             connection.query(
                 "INSERT INTO message(chatId, message, sentBy) select chatId, ?, ? from chat c where c.user1=? and c.user2=?",
-                [message, sentBy, from, to],
-                (err, rows) => {
-                    if (err) console.log(err);
-                    else console.log(rows);
+                [message, sentBy, from, to]).then(rows => {
+                    io.sockets.emit("message-to", { message, sentBy });
+                }, err => {
+                    console.log(err);
                 }
             );
         });

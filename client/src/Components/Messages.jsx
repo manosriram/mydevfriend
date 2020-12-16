@@ -1,8 +1,9 @@
 import { withRouter } from "react-router-dom";
-import { Navbar } from "./";
 import { useState, useEffect } from "react";
 import getUser from "../getUser";
 import {
+    Tab,
+    TabNavigation,
     Avatar,
     Card,
     Position,
@@ -19,11 +20,9 @@ import {
     Text
 } from "evergreen-ui";
 import "../Styles/Messages.css";
-import { Form, Formik } from "formik";
-import { NavLink } from "react-router-dom";
-import { ChatFeed, Message } from "react-chat-ui";
 import axios from "axios";
 import Cookie from "js-cookie";
+
 import io from "socket.io-client";
 const socket = io("http://localhost:5454", {
     transports: ["websocket", "polling", "flashsocket"]
@@ -36,11 +35,23 @@ const fakeUsers = [
     { name: "sriram" }
 ];
 
+const msgs = [
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+    "lajdlasjdklasjldjasldjasjdas",
+];
+
 function Messages(props) {
     const [user, setUser] = useState({});
     const [message, setMessage] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
-    const [messages, setMessages] = useState([{}]);
+    const [messages, setMessages] = useState([]);
     const [shown, setShown] = useState(true);
 
     const update = () => {
@@ -48,6 +59,15 @@ function Messages(props) {
         // setFakeMessages(messages.concat("new concat"));
         // }, 1500);
     };
+
+    useEffect(() => {
+        socket.on("message-to", (message, sentBy) => {
+            console.log("received " + message);
+            // setMessages(msg => [...msg, message]);
+
+            addMessage(message);
+        });
+    }, []);
 
     const getMessages = async toUser => {
         const data = {
@@ -85,13 +105,12 @@ function Messages(props) {
     };
 
     const addMessage = message => {
-        const el = document.querySelector("#msgs");
-        el.insertAdjacentHTML(
-            "beforeend",
-            `<Text id="msg-listed">${message}</Text><br /><br />`
-        );
-        sc();
+        console.log(message);
+        setMessages(msg => [...msg, message]);
+
+
         document.querySelector("#msg").value = "";
+        sc();
     };
 
     const sendMessage = message => {
@@ -100,142 +119,55 @@ function Messages(props) {
             to = selectedUser;
 
         socket.emit("message", { from, to, message: message.message });
-        addMessage(message.message);
     };
 
     var last;
     return (
         <>
             <div id="container">
-                <Pane id="con" clearfix>
-                    <SideSheet
-                        isShown={shown}
-                        onCloseComplete={() => setShown(false)}
-                        containerProps={{
-                            display: "flex",
-                            flex: "1",
-                            flexDirection: "column"
-                        }}
-                    >
-                        <Pane
-                            zIndex={1}
-                            flexShrink={0}
-                            elevation={0}
-                            backgroundColor="white"
-                        >
-                            <Pane padding={16}>
-                                <Heading size={600}>Title</Heading>
-                                <Paragraph size={400}>
-                                    Optional description or sub title
-                                </Paragraph>
-                            </Pane>
-                        </Pane>
-                        <Pane
-                            flex="1"
-                            overflowY="scroll"
-                            background="tint1"
-                            padding={16}
-                        >
-                            {fakeUsers.map(fuser => {
-                                return (
-                                    <Card
-                                        backgroundColor="white"
-                                        elevation={0}
-                                        height={50}
-                                        display="flex"
-                                        alignItems="center"
-                                        justifyContent="center"
-                                    >
-                                        <Avatar name={fuser.name} size={35} />
-                                        <div id="user">
-                                            <Text
-                                                id="username-msg"
-                                                size={600}
-                                                onClick={() => {
-                                                    selectUser(fuser.name);
-                                                }}
-                                            >
-                                                {fuser.name}
-                                            </Text>
-                                            <br />
-                                        </div>
-                                    </Card>
-                                );
-                            })}
-                        </Pane>
-                    </SideSheet>
-
-                    {selectedUser && (
-                        <Pane
-                            elevation={0}
-                            float="left"
-                            backgroundColor="white"
-                            width="60vw"
-                            height="90vh"
-                            margin={24}
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            flexDirection="column"
-                            id="ft"
-                        >
-                            <div id="msgs">
-                                {messages.map((message, index) => {
-                                    return (
-                                        <>
-                                            {last != message.sentBy && (
-                                                <Heading size={700}>
-                                                    {user.username ===
-                                                    message.sentBy
-                                                        ? "You"
-                                                        : message.sentBy}
-                                                </Heading>
-                                            )}
-                                            <div id="nov">
-                                                {(last = message.sentBy)}
-                                            </div>
-                                            <Text id="msg-listed">
-                                                {message.message}
-                                            </Text>
-                                            <br />
-                                            <br />
-                                        </>
-                                    );
-                                })}
-                            </div>
-                            <div id="send">
-                                <TextInput
-                                    onChange={e => {
-                                        setMessage({
-                                            ...message,
-                                            [e.target.name]: e.target.value
-                                        });
-                                    }}
-                                    id="msg"
-                                    name="message"
-                                    width="40vw"
-                                    text-align="left"
-                                    placeholder="Message here"
-                                />
-                                {"  "}
-                                <Button
-                                    intent="success"
-                                    onClick={() => sendMessage(message)}
-                                    iconAfter={DirectionRightIcon}
-                                >
-                                    Send
-                                </Button>
-                            </div>
-                            <Button
-                                id="show-chat"
-                                iconBefore={DoubleChevronLeftIcon}
-                                onClick={() => setShown(true)}
-                            >
-                                Chat
-                            </Button>
-                        </Pane>
-                    )}
-                </Pane>
+                <div id="left">
+                    <h1>Users</h1>
+                    {fakeUsers.map(fakeUser => {
+                        return (
+                            <h2 onClick={() => selectUser(fakeUser.name)}>{fakeUser.name}</h2>
+                        );
+                    })}
+                </div>
+                {selectedUser && (
+                <div id="right">
+                    <div class="messages">
+                        {messages.map(msg => {
+                            return (
+                                <>
+                                {last !== msg.sentBy && user.username === msg.sentBy && (
+                                    <>
+                                        <hr />
+                                        <h2>You</h2>
+                                    </>
+                                )}
+                                {last !== msg.sentBy && user.username !== msg.sentBy && (
+                                    <>
+                                        <hr />
+                                        <h2>{msg.sentBy}</h2>
+                                    </>
+                                )}
+                                <div id="now-own">
+                                    <h3>{msg.message}</h3>
+                                </div>
+                                <div id="nov">
+                                    {last = msg.sentBy}
+                                </div>
+                                </>
+                             )}
+                            )}
+                    </div>
+                    <div class="message-send">
+                        <TextInput width="50vw" id="msg" name="message" placeholder="message" onChange={e => setMessage({...message, [e.target.name]: e.target.value})}/>
+                        {"   "}
+                        <Button onClick={() => sendMessage(message)}>Send</Button>
+                    </div>
+                </div>
+                )}
             </div>
         </>
     );

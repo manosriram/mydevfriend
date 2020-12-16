@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@livechat/ui-kit": "^0.4.0-10",
+        "@progress/kendo-react-conversational-ui": "^4.1.0",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",

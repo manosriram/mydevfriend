@@ -1,83 +1,38 @@
-#show-chat {
-    display: inline-block;
-    position: absolute;
-    right: 0;
-    top: 0;
-    outline: none;
-}
-
-#msg-avatar {
-    padding: 4%;
-}
-
-#username-msg {
-    display: flex;
-    align-items: center;
-}
-
-#username-msg:hover {
-    cursor: pointer;
-}
-
-#ft {
-    position: relative;
-    width: 60vw;
-}
-
-#user {
-    min-width: 18vw;
-    width: 18vw;
-    height: 2vh;
-    margin: 5px;
-    padding: 10px;
-    border-color: black;
-}
-
-#show {
-    position: absolute;
-}
-
-#user:hover {
-    text-decoration: underline;
-}
-
-#msgs {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    min-width: 80%;
-    display: inline-block;
-    color: #fff;
-    color: black;
-    text-align: left;
-    max-height: 75vh;
-    overflow: hidden;
-    overflow-y: scroll;
-    margin: 5% 5%;
-}
-
-#send {
-    width: auto;
-    height: 60px;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin-left: 5%;
-}
-
-#msgs text {
-    min-height: 4vh;
-    font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol";
-    color: #425a70;
-    font-size: 14px;
-}
-
 #nov {
     display: none;
 }
 
-#msg-listed {
-    padding: 0.2%;
+#container {
+    display: flex;
+    height: 100px;
+    margin: 2%;
+}
+
+#left {
+    width: 20vw;
+    background: green;
+    height: 80vh;
+}
+
+#right {
+    background: blue;
+    width: 60vw;
+    height: 80vh;
+    position: relative;
+}
+
+.message-send {
+        position: absolute;
+            bottom: 0;
+                left: 0;
+                margin: 10px;
+}
+
+#own {
+    float: right;
+}
+.messages {
+    padding: 2vw;
+    height: 70vh;
+    overflow-y: scroll;
 }
