@@ -10,22 +10,22 @@
 
 #left {
     width: 20vw;
-    background: green;
     height: 80vh;
 }
 
 #right {
-    background: blue;
     width: 60vw;
     height: 80vh;
     position: relative;
+    border-radius: 5px;
 }
 
 .message-send {
-        position: absolute;
-            bottom: 0;
-                left: 0;
-                margin: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 10px;
+    background: white;
 }
 
 #own {
@@ -35,4 +35,37 @@
     padding: 2vw;
     height: 70vh;
     overflow-y: scroll;
+}
+
+#user:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+hr {
+    opacity: 0.2;
+}
+#you-user,
+.not-own-name {
+}
+#sentBy {
+    vertical-align: super;
+    padding: 5px;
+    display: inline;
+    font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol";
+    color: #2d3436;
+}
+
+#msg-text {
+    padding-left: 1.5vw;
+}
+
+#down-down {
+    border-radius: 50%;
+    vertical-align: top;
+    margin-right: 1vw;
+}
+#down-down:hover {
+    cursor: pointer;
 }

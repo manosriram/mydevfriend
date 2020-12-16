@@ -11,7 +11,7 @@ router.post("/history", isAuth, (req, res, next) => {
 
         const { connection } = req;
         connection.query(
-            "select message, sentBy from message m inner join chat c on (m.sentBy = ? or m.sentBy = ?) and (c.chatId = m.chatId) where c.user1=? and c.user2=?",
+            "select message, sentBy, sent from message m inner join chat c on (m.sentBy = ? or m.sentBy = ?) and (c.chatId = m.chatId) where c.user1=? and c.user2=?",
             [from, to, user1, user2]).then(rows => {
                 res.json({ success: true, messages: [rows] });
             }, err => {
