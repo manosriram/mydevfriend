@@ -142,9 +142,10 @@ function Messages(props) {
     var last;
     return (
         <>
-            <div id="container">
+            <div id="message-container">
                 <div id="left">
                     <Heading size={700}>Messages</Heading>
+                    <hr />
                     {chat.map(chatUser => {
                         const showUser =
                             chatUser.user1 === user.username
@@ -156,11 +157,22 @@ function Messages(props) {
                                 size={500}
                                 onClick={() => selectUser(showUser)}
                             >
-                                {showUser}
+                                <div id="you-user">
+                                    <Avatar
+                                        name={showUser}
+                                        margin-right="2px"
+                                    />
+                                    <h4 id="sentBy">{showUser}</h4>
+                                </div>
                             </Heading>
                         );
                     })}
                 </div>
+                {!selectedUser && (
+                    <div id="no" style={{ margin: "auto" }}>
+                        <Text>Select any user to show conversations.</Text>
+                    </div>
+                )}
                 {selectedUser && (
                     <div id="right">
                         <div class="messages">
@@ -220,6 +232,7 @@ function Messages(props) {
                                 id="msg"
                                 name="message"
                                 placeholder="message"
+                                type="textarea"
                                 onChange={e =>
                                     setInputMessage({
                                         ...inputMessage,

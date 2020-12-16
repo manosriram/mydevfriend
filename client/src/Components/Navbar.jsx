@@ -18,7 +18,7 @@ import {
 } from "evergreen-ui";
 import { useEffect } from "react";
 import Cookie from "js-cookie";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 const customDefaultStyles = {
     padding: "5px",
@@ -40,11 +40,22 @@ function Navbar(props) {
         <div style={customDefaultStyles}>
             <Pane height="5vh" width="100%" border="none">
                 <TabNavigation>
-                    <Tab key="foundbug" is="a" href="/" id="foundbug">
+                    <Tab
+                        onClick={() => props.history.push("/")}
+                        key="messages"
+                        is=""
+                        id="foundbug"
+                    >
                         <h2>foundbug</h2>
                     </Tab>
 
-                    <Tab key="messages" is="a" href="/messages" id="/messages">
+                    <Tab
+                        onClick={() => props.history.push("/messages")}
+                        key="messages"
+                        is=""
+                        href="/messages"
+                        id="/messages"
+                    >
                         <h2>messages</h2>
                     </Tab>
 
@@ -59,7 +70,6 @@ function Navbar(props) {
                                     >
                                         Profile
                                     </Menu.Item>
-                                    <Menu.Item>Settings</Menu.Item>
                                 </Menu.Group>
                                 <Menu.Divider />
                                 <Menu.Group>

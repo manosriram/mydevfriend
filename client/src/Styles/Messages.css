@@ -6,7 +6,7 @@
     display: none;
 }
 
-#container {
+#message-container {
     display: flex;
     height: 100px;
     margin: 2%;
@@ -38,7 +38,11 @@
 .messages {
     padding: 2vw;
     height: 70vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+}
+
+#user {
+    margin-top: 1vh;
 }
 
 #user:hover {

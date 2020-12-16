@@ -68,8 +68,6 @@ function UserHome(props) {
                     />
                     {"  "}
                 </Dialog>
-
-                <Button onClick={() => setMatch(true)}>Show Dialog</Button>
             </Pane>
         );
     } else {
@@ -89,7 +87,9 @@ function UserHome(props) {
                 >
                     {JSON.stringify(props.user)}
                     <br />
-                    <Button onClick={matchNow}>find random user</Button>
+                    <a href="#" onClick={matchNow}>
+                        find random user
+                    </a>
                 </Pane>
             </>
         );
