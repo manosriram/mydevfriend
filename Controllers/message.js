@@ -1,6 +1,22 @@
 const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 
+router.get("/connections", isAuth, (req, res) => {
+    const { username } = req.user;
+
+    const { connection } = req;
+    connection.query(
+        "select * from chat where user1 = ? or user2 = ?",
+        [username, username]).then(rows => {
+            if (rows[0]) {
+                console.log(rows[0]);
+            }
+            res.json({ success: true, friends: rows });
+    }, err => {
+        next(err);
+    });
+});
+
 router.post("/history", isAuth, (req, res, next) => {
     try {
         const { from, to } = req.body.data;
@@ -13,7 +29,7 @@ router.post("/history", isAuth, (req, res, next) => {
         connection.query(
             "select message, sentBy, sent from message m inner join chat c on (m.sentBy = ? or m.sentBy = ?) and (c.chatId = m.chatId) where c.user1=? and c.user2=?",
             [from, to, user1, user2]).then(rows => {
-                res.json({ success: true, messages: [rows] });
+                return res.json({ success: true, messages: [rows] });
             }, err => {
                 next(err);
             });

@@ -42,12 +42,26 @@ function Messages(props) {
     const [inputMessage, setInputMessage] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
     const [messages, setMessages] = useState([]);
+    const [chat, setChat] = useState([]);
+
+    const getChat = () => {
+        const headers = {
+            authorization: "Bearer " + Cookie.get("jtk")
+        };
+        const res = axios.get("/chat/connections", { headers });
+        res.then(result => {
+            setChat(result.data.friends);
+        }).catch(err => {
+            console.log(err);
+        });
+    };
 
     useEffect(() => {
         socket.on("message-to", (message, sentBy) => {
             addMessage(message);
         });
 
+        getChat();
         return () => {
             socket.off();
         };
@@ -70,14 +84,34 @@ function Messages(props) {
         });
     };
 
-    window.onload = function() {};
-
     function sc() {
         var objDiv = document.querySelector(".messages");
         if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
     }
 
+    const headers = {
+        authorization: "Bearer " + Cookie.get("jtk")
+    };
+    const initiateConversation = () => {
+        const res = axios.post(
+            "/chat/createChat",
+            { user1: props.matchData.match, user2: props.user.username },
+            { headers }
+        );
+        res.then(result => {
+            console.log(result);
+        }).catch(err => {
+            console.log(err);
+        });
+    };
+
     useEffect(() => {
+        console.log(props.matchData);
+
+        if (props.matchData) {
+            initiateConversation();
+        }
+
         getUser().then(res => {
             setUser(res);
         });
@@ -93,6 +127,8 @@ function Messages(props) {
         sc();
     };
 
+    window.onload = function() {};
+
     const sendMessage = message => {
         if (!message) return;
         const from = user.username,
@@ -100,6 +136,7 @@ function Messages(props) {
 
         socket.emit("message", { from, to, message: message.message });
         document.querySelector("#msg").value = "";
+        setInputMessage("");
     };
 
     var last;
@@ -108,14 +145,18 @@ function Messages(props) {
             <div id="container">
                 <div id="left">
                     <Heading size={700}>Messages</Heading>
-                    {fakeUsers.map(fakeUser => {
+                    {chat.map(chatUser => {
+                        const showUser =
+                            chatUser.user1 === user.username
+                                ? chatUser.user2
+                                : chatUser.user1;
                         return (
                             <Heading
                                 id="user"
                                 size={500}
-                                onClick={() => selectUser(fakeUser.name)}
+                                onClick={() => selectUser(showUser)}
                             >
-                                {fakeUser.name}
+                                {showUser}
                             </Heading>
                         );
                     })}
@@ -123,6 +164,11 @@ function Messages(props) {
                 {selectedUser && (
                     <div id="right">
                         <div class="messages">
+                            {!messages.length && (
+                                <div id="no">
+                                    <Text>No conversations yet :(</Text>
+                                </div>
+                            )}
                             {messages.map(msg => {
                                 return (
                                     <>
@@ -183,6 +229,7 @@ function Messages(props) {
                             />
                             {"   "}
                             <Button
+                                id="send-button"
                                 iconAfter={DoubleChevronUpIcon}
                                 onClick={() => sendMessage(inputMessage)}
                             >

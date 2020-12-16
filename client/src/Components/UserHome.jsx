@@ -10,43 +10,61 @@ import {
     Text
 } from "evergreen-ui";
 import { Link, withRouter } from "react-router-dom";
-import { UserContext, Navbar } from "./";
+import { Messages, UserContext, Navbar } from "./";
 import getUser from "../getUser";
 import axios from "axios";
 import Cookie from "js-cookie";
 
 function UserHome(props) {
     const [match, setMatch] = useState(false);
+    const [message, setMessage] = useState("");
+    const [submitMessage, setSubmitMessage] = useState(false);
 
     const matchNow = () => {
-        const { username } = props.user;
-
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
         const res = axios.get("/match/", { headers });
         res.then(result => {
-            console.log(result);
+            setMatch(result.data.user);
         }).catch(err => {
             console.log(err);
         });
-
-        setMatch(true);
     };
+
+    const pairWith = () => {
+        setSubmitMessage(true);
+    };
+
+    if (submitMessage) {
+        return (
+            <Messages
+                matchData={{ match: match, message: message.message }}
+                user={props.user}
+            />
+        );
+    }
 
     if (match) {
         return (
             <Pane>
                 <Dialog
                     isShown={match}
-                    title="Matched with a dev!"
+                    title={"Paired with " + match}
                     onCloseComplete={() => setMatch(false)}
                     confirmLabel="Send"
+                    onConfirm={pairWith}
                 >
                     <TextInput
                         width="100%"
-                        name="firstHi"
+                        name="message"
                         placeholder="Say something like hello, world."
+                        onChange={e =>
+                            setMessage({
+                                ...message,
+                                [e.target.name]: e.target.value
+                            })
+                        }
                     />
                     {"  "}
                 </Dialog>
