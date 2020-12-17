@@ -9,7 +9,6 @@ router.get("/connections", isAuth, (req, res) => {
         "select * from chat where user1 = ? or user2 = ?",
         [username, username]).then(rows => {
             if (rows[0]) {
-                console.log(rows[0]);
             }
             res.json({ success: true, friends: rows });
     }, err => {
@@ -46,8 +45,11 @@ router.post("/createChat", isAuth, (req, res, next) => {
         connection.query(
             "INSERT INTO chat(user1, user2) VALUES(?, ?)",
             [user1, user2]).then(rows => {
-                return res.status(201).send("Chat initiated");
+                return res.status(201).send({ success: true, message: "Chat initiated", code: 1 });
             }, err => {
+                if (err.errno === 1062) {
+                    return res.status(200).send({ success: true, message: "Existing chat", code: 0 });
+                }
                 next(err);
             });
     } catch (er) {

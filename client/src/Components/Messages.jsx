@@ -99,21 +99,20 @@ function Messages(props) {
             { headers }
         );
         res.then(result => {
-            console.log(result);
+            if (result.data.code === 1) selectUser(props.matchData.match);
         }).catch(err => {
             console.log(err);
         });
     };
 
     useEffect(() => {
-        console.log(props.matchData);
-
         if (props.matchData) {
             initiateConversation();
         }
 
         getUser().then(res => {
             setUser(res);
+            props.history.push("/messages");
         });
     }, []);
 
