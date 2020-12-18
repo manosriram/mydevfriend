@@ -69,7 +69,7 @@ function Messages(props) {
 
     const getMessages = async toUser => {
         const data = {
-            from: user.username,
+            from: props.user.username,
             to: toUser
         };
         const headers = {
@@ -89,6 +89,11 @@ function Messages(props) {
         if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
     }
 
+    const selectUser = user => {
+        setSelectedUser(user);
+        getMessages(user);
+    };
+
     const headers = {
         authorization: "Bearer " + Cookie.get("jtk")
     };
@@ -99,7 +104,9 @@ function Messages(props) {
             { headers }
         );
         res.then(result => {
-            if (result.data.code === 1) selectUser(props.matchData.match);
+            if (result.data.code === 1) {
+                selectUser(props.matchData.match);
+            }
         }).catch(err => {
             console.log(err);
         });
@@ -115,11 +122,6 @@ function Messages(props) {
             props.history.push("/messages");
         });
     }, []);
-
-    const selectUser = user => {
-        setSelectedUser(user);
-        getMessages(user);
-    };
 
     const addMessage = message => {
         setMessages(msg => [...msg, message]);

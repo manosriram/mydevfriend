@@ -6,3 +6,4 @@ export { default as UserHome } from "./UserHome";
 export { default as Messages } from "./Messages";
 export { default as UserContext } from "./UserContext";
 export { default as Profile } from "./Profile";
+export { default as About } from "./About";

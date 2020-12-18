@@ -46,7 +46,7 @@ function Navbar(props) {
                         is=""
                         id="foundbug"
                     >
-                        <h2>foundbug</h2>
+                        <h2>codealone</h2>
                     </Tab>
 
                     <Tab

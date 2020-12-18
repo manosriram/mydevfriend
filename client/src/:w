@@ -1,6 +1,8 @@
 * {
     margin: 0;
     padding: 0;
+    background: url("../Assets/home-bg.png");
+    background-repeat: no-repeat;
 }
 
 #about-link {
@@ -21,28 +23,6 @@
     -ms-transform: translate(-50%, -50%);
 }
 
-#sidebg {
-    width: 35vw;
-    margin: 10vw;
-}
-
-.wrapper {
-    display: flex;
-    align-items: center;
-}
-
-#welcome {
-    font-size: 1vw;
-    padding: 1vw;
-}
-
-.home-container {
-    display: inline-block;
-    text-align: center;
-    width: min-content;
-    float: left;
-}
-
 #container {
     margin: auto;
     text-align: center;
@@ -54,8 +34,8 @@
     -moz-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
-    margin-left: 5%;
     min-width: 100%;
+    margin-left: 5%;
 }
 
 .App {
