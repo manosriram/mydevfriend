@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function About(props) {
     return (
         <div id="container">
-            <img src={yourImage} alt="" />
+            <img id="side-bg" src={yourImage} alt="" />
             <Heading className="head" size={100}>
                 Codealone lets you meet and pair up with like minded developers.
             </Heading>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Formik } from "formik";
 import {
+    Heading,
     toaster,
     Text,
     AddIcon,
@@ -27,7 +28,6 @@ function Signup(props) {
     };
     return (
         <>
-            <h1>Create a free account</h1>
             <Formik
                 initialValues={{
                     firstName: "",
@@ -49,6 +49,9 @@ function Signup(props) {
             >
                 {({ values, handleChange, handleSubmit, handleBlur }) => (
                     <Form id="form-container">
+                        <Heading id="welcome" size={100}>
+                            Create a free account
+                        </Heading>
                         <TextInput
                             value={values.firstName}
                             onChange={handleChange}
