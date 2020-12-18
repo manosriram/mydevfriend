@@ -72,26 +72,13 @@ function UserHome(props) {
         );
     } else {
         return (
-            <>
-                <Pane
-                    elevation={0}
-                    float="left"
-                    backgroundColor="white"
-                    width="100%"
-                    height="auto"
-                    margin={24}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    flexDirection="column"
-                >
-                    {JSON.stringify(props.user)}
-                    <br />
-                    <a href="#" onClick={matchNow}>
-                        find random user
-                    </a>
-                </Pane>
-            </>
+            <div id="user-home-container">
+                <a href="#" onClick={matchNow}>
+                    find random user
+                </a>
+                <br />
+                <a href="#">find friends (non-functional)</a>
+            </div>
         );
     }
 }

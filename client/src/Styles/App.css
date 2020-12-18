@@ -43,6 +43,11 @@
     float: left;
 }
 
+#user-home-container {
+    float: left;
+    padding: 10vw;
+}
+
 #container {
     margin: auto;
     text-align: center;

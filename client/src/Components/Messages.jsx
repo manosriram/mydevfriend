@@ -107,20 +107,29 @@ function Messages(props) {
             if (result.data.code === 1) {
                 selectUser(props.matchData.match);
             }
-        }).catch(err => {
-            console.log(err);
-        });
+            return props.matchData.message;
+        })
+            .then(matchMessage => {
+                sendMessage(matchMessage);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 
     useEffect(() => {
-        if (props.matchData) {
-            initiateConversation();
-        }
-
-        getUser().then(res => {
-            setUser(res);
-            props.history.push("/messages");
-        });
+        getUser()
+            .then(res => {
+                setUser(res);
+            })
+            .then(() => {
+                if (props.matchData) {
+                    initiateConversation();
+                }
+            })
+            .then(() => {
+                props.history.push("/messages");
+            });
     }, []);
 
     const addMessage = message => {
@@ -132,6 +141,7 @@ function Messages(props) {
 
     const sendMessage = message => {
         if (!message) return;
+
         const from = user.username,
             to = selectedUser;
 
@@ -182,13 +192,13 @@ function Messages(props) {
                                     <Text>No conversations yet :(</Text>
                                 </div>
                             )}
-                            {messages.map(msg => {
+                            {messages.map((msg, msgIndex) => {
                                 return (
                                     <>
                                         {last !== msg.sentBy &&
                                             user.username === msg.sentBy && (
                                                 <div id="you-user">
-                                                    <hr />
+                                                    {msgIndex != 0 && <hr />}
                                                     <Avatar
                                                         name={user.username}
                                                         margin-right="2px"
@@ -199,7 +209,7 @@ function Messages(props) {
                                         {last !== msg.sentBy &&
                                             user.username !== msg.sentBy && (
                                                 <div className="not-own-name">
-                                                    <hr />
+                                                    {msgIndex != 0 && <hr />}
                                                     <Avatar
                                                         name={msg.sentBy}
                                                         vertical-align="middle"
