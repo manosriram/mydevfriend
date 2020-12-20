@@ -17,6 +17,7 @@ import {
 } from "evergreen-ui";
 import { Form, Formik } from "formik";
 import axios from "axios";
+import Cookie from "js-cookie";
 
 const forbiddenToast = { id: "forbidden-action" };
 function Profile(props) {
@@ -31,7 +32,14 @@ function Profile(props) {
             email: props.user.email,
             gender: data.gender || props.user.gender
         };
-        const res = axios.put("/user/profile", { data: updatedData });
+        const headers = {
+            authorization: "Bearer " + Cookie.get("jtk")
+        };
+        const res = axios.put(
+            "/user/profile",
+            { data: updatedData },
+            { headers }
+        );
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
             props.history.push("/");

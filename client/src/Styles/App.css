@@ -25,9 +25,28 @@
     -ms-transform: translate(-50%, -50%);
 }
 
+#title {
+    text-transform: lowercase;
+    color: #34495e;
+}
+
+#intro-text,
+#about-description {
+    margin: auto;
+    text-align: center;
+    font-size: 0.7vw;
+    color: #34495e;
+}
+
+#sidebg-wrapper {
+    text-align: justify;
+}
+
 #sidebg {
-    width: 35vw;
+    width: 30vw;
     margin: 10vw;
+    margin-bottom: 0;
+    display: block;
 }
 
 .wrapper {
@@ -38,6 +57,8 @@
 #welcome {
     font-size: 1vw;
     padding: 1vw;
+    text-transform: lowercase;
+    color: black;
 }
 
 .home-container {

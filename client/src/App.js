@@ -1,6 +1,7 @@
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
+    Cookie,
     Navbar,
     About,
     Profile,
@@ -28,6 +29,9 @@ function App() {
                     <PrivateRoute path="/profile" component={Profile} />
                     <Route path="/about">
                         <About />
+                    </Route>
+                    <Route path="/cookie">
+                        <Cookie />
                     </Route>
                     <Route path="/">
                         <NotFound />

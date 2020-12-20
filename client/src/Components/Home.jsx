@@ -16,7 +16,6 @@ import Cookie from "js-cookie";
 import getUser from "../getUser";
 import { useState, useEffect } from "react";
 import sideBg from "../Assets/side-bg.png";
-import logo from "../Assets/logo.png";
 
 const forbiddenToast = { id: "forbidden-action" };
 
@@ -66,7 +65,15 @@ function Home(props) {
 
     return (
         <div className="wrapper cf">
-            <img src={sideBg} alt="" id="sidebg" />
+            <div id="sidebg-wrapper">
+                <img src={sideBg} alt="" id="sidebg" />
+                <Heading id="intro-text" size={100}>
+                    <strong>
+                        codealone connects you with developers all around the
+                        world.
+                    </strong>
+                </Heading>
+            </div>
             <div className="home-container" id="home-container">
                 <Pane clearfix>
                     <Pane
@@ -80,7 +87,11 @@ function Home(props) {
                         alignItems="center"
                         flexDirection="column"
                     >
-                        <Heading id="welcome" size={100}>
+                        <Heading
+                            className="welcome-title"
+                            id="welcome"
+                            size={100}
+                        >
                             Codealone
                         </Heading>
                         <Formik
@@ -93,7 +104,7 @@ function Home(props) {
                                 { setSubmitting, resetForm }
                             ) => {
                                 setSubmitting(true);
-                                await submitForm(data);
+                                submitForm(data);
                                 setSubmitting(false);
                             }}
                         >
@@ -143,7 +154,7 @@ function Home(props) {
                                         <Link id="about-link" to="/about">
                                             <Text>About</Text>
                                         </Link>
-                                        <Link id="about-link" to="/about">
+                                        <Link id="about-link" to="/cookie">
                                             <Text>Cookie Policy</Text>
                                         </Link>
                                     </NavLink>

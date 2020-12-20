@@ -1,6 +1,6 @@
 import "../Styles/Messages.css";
 import { Heading, Paragraph } from "evergreen-ui";
-import yourImage from "../Assets/about-build.png";
+import yourImage from "../Assets/cookies.png";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
@@ -90,15 +90,12 @@ function About(props) {
 
             <img id="side-bg" src={yourImage} alt="" />
             <Heading className="head" size={100}>
-                <span id="title">Codealone</span>
-                {"  "} lets you meet and pair up with like minded developers.
+                codealone uses cookies to persist and manage sessions. By
+                signing-up, you agree with the cookie policy of
+                {"  "}
+                <span id="title">codealone.</span>
             </Heading>
-            <Heading size={100} id="about-description">
-                Find yourself a project-buddy, a dev friend, or even a
-                co-founder for your upcoming startup.
-            </Heading>
-            <Heading size={100}></Heading>
-            <Heading size={100}>
+            <Heading size={500}>
                 <Link to="/">Home</Link>
             </Heading>
         </div>
