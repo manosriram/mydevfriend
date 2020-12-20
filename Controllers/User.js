@@ -2,6 +2,25 @@ const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 const jwt = require("jsonwebtoken");
 
+router.get("/:username", (req, res, next) => {
+    const { username } = req.params;
+    const { connection } = req;
+
+    connection
+        .query(
+            "select username, firstName, lastName, email, location, dob, gender, created, bio from user where username = ?",
+            username
+        )
+        .then(
+            rows => {
+                return res.status(200).json({ success: true, user: rows[0] });
+            },
+            err => {
+                next(err);
+            }
+        );
+});
+
 router.post("/all", (req, res, next) => {
     const { connection } = req;
     const { currentPage } = req.body;

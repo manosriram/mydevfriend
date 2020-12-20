@@ -26,16 +26,11 @@ const customDefaultStyles = {
 };
 
 function Navbar(props) {
-    useEffect(() => {
-        console.log(props);
-    }, []);
-
     const handleLogout = () => {
         Cookie.remove("jtk");
         props.history.push("/");
     };
 
-    const [username, setUsername] = useState("");
     return (
         <div style={customDefaultStyles}>
             <Pane height="5vh" width="100%" border="none">
@@ -49,50 +44,55 @@ function Navbar(props) {
                         <h2>codealone</h2>
                     </Tab>
 
-                    <Tab
-                        onClick={() => props.history.push("/messages")}
-                        key="messages"
-                        is=""
-                        href="/messages"
-                        id="/messages"
-                    >
-                        <h2>messages</h2>
-                    </Tab>
+                    {props.user && (
+                        <>
+                            <Tab
+                                onClick={() => props.history.push("/messages")}
+                                key="messages"
+                                is=""
+                                href="/messages"
+                                id="/messages"
+                            >
+                                <h2>messages</h2>
+                            </Tab>
 
-                    <Popover
-                        content={
-                            <Menu>
-                                <Menu.Group>
-                                    <Menu.Item
-                                        onClick={() =>
-                                            props.history.push("/account")
-                                        }
-                                    >
-                                        Account
-                                    </Menu.Item>
-                                </Menu.Group>
-                                <Menu.Divider />
-                                <Menu.Group>
-                                    <Menu.Item
-                                        intent="danger"
-                                        onClick={handleLogout}
-                                    >
-                                        Logout
-                                    </Menu.Item>
-                                </Menu.Group>
-                            </Menu>
-                        }
-                    >
-                        <Avatar
-                            id="avatar"
-                            float="right"
-                            name={props.user.username}
-                            size={40}
-                        />
-                    </Popover>
+                            <Popover
+                                content={
+                                    <Menu>
+                                        <Menu.Group>
+                                            <Menu.Item
+                                                onClick={() =>
+                                                    props.history.push(
+                                                        "/account"
+                                                    )
+                                                }
+                                            >
+                                                Account
+                                            </Menu.Item>
+                                        </Menu.Group>
+                                        <Menu.Divider />
+                                        <Menu.Group>
+                                            <Menu.Item
+                                                intent="danger"
+                                                onClick={handleLogout}
+                                            >
+                                                Logout
+                                            </Menu.Item>
+                                        </Menu.Group>
+                                    </Menu>
+                                }
+                            >
+                                <Avatar
+                                    id="avatar"
+                                    float="right"
+                                    name={props.user.username}
+                                    size={40}
+                                />
+                            </Popover>
+                        </>
+                    )}
                 </TabNavigation>
             </Pane>
-            {username}
         </div>
     );
 }

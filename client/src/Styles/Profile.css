@@ -6,3 +6,25 @@ img {
 img:hover {
     cursor: pointer;
 }
+
+#left {
+    float: left;
+    text-align: left;
+}
+
+#bio {
+    margin: 15px 0 15px 0;
+}
+
+#bio h3 {
+    color: #66788a;
+}
+
+.ub-txt-trns_uppercase {
+    text-transform: none;
+}
+
+#message-user {
+    margin: 15px 0 15px 0;
+    display: block;
+}
