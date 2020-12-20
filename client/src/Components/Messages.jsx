@@ -47,6 +47,7 @@ function Messages(props) {
         };
         const res = axios.get("/chat/connections", { headers });
         res.then(result => {
+            console.log(result);
             setChat(result.data.friends);
             setSpin(false);
         }).catch(err => {
@@ -88,24 +89,27 @@ function Messages(props) {
     }
 
     const selectUser = user => {
-        setSelectedUser(user);
         getMessages(user);
+        setSelectedUser(user);
     };
 
-    const headers = {
-        authorization: "Bearer " + Cookie.get("jtk")
-    };
-    const initiateConversation = () => {
+    const initiateConversation = (u_user1, u_user2) => {
+        const headers = {
+            authorization: "Bearer " + Cookie.get("jtk")
+        };
         const res = axios.post(
             "/chat/createChat",
-            { user1: props.matchData.match, user2: props.user.username },
+            {
+                user1: u_user1,
+                user2: props.user.username || u_user2
+            },
             { headers }
         );
         res.then(result => {
             if (result.data.code === 1) {
-                selectUser(props.matchData.match);
+                selectUser(props.location.state.matchData.match);
             }
-            return props.matchData.message;
+            return props.location.state.matchData.message;
         })
             .then(matchMessage => {
                 sendMessage(matchMessage);
@@ -120,14 +124,18 @@ function Messages(props) {
         getUser()
             .then(res => {
                 setUser(res);
+                return res.username;
             })
-            .then(() => {
-                if (props.matchData) {
-                    initiateConversation();
+            .then(usernameViaHistory => {
+                if (props.location.state && props.location.state.matchData) {
+                    initiateConversation(
+                        props.location.state.matchData.match,
+                        usernameViaHistory
+                    );
+                    getChat();
+                    setSelectedUser(props.location.state.matchData.match);
+                    props.location.state = null;
                 }
-            })
-            .then(() => {
-                props.history.push("/messages");
             });
     }, []);
 
@@ -141,11 +149,12 @@ function Messages(props) {
     const sendMessage = message => {
         if (!message) return;
 
-        const from = user.username,
-            to = selectedUser;
+        const from = user.username || message.from,
+            to = selectedUser || props.location.state.matchData.match;
 
         socket.emit("message", { from, to, message: message.message });
-        document.querySelector("#msg").value = "";
+        const msgElement = document.querySelector("#msg");
+        if (msgElement) msgElement.value = "";
         setInputMessage("");
     };
 
@@ -351,7 +360,9 @@ function Messages(props) {
                             <Button
                                 id="send-button"
                                 iconAfter={DoubleChevronUpIcon}
-                                onClick={() => sendMessage(inputMessage)}
+                                onClick={() =>
+                                    sendMessage(inputMessage, undefined)
+                                }
                             >
                                 Send
                             </Button>

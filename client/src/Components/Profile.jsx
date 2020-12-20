@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { withRouter, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
@@ -61,12 +61,15 @@ function Profile(props) {
     }, []);
 
     if (confirmed) {
-        return (
-            <Messages
-                matchData={{ match: user.username, message: message.message }}
-                user={loggedInUser}
-            />
-        );
+        props.history.push({
+            pathname: "/messages",
+            state: {
+                matchData: {
+                    match: user.username,
+                    message: message.message
+                }
+            }
+        });
     }
     if (messageInit) {
         return (
@@ -141,4 +144,4 @@ function Profile(props) {
     }
 }
 
-export default Profile;
+export default withRouter(Profile);

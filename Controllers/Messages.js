@@ -2,6 +2,7 @@ const listenMessages = (io, connection) => {
     io.on("connection", socket => {
         //
         socket.on("message", ({ from, to, message }) => {
+            console.log(from, to);
             const sentBy = from;
             if (from && to) {
                 if (from.localeCompare(to) === 1) to = [from, (from = to)][0];

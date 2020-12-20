@@ -55,12 +55,15 @@ function UserHome(props) {
     }
 
     if (submitMessage) {
-        return (
-            <Messages
-                matchData={{ match: match, message: message.message }}
-                user={props.user}
-            />
-        );
+        props.history.push({
+            pathname: "/messages",
+            state: {
+                matchData: {
+                    match: props.user.username,
+                    message: message.message
+                }
+            }
+        });
     }
 
     if (match) {
