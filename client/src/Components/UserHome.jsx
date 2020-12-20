@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import {
+    Spinner,
     Dialog,
     toaster,
     LogInIcon,
@@ -16,17 +17,20 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 function UserHome(props) {
+    const [spin, setSpin] = useState(false);
     const [match, setMatch] = useState(false);
     const [message, setMessage] = useState("");
     const [submitMessage, setSubmitMessage] = useState(false);
 
     const matchNow = () => {
+        setSpin(true);
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
         const res = axios.get("/match/", { headers });
         res.then(result => {
             setMatch(result.data.user);
+            setSpin(false);
         }).catch(err => {
             console.log(err);
         });
@@ -35,6 +39,19 @@ function UserHome(props) {
     const pairWith = () => {
         setSubmitMessage(true);
     };
+
+    if (spin) {
+        return (
+            <Pane
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height={400}
+            >
+                <Spinner />
+            </Pane>
+        );
+    }
 
     if (submitMessage) {
         return (
@@ -76,8 +93,6 @@ function UserHome(props) {
                 <a href="#" onClick={matchNow}>
                     find random user
                 </a>
-                <br />
-                <a href="#">find friends (non-functional)</a>
             </div>
         );
     }

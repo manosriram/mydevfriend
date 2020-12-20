@@ -4,6 +4,8 @@ import getUser from "../getUser";
 import { Navbar } from "./";
 import "../Styles/Profile.css";
 import {
+    Pane,
+    Spinner,
     FilePicker,
     Avatar,
     toaster,
@@ -18,8 +20,9 @@ import axios from "axios";
 
 const forbiddenToast = { id: "forbidden-action" };
 function Profile(props) {
+    const [spin, setSpin] = useState(false);
     const submitForm = async data => {
-        console.log(props.user);
+        setSpin(true);
         const updatedData = {
             firstName: data.firstName || props.user.firstName,
             lastName: data.lastName || props.user.lastName,
@@ -33,10 +36,24 @@ function Profile(props) {
             toaster.success(result.data.message, forbiddenToast);
             props.history.push("/");
         }).catch(err => {
+            setSpin(false);
             if (err.response && err.response.data)
                 toaster.danger(err.response.data.message, forbiddenToast);
         });
     };
+
+    if (spin) {
+        return (
+            <Pane
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height={400}
+            >
+                <Spinner />
+            </Pane>
+        );
+    }
 
     return (
         <div>

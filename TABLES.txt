@@ -8,6 +8,7 @@ CREATE TABLE user (
     location VARCHAR(32),
     dob DATE,
     profilePic VARCHAR(64),
+    active boolean DEFAULT false,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     primary key (username, email)
 );

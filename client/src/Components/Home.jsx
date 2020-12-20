@@ -1,5 +1,6 @@
 import "../Styles/App.css";
 import {
+    Spinner,
     toaster,
     LogInIcon,
     Button,
@@ -20,7 +21,10 @@ import logo from "../Assets/logo.png";
 const forbiddenToast = { id: "forbidden-action" };
 
 function Home(props) {
+    const [spin, setSpin] = useState(false);
+
     const submitForm = data => {
+        setSpin(true);
         const res = axios.post("/auth/login", { data });
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
@@ -28,19 +32,37 @@ function Home(props) {
             props.history.push({
                 pathname: "/home"
             });
+            setSpin(false);
         }).catch(err => {
             if (err.response && err.response.data)
                 toaster.danger(err.response.data.message, forbiddenToast);
+
+            setSpin(false);
         });
     };
 
     useEffect(() => {
+        setSpin(true);
         getUser().then(res => {
             if (res.username) {
                 props.history.push("/home");
             }
         });
+        setSpin(false);
     }, []);
+
+    if (spin) {
+        return (
+            <Pane
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height={400}
+            >
+                <Spinner />
+            </Pane>
+        );
+    }
 
     return (
         <div className="wrapper cf">

@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+#notFound {
+    width: 70%;
+}
+
 #about-link {
     text-decoration: none;
     padding: 5px;

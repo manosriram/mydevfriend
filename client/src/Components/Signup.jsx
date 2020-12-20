@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
 import {
     Heading,
@@ -16,11 +16,26 @@ import axios from "axios";
 const forbiddenToast = { id: "forbidden-action" };
 
 function Signup(props) {
-    const submitForm = async data => {
-        const res = axios.post("/auth/signup", { data });
+    const [resend, setResend] = useState(false);
+    const [email, setEmail] = useState("");
+
+    const resendMail = () => {
+        const res = axios.post("/auth/resendMail", { email });
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
-            props.history.push("/");
+        }).catch(err => {
+            if (err.response && err.response.data)
+                toaster.danger(err.response.data.message, forbiddenToast);
+        });
+    };
+
+    const submitForm = async data => {
+        const res = axios.post("/auth/signup", { data });
+        setEmail(data.email);
+        res.then(result => {
+            toaster.success(result.data.message, forbiddenToast);
+            setResend(true);
+            // props.history.push("/");
         }).catch(err => {
             if (err.response && err.response.data)
                 toaster.danger(err.response.data.message, forbiddenToast);
@@ -141,6 +156,16 @@ function Signup(props) {
                         <NavLink to="/" style={{ color: "blue" }}>
                             Back to Login
                         </NavLink>
+                        {"  "}
+                        {resend && (
+                            <NavLink
+                                onClick={resendMail}
+                                to="#"
+                                style={{ color: "blue" }}
+                            >
+                                Resend activation email
+                            </NavLink>
+                        )}
                     </Form>
                 )}
             </Formik>

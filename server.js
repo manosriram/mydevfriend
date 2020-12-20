@@ -10,6 +10,8 @@ const http = require("http");
 const cors = require("cors");
 const listenMessages = require("./Controllers/Messages");
 const Database = require("./Controllers/Query");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const mysqlConfig = {
     host: "localhost",

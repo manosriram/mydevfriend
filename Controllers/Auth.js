@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const yup = require("yup");
 const jwt = require("jsonwebtoken");
+const sendMail = require("../utils/sendMail");
+const { encryptBuffer, decryptBuffer } = require("../utils/encdec");
 
 const signUpSchema = yup.object().shape({
     username: yup
@@ -44,6 +46,14 @@ const loginSchema = yup.object().shape({
         .max(32, "Password should not exceed length 32")
         .required()
 });
+
+const sendMailWithEmail = email => {
+    const id = encryptBuffer(email, "mano1234");
+    const url = `http://localhost:5454/auth/verifyUser/${id}/`;
+
+    sendMail("Activate Account - Codealone", url, email);
+    return;
+};
 
 router.get("/user", (req, res, next) => {
     let token = req.headers["authorization"];
@@ -96,13 +106,14 @@ router.post("/signup", async (req, res, next) => {
             )
             .then(
                 rows => {
+                    sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,
-                        message: "User created"
+                        message: "Check your mail for an activation link"
                     });
                 },
                 err => {
-                    if (err.errno === 1062) next(new Error("username exists"));
+                    if (err.errno === 1062) next(new Error("user exists"));
                     else next(new Error("some error occured"));
                 }
             );
@@ -125,7 +136,14 @@ router.post("/login", (req, res, next) => {
         .then(
             rows => {
                 if (rows[0]) {
-                    // JWT
+                    // if (!rows[0].active) {
+                    // return res
+                    // .status(403)
+                    // .json({
+                    // success: false,
+                    // message: "Account not verified"
+                    // });
+                    // }
 
                     const {
                         firstName,
@@ -133,7 +151,8 @@ router.post("/login", (req, res, next) => {
                         email,
                         location,
                         dob,
-                        gender
+                        gender,
+                        active
                     } = rows[0];
                     const userPayload = {
                         username,
@@ -142,7 +161,8 @@ router.post("/login", (req, res, next) => {
                         lastName: lastName,
                         location: location,
                         dob: dob,
-                        gender: gender
+                        gender: gender,
+                        active: active
                     };
                     const token = jwt.sign(userPayload, "secret", {
                         expiresIn: "1d"
@@ -161,6 +181,41 @@ router.post("/login", (req, res, next) => {
                 next(new Error(err));
             }
         );
+});
+
+router.get("/verifyUser/:id", (req, res, next) => {
+    const { connection } = req;
+    const { id } = req.params;
+    const decrypted = decryptBuffer(id, "mano1234");
+
+    connection
+        .query("update user set active = true where email = ?", decrypted)
+        .then(
+            rows => {
+                res.status(201).json({
+                    success: true,
+                    message: "Account verified"
+                });
+            },
+            err => {
+                next(err);
+            }
+        );
+});
+
+router.post("/resendMail", (req, res, next) => {
+    try {
+        console.log(req.body);
+        const { email } = req.body;
+        sendMailWithEmail(email);
+
+        return res.status(200).json({
+            success: true,
+            message: "Check your mail for an activation link"
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 
 module.exports = router;

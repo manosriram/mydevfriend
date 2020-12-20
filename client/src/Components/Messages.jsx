@@ -2,6 +2,7 @@ import { withRouter } from "react-router-dom";
 import { useState, useEffect } from "react";
 import getUser from "../getUser";
 import {
+    Spinner,
     Tab,
     TabNavigation,
     Avatar,
@@ -30,14 +31,8 @@ const socket = io("http://localhost:5454", {
     transports: ["websocket", "polling", "flashsocket"]
 });
 
-const fakeUsers = [
-    { name: "sriram123" },
-    { name: "abc" },
-    { name: "mabc" },
-    { name: "sriram" }
-];
-
 function Messages(props) {
+    const [spin, setSpin] = useState(false);
     const [user, setUser] = useState({});
     const [inputMessage, setInputMessage] = useState("");
     const [selectedUser, setSelectedUser] = useState("");
@@ -45,12 +40,14 @@ function Messages(props) {
     const [chat, setChat] = useState([]);
 
     const getChat = () => {
+        setSpin(true);
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
         const res = axios.get("/chat/connections", { headers });
         res.then(result => {
             setChat(result.data.friends);
+            setSpin(false);
         }).catch(err => {
             console.log(err);
         });
@@ -118,6 +115,7 @@ function Messages(props) {
     };
 
     useEffect(() => {
+        setSpin(true);
         getUser()
             .then(res => {
                 setUser(res);
@@ -149,6 +147,19 @@ function Messages(props) {
         document.querySelector("#msg").value = "";
         setInputMessage("");
     };
+
+    if (spin) {
+        return (
+            <Pane
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height={400}
+            >
+                <Spinner />
+            </Pane>
+        );
+    }
 
     var last;
     return (

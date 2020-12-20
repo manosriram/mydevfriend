@@ -9,7 +9,6 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
 
     useEffect(() => {
         getUser().then(res => {
-            console.log(res);
             setUser(res);
         });
     }, []);
