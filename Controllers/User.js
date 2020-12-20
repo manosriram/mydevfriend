@@ -2,6 +2,25 @@ const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 const jwt = require("jsonwebtoken");
 
+router.post("/all", (req, res, next) => {
+    const { connection } = req;
+    const { currentPage } = req.body;
+
+    connection
+        .query("select username from user limit ?, ?", [
+            currentPage * 10,
+            currentPage * 10 + 10
+        ])
+        .then(
+            rows => {
+                return res.status(200).json({ success: true, users: rows });
+            },
+            err => {
+                next(err);
+            }
+        );
+});
+
 router.put("/profile", isAuth, (req, res, next) => {
     const connection = req.connection;
     const {

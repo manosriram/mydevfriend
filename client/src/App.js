@@ -1,10 +1,11 @@
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
+    FindUsers,
     Cookie,
     Navbar,
     About,
-    Profile,
+    Account,
     Messages,
     UserHome,
     NotFound,
@@ -26,7 +27,8 @@ function App() {
                     </Route>
                     <PrivateRoute path="/home" component={UserHome} />
                     <PrivateRoute path="/messages" component={Messages} />
-                    <PrivateRoute path="/profile" component={Profile} />
+                    <PrivateRoute path="/account" component={Account} />
+                    <PrivateRoute path="/find" component={FindUsers} />
                     <Route path="/about">
                         <About />
                     </Route>

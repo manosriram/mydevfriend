@@ -65,10 +65,10 @@ function Navbar(props) {
                                 <Menu.Group>
                                     <Menu.Item
                                         onClick={() =>
-                                            props.history.push("/profile")
+                                            props.history.push("/account")
                                         }
                                     >
-                                        Profile
+                                        Account
                                     </Menu.Item>
                                 </Menu.Group>
                                 <Menu.Divider />
