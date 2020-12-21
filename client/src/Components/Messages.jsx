@@ -2,6 +2,7 @@ import { withRouter } from "react-router-dom";
 import { useState, useEffect } from "react";
 import getUser from "../getUser";
 import {
+    CrossIcon,
     Spinner,
     Tab,
     TabNavigation,
@@ -41,18 +42,22 @@ function Messages(props) {
     const [chat, setChat] = useState([]);
 
     const getChat = () => {
-        setSpin(true);
-        const headers = {
-            authorization: "Bearer " + Cookie.get("jtk")
-        };
-        const res = axios.get("/chat/connections", { headers });
-        res.then(result => {
-            console.log(result);
-            setChat(result.data.friends);
-            setSpin(false);
-        }).catch(err => {
+        try {
+            setSpin(true);
+            const headers = {
+                authorization: "Bearer " + Cookie.get("jtk")
+            };
+            const res = axios.get("/chat/connections", { headers });
+            res.then(result => {
+                console.log(result);
+                setChat(result.data.friends);
+                setSpin(false);
+            }).catch(err => {
+                console.log(err);
+            });
+        } catch (err) {
             console.log(err);
-        });
+        }
     };
 
     useEffect(() => {
@@ -67,20 +72,24 @@ function Messages(props) {
     }, []);
 
     const getMessages = async toUser => {
-        const data = {
-            from: props.user.username,
-            to: toUser
-        };
-        const headers = {
-            authorization: "Bearer " + Cookie.get("jtk")
-        };
-        const res = axios.post("/chat/history", { data }, { headers });
-        res.then(result => {
-            setMessages(result.data.messages[0]);
-            sc();
-        }).catch(err => {
+        try {
+            const data = {
+                from: props.user.username,
+                to: toUser
+            };
+            const headers = {
+                authorization: "Bearer " + Cookie.get("jtk")
+            };
+            const res = axios.post("/chat/history", { data }, { headers });
+            res.then(result => {
+                setMessages(result.data.messages[0]);
+                sc();
+            }).catch(err => {
+                console.log(err);
+            });
+        } catch (err) {
             console.log(err);
-        });
+        }
     };
 
     function sc() {
@@ -91,32 +100,37 @@ function Messages(props) {
     const selectUser = user => {
         getMessages(user);
         setSelectedUser(user);
+        props.location.state = null;
     };
 
     const initiateConversation = (u_user1, u_user2) => {
-        const headers = {
-            authorization: "Bearer " + Cookie.get("jtk")
-        };
-        const res = axios.post(
-            "/chat/createChat",
-            {
-                user1: u_user1,
-                user2: props.user.username || u_user2
-            },
-            { headers }
-        );
-        res.then(result => {
-            if (result.data.code === 1) {
-                selectUser(props.location.state.matchData.match);
-            }
-            return props.location.state.matchData.message;
-        })
-            .then(matchMessage => {
-                sendMessage(matchMessage);
+        try {
+            const headers = {
+                authorization: "Bearer " + Cookie.get("jtk")
+            };
+            const res = axios.post(
+                "/chat/createChat",
+                {
+                    user1: u_user1,
+                    user2: props.user.username || u_user2
+                },
+                { headers }
+            );
+            res.then(result => {
+                if (result.data.code === 1) {
+                    selectUser(props.location.state.matchData.match);
+                }
+                return props.location.state.matchData.message;
             })
-            .catch(err => {
-                console.log(err);
-            });
+                .then(matchMessage => {
+                    sendMessage(matchMessage);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     useEffect(() => {
@@ -134,7 +148,6 @@ function Messages(props) {
                     );
                     getChat();
                     setSelectedUser(props.location.state.matchData.match);
-                    props.location.state = null;
                 }
             });
     }, []);
@@ -170,6 +183,24 @@ function Messages(props) {
             </Pane>
         );
     }
+
+    const deactivateChat = deleteUserChat => {
+        const headers = {
+            authorization: "Bearer " + Cookie.get("jtk")
+        };
+        const data = {
+            activeValue: 0,
+            user1: user.username,
+            user2: deleteUserChat
+        };
+        const res = axios.post("/chat/toggleChat", { data }, { headers });
+        res.then(result => {
+            console.log(result);
+            // window.location.reload();
+        }).catch(err => {
+            console.log(err);
+        });
+    };
 
     var last;
     return (
@@ -268,19 +299,30 @@ function Messages(props) {
                                 ? chatUser.user2
                                 : chatUser.user1;
                         return (
-                            <Heading
-                                id="user"
-                                size={500}
-                                onClick={() => selectUser(showUser)}
-                            >
-                                <div id="you-user">
-                                    <Avatar
-                                        name={showUser}
-                                        margin-right="2px"
-                                    />
-                                    <h4 id="sentBy">{showUser}</h4>
-                                </div>
-                            </Heading>
+                            <>
+                                <Heading id="user" size={500}>
+                                    <div id="you-user">
+                                        <Avatar
+                                            name={showUser}
+                                            margin-right="2px"
+                                        />
+                                        <h4
+                                            id="sentBy"
+                                            onClick={() => selectUser(showUser)}
+                                        >
+                                            {showUser}
+                                        </h4>
+                                        <Text
+                                            id="delete-right"
+                                            onClick={() =>
+                                                deactivateChat(showUser)
+                                            }
+                                        >
+                                            <CrossIcon />
+                                        </Text>
+                                    </div>
+                                </Heading>
+                            </>
                         );
                     })}
                 </div>

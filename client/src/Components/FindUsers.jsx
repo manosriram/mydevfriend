@@ -13,21 +13,23 @@ function FindUsers(props) {
     const [spin, setSpin] = useState(false);
 
     const getFirstPage = () => {
-        setSpin(true);
-        const headers = {
-            authorization: "Bearer " + Cookie.get("jtk")
-        };
-        const res = axios.post("/user/all", { currentPage }, { headers });
-        res.then(result => {
-            setUsers(result.data.users);
-            setMatched(result.data.users);
-            setSpin(false);
-        }).catch(err => {
+        try {
+            setSpin(true);
+            const headers = {
+                authorization: "Bearer " + Cookie.get("jtk")
+            };
+            const res = axios.post("/user/all", { currentPage }, { headers });
+            res.then(result => {
+                setUsers(result.data.users);
+                setMatched(result.data.users);
+                setSpin(false);
+            }).catch(err => {
+                console.log(err);
+            });
+        } catch (err) {
             console.log(err);
-        });
+        }
     };
-
-    const autoComplete = e => {};
 
     useEffect(() => {
         getFirstPage();

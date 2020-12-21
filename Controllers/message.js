@@ -1,15 +1,38 @@
 const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 
-router.get("/connections", isAuth, (req, res) => {
+router.post("/toggleChat", isAuth, (req, res, next) => {
+    let { activeValue, user1, user2 } = req.body.data;
+    if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
+
+    console.log(user1, user2);
+    const { connection } = req;
+    connection
+        .query("update chat set active = 0 where user1 = ? and user2 = ?", [
+            activeValue,
+            user1,
+            user2
+        ])
+        .then(result => {
+            console.log(result);
+            return res
+                .status(201)
+                .json({ success: true, message: "Chat removed" });
+        })
+        .catch(err => {
+            next(err);
+        });
+});
+
+router.get("/connections", isAuth, (req, res, next) => {
     const { username } = req.user;
 
     const { connection } = req;
     connection
-        .query("select * from chat where user1 = ? or user2 = ?", [
-            username,
-            username
-        ])
+        .query(
+            "select * from chat where (user1 = ? or user2 = ?) and active = 1",
+            [username, username]
+        )
         .then(
             rows => {
                 if (rows[0]) {
@@ -69,6 +92,10 @@ router.post("/createChat", isAuth, (req, res, next) => {
                 },
                 err => {
                     if (err.errno === 1062) {
+                        connection.query(
+                            "update chat set active = 1 where user1 = ? and user2 = ?",
+                            [user1, user2]
+                        );
                         return res.status(200).send({
                             success: true,
                             message: "Existing chat",
@@ -78,8 +105,8 @@ router.post("/createChat", isAuth, (req, res, next) => {
                     next(err);
                 }
             );
-    } catch (er) {
-        next(er);
+    } catch (err) {
+        next(err);
     }
 });
 

@@ -1,3 +1,8 @@
+#delete-right {
+    float: right;
+    margin: 5px;
+}
+
 #side-bg {
     min-width: 30vw;
     margin: 10vw;

@@ -4,6 +4,7 @@ import getUser from "../getUser";
 import { Navbar } from "./";
 import "../Styles/Profile.css";
 import {
+    Textarea,
     Pane,
     Spinner,
     FilePicker,
@@ -30,7 +31,8 @@ function Profile(props) {
             location: data.location || props.user.location,
             username: data.username || props.user.username,
             email: props.user.email,
-            gender: data.gender || props.user.gender
+            gender: data.gender || props.user.gender,
+            bio: data.bio || props.user.bio
         };
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
@@ -71,7 +73,8 @@ function Profile(props) {
                     lastName: props.user.lastName,
                     username: props.user.username,
                     location: props.user.location,
-                    gender: props.user.location
+                    gender: props.user.location,
+                    bio: props.user.bio
                 }}
                 onSubmit={async (data, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
@@ -98,6 +101,15 @@ function Profile(props) {
                             name="lastName"
                             placeholder={props.user.lastName}
                         />
+                        <br />
+                        <br />
+                        <Textarea
+                            value={values.bio}
+                            onChange={handleChange}
+                            name="bio"
+                            placeholder={values.bio}
+                        />
+
                         <br />
                         <br />
                         <TextInput

@@ -24,9 +24,6 @@ function Profile(props) {
     const location = useLocation();
     const [user, setUser] = useState({});
     const [loggedInUser, setLoggedInUser] = useState({});
-    const [message, setMessage] = useState("");
-    const [messageInit, setMessageInit] = useState(false);
-    const [confirmed, setConfirmed] = useState(false);
     const [spin, setSpin] = useState(false);
 
     const getUserProfile = username => {
@@ -40,14 +37,6 @@ function Profile(props) {
         }).catch(err => {
             console.log(err);
         });
-    };
-
-    const initMessage = () => {
-        setMessageInit(true);
-    };
-
-    const confirmMessage = () => {
-        setConfirmed(true);
     };
 
     useEffect(() => {
@@ -75,44 +64,6 @@ function Profile(props) {
                 height={400}
             >
                 <Spinner />
-            </Pane>
-        );
-    }
-
-    if (confirmed) {
-        props.history.push({
-            pathname: "/messages",
-            state: {
-                matchData: {
-                    match: user.username,
-                    message: message.message
-                }
-            }
-        });
-    }
-    if (messageInit) {
-        return (
-            <Pane>
-                <Dialog
-                    isShown={messageInit}
-                    title={"Message " + user.username}
-                    onCloseComplete={() => setMessageInit(false)}
-                    confirmLabel="Send"
-                    onConfirm={confirmMessage}
-                >
-                    <TextInput
-                        width="100%"
-                        name="message"
-                        placeholder="Your message"
-                        onChange={e =>
-                            setMessage({
-                                ...message,
-                                [e.target.name]: e.target.value
-                            })
-                        }
-                    />
-                    {"  "}
-                </Dialog>
             </Pane>
         );
     } else {
@@ -145,7 +96,16 @@ function Profile(props) {
                         {"  "}
                         <Text>{user.location}</Text>
                         <Button
-                            onClick={initMessage}
+                            onClick={() => {
+                                props.history.push({
+                                    pathname: "/messages",
+                                    state: {
+                                        matchData: {
+                                            match: user.username
+                                        }
+                                    }
+                                });
+                            }}
                             id="message-user"
                             intent="success"
                         >

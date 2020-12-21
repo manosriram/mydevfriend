@@ -20,7 +20,6 @@ import { Helmet } from "react-helmet";
 function UserHome(props) {
     const [spin, setSpin] = useState(false);
     const [match, setMatch] = useState("");
-    const [message, setMessage] = useState("");
     const [submitMessage, setSubmitMessage] = useState(false);
 
     const matchNow = () => {
@@ -34,6 +33,7 @@ function UserHome(props) {
             setSpin(false);
         }).catch(err => {
             console.log(err);
+            setSpin(false);
         });
     };
 

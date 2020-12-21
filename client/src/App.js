@@ -1,5 +1,6 @@
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import {
     Profile,
     FindUsers,
@@ -15,10 +16,11 @@ import {
 } from "./Components";
 import { PrivateRoute } from "./PrivateRoute";
 
+export const appHistory = createBrowserHistory();
 function App() {
     return (
         <>
-            <Router>
+            <Router history={appHistory}>
                 <Switch>
                     <Route path="/" exact>
                         <Home />
