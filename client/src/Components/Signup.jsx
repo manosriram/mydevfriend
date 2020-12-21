@@ -7,6 +7,7 @@ import {
     AddIcon,
     Select,
     Button,
+    Textarea,
     TextInput
 } from "evergreen-ui";
 import "../Styles/App.css";
@@ -136,7 +137,8 @@ function Signup(props) {
                     location: "",
                     gender: "",
                     username: "",
-                    password: ""
+                    password: "",
+                    bio: ""
                 }}
                 onSubmit={async (data, { setSubmitting, resetForm }) => {
                     setSubmitting(true);
@@ -194,6 +196,15 @@ function Signup(props) {
                             type="password"
                             placeholder="Password"
                         />
+                        <br />
+                        <br />
+                        <Textarea
+                            name="bio"
+                            placeholder="bio"
+                            value={values.bio}
+                            onChange={handleChange}
+                        />
+
                         <br />
                         <br />
                         <TextInput

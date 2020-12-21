@@ -3,6 +3,13 @@
     padding: 0;
 }
 
+#link-home {
+    font-size: 1vw;
+}
+#link-home:hover {
+    color: orange;
+}
+
 #notFound {
     width: 70%;
 }

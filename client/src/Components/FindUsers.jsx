@@ -2,34 +2,68 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import "../Styles/Find.css";
-import { SearchInput, Pane, Heading, Text } from "evergreen-ui";
+import { Spinner, SearchInput, Pane, Heading, Text } from "evergreen-ui";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
 function FindUsers(props) {
     const [currentPage, setCurrentPage] = useState(0);
     const [users, setUsers] = useState([]);
+    const [matched, setMatched] = useState([]);
+    const [spin, setSpin] = useState(false);
 
     const getFirstPage = () => {
+        setSpin(true);
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
         const res = axios.post("/user/all", { currentPage }, { headers });
         res.then(result => {
             setUsers(result.data.users);
+            setMatched(result.data.users);
+            setSpin(false);
         }).catch(err => {
             console.log(err);
         });
     };
 
+    const autoComplete = e => {};
+
     useEffect(() => {
         getFirstPage();
     }, []);
 
+    if (spin) {
+        return (
+            <Pane
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height={400}
+            >
+                <Spinner />
+            </Pane>
+        );
+    }
+
     return (
         <div id="users-container" className="usersall">
-            <SearchInput placeholder="Search User" height={40} />
-            {users.map(user => {
+            <SearchInput
+                autocomplete="off"
+                name="search"
+                placeholder="Search User"
+                height={40}
+                onChange={e => {
+                    setMatched(
+                        users.filter(user =>
+                            user.username
+                                .toLowerCase()
+                                .includes(e.target.value.toLowerCase())
+                        )
+                    );
+                }}
+            />
+            {matched.map(user => {
                 const url = `/user/${user.username}`;
                 return (
                     <div>

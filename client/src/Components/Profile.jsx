@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import {
+    Spinner,
     GlobeNetworkIcon,
     Icon,
     CalendarIcon,
@@ -26,8 +27,10 @@ function Profile(props) {
     const [message, setMessage] = useState("");
     const [messageInit, setMessageInit] = useState(false);
     const [confirmed, setConfirmed] = useState(false);
+    const [spin, setSpin] = useState(false);
 
     const getUserProfile = username => {
+        setSpin(true);
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
@@ -55,10 +58,26 @@ function Profile(props) {
             .then(res => {
                 setLoggedInUser(res);
             })
+            .then(() => {
+                setSpin(false);
+            })
             .catch(err => {
                 console.log(err);
             });
     }, []);
+
+    if (spin) {
+        return (
+            <Pane
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                height={400}
+            >
+                <Spinner />
+            </Pane>
+        );
+    }
 
     if (confirmed) {
         props.history.push({
@@ -112,14 +131,9 @@ function Profile(props) {
                         </Text>
                         <br />
                         <div id="bio">
-                            <Pane elevation={1}>
-                                <Text size={50}>
-                                    alsjdlasjdl jalsdj lasjdlasjl ajdl ajsldjlAA
-                                    <br />
-                                    alsjdlasjdl jalsdj lasjdlasjl ajdl ajsldjl
-                                    asdjlasjdl
-                                </Text>
-                            </Pane>
+                            <div>
+                                <Text size={50}>{user.bio}</Text>
+                            </div>
                         </div>
                         <Icon id="joined-icon" icon={CalendarIcon} />
                         {"  "}

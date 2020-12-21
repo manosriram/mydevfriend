@@ -30,7 +30,8 @@ const signUpSchema = yup.object().shape({
         .string()
         .required()
         .max(32, "Last Name should not exceed length 32"),
-    dob: yup.string().required()
+    dob: yup.string().required(),
+    bio: yup.string().max(264, "Bio must be less than 264 characters")
 });
 
 const loginSchema = yup.object().shape({
@@ -76,7 +77,8 @@ router.post("/signup", async (req, res, next) => {
             firstName,
             lastName,
             dob,
-            gender
+            gender,
+            bio
         } = req.body.data;
         signUpSchema.validateSync({
             username,
@@ -86,13 +88,14 @@ router.post("/signup", async (req, res, next) => {
             firstName,
             lastName,
             dob,
-            gender
+            gender,
+            bio
         });
         const connection = req.connection;
 
         connection
             .query(
-                "INSERT INTO user(username, email, password, location, dob, firstName, lastName, gender) values(?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO user(username, email, password, location, dob, firstName, lastName, gender, bio) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     username,
                     email,
@@ -101,7 +104,8 @@ router.post("/signup", async (req, res, next) => {
                     dob,
                     firstName,
                     lastName,
-                    gender
+                    gender,
+                    bio
                 ]
             )
             .then(
