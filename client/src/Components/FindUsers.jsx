@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import "../Styles/Find.css";
-import { Pane, Heading, Text } from "evergreen-ui";
-import {Link } from "react-router-dom";
+import { SearchInput, Pane, Heading, Text } from "evergreen-ui";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
 function FindUsers(props) {
     const [currentPage, setCurrentPage] = useState(0);
@@ -27,15 +28,20 @@ function FindUsers(props) {
 
     return (
         <div id="users-container" className="usersall">
+            <SearchInput placeholder="Search User" height={40} />
             {users.map(user => {
                 const url = `/user/${user.username}`;
                 return (
                     <div>
                         <Heading size={100} id="user">
                             <Link to={url}>{user.username}</Link>
+                            {"  "}
                         </Heading>
+                        <Text>
+                            joined {moment().format("MMMM Do, YYYY", user.dob)}
+                        </Text>
                     </div>
-                )
+                );
             })}
         </div>
     );

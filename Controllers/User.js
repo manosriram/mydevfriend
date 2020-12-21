@@ -26,7 +26,7 @@ router.post("/all", (req, res, next) => {
     const { currentPage } = req.body;
 
     connection
-        .query("select username from user limit ?, ?", [
+        .query("select username, created from user limit ?, ?", [
             currentPage * 10,
             currentPage * 10 + 10
         ])
