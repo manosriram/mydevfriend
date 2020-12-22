@@ -5,7 +5,7 @@ async function getUser() {
     try {
         return new Promise((resolve, reject) => {
             const token = Cookie.get("jtk");
-            if (!token) return null;
+            if (!token) reject(null);
             else {
                 const res = axios.get("/auth/user", {
                     headers: {

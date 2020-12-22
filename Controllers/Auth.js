@@ -57,14 +57,18 @@ const sendMailWithEmail = email => {
 };
 
 router.get("/user", (req, res, next) => {
-    let token = req.headers["authorization"];
-    token = token.split(" ")[1];
-    jwt.verify(token, "secret", (err, user) => {
-        let status = 403;
-        if (user) status = 200;
-        if (!err) return res.status(status).json({ user: user || null });
-        else next(err);
-    });
+    try {
+        let token = req.headers["authorization"];
+        token = token.split(" ")[1];
+        jwt.verify(token, "secret", (err, user) => {
+            let status = 403;
+            if (user) status = 200;
+            if (!err) return res.status(status).json({ user: user || null });
+            else next(err);
+        });
+    } catch (err) {
+        next(err);
+    }
 });
 
 router.post("/signup", async (req, res, next) => {

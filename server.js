@@ -17,7 +17,7 @@ const mysqlConfig = {
     host: "localhost",
     user: "root",
     password: "password",
-    database: "codealone"
+    database: "foundbug"
 };
 const connection = new Database(mysqlConfig);
 

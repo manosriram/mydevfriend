@@ -51,6 +51,7 @@ function Home(props) {
                 props.history.push("/home");
             }
         });
+        setSpin(false);
     }, []);
 
     if (spin) {
