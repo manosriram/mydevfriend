@@ -110,15 +110,18 @@ router.post("/signup", async (req, res, next) => {
             )
             .then(
                 rows => {
-                    sendMailWithEmail(email);
+                    // sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,
                         message: "Check your mail for an activation link"
                     });
                 },
                 err => {
-                    if (err.errno === 1062) next(new Error("user exists"));
-                    else next(new Error("some error occured"));
+                    if (err.errno === 1062) {
+                        let exists = new Error("user exists");
+                        exists.status = 409;
+                        next(exists);
+                    } else next(new Error("some error occured"));
                 }
             );
     } catch (err) {

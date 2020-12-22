@@ -74,9 +74,10 @@ router.put("/profile", isAuth, (req, res, next) => {
                         expiresIn: "1d"
                     });
                     res.cookie("jtk", token);
-                    return res.json({
+                    return res.status(200).json({
                         success: true,
-                        message: "Profile updated successfully"
+                        message: "Profile updated successfully",
+                        user: userPayload
                     });
                 },
                 err => {

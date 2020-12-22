@@ -5,10 +5,9 @@ router.post("/toggleChat", isAuth, (req, res, next) => {
     let { activeValue, user1, user2 } = req.body.data;
     if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
 
-    console.log(user1, user2);
     const { connection } = req;
     connection
-        .query("update chat set active = 0 where user1 = ? and user2 = ?", [
+        .query("update chat set active = ? where user1 = ? and user2 = ?", [
             activeValue,
             user1,
             user2
