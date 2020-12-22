@@ -36,7 +36,7 @@ router.get("/connections", isAuth, (req, res, next) => {
             rows => {
                 if (rows[0]) {
                 }
-                res.json({ success: true, friends: rows });
+                res.status(200).json({ success: true, friends: rows });
             },
             err => {
                 next(err);
@@ -59,7 +59,9 @@ router.post("/history", isAuth, (req, res, next) => {
             )
             .then(
                 rows => {
-                    return res.json({ success: true, messages: [rows] });
+                    return res
+                        .status(200)
+                        .json({ success: true, messages: [rows] });
                 },
                 err => {
                     next(err);

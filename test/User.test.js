@@ -61,7 +61,7 @@ describe("User tests", () => {
     // Get logged-in user's profile.
     describe("/user/profile", () => {
         it("should update logged-in user's profile with status 200 ", done => {
-            const newFakeUserFirstName = "updateFakeUserFirstName";
+            const newFakeUserFirstName = "updatedFakeUserFirstName";
             chai.request(app)
                 .put("/user/profile")
                 .set("authorization", `Bearer ${token}`)
@@ -92,23 +92,13 @@ describe("User tests", () => {
                     currentPage: 0
                 })
                 .end((err, res) => {
-                    assert.isArray(res.body.user);
+                    chai.assert.isArray(
+                        res.body.users,
+                        "User details not an array"
+                    );
                     res.should.have.status(200);
                     done();
                 });
         });
     });
-});
-
-after(() => {
-    connection
-        .query("delete from user where username = ?", fakeUser.username)
-        .then(
-            rows => {
-                console.log("Cleaned Test DB details");
-            },
-            err => {
-                console.log(err);
-            }
-        );
 });
