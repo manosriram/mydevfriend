@@ -68,7 +68,7 @@ function UserHome(props) {
         <div id="user-home-container">
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>codealone</title>
+                <title>foundbug</title>
                 <meta
                     name="description"
                     content="Find a pair-programming partner"

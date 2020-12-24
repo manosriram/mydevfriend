@@ -72,8 +72,8 @@ function Home(props) {
                     <img src={sideBg} alt="" id="sidebg" />
                     <Heading id="intro-text" size={100}>
                         <strong>
-                            codealone connects you with developers all around
-                            the world.
+                            foundbug connects you with developers all around the
+                            world.
                         </strong>
                     </Heading>
                 </div>
@@ -95,7 +95,7 @@ function Home(props) {
                                 id="welcome"
                                 size={100}
                             >
-                                Codealone
+                                foundbug
                             </Heading>
                             <Formik
                                 initialValues={{

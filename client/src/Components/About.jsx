@@ -9,8 +9,8 @@ function About(props) {
         <div id="container">
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>About - codealone</title>
-                <meta name="description" content="About Page - codealone" />
+                <title>About - foundbug</title>
+                <meta name="description" content="About Page - foundbug" />
                 <link
                     rel="apple-touch-icon"
                     sizes="57x57"
@@ -90,7 +90,7 @@ function About(props) {
 
             <img id="side-bg" src={yourImage} alt="" />
             <Heading className="head" size={100}>
-                <span id="title">Codealone</span>
+                <span id="title">foundbug</span>
                 {"  "} lets you meet and pair up with like minded developers.
             </Heading>
             <Heading size={100} id="about-description">
@@ -98,7 +98,7 @@ function About(props) {
                 co-founder for your upcoming startup.
             </Heading>
             <Heading size={100}></Heading>
-            <Heading size={100}>
+            <Heading size={500}>
                 <Link to="/">Home</Link>
             </Heading>
         </div>
