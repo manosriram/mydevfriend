@@ -150,13 +150,19 @@ function UserHome(props) {
                 />
             </Helmet>
 
-            <Link id="link-home" onClick={matchNow}>
-                find random user
-            </Link>
-            <br />
-            <Link id="link-home" to="/find">
-                find users
-            </Link>
+            <div id="inner-container">
+                <div id="left-home">
+                    <Link id="link-home" onClick={matchNow}>
+                        find random user
+                    </Link>
+                    <br />
+                </div>
+                <div id="right-home">
+                    <Link id="link-home" to="/find">
+                        find users
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 }
