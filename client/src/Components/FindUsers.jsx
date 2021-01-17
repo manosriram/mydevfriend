@@ -67,6 +67,7 @@ function FindUsers(props) {
             />
             {matched.map(user => {
                 const url = `/user/${user.username}`;
+                console.log(user);
                 return (
                     <div>
                         <Heading size={100} id="user">
@@ -74,7 +75,8 @@ function FindUsers(props) {
                             {"  "}
                         </Heading>
                         <Text>
-                            joined {moment().format("MMMM Do, YYYY", user.dob)}
+                            joined{" "}
+                            {moment(user.created).format("MMMM Do, YYYY")}
                         </Text>
                     </div>
                 );
