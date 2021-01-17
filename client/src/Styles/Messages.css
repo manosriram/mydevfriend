@@ -66,6 +66,7 @@
 }
 hr {
     opacity: 0.2;
+    margin: 5px 0;
 }
 #you-user,
 .not-own-name {
