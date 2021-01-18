@@ -17,4 +17,5 @@
 
 #user {
     font-size: 1vw;
+    text-transform: lowercase;
 }
