@@ -37,7 +37,6 @@ app.use((req, res, next) => {
     next();
 });
 
-console.log("hii");
 const server = app.listen(PORT, "0.0.0.0", () =>
     console.log(`Server at ${PORT}`)
 );
