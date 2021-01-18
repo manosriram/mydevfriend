@@ -9,7 +9,7 @@ on:
     
 defaults:
   run:
-    working-directory: /var/www/
+    working-directory: /var/www/foundbug
     
 jobs:
   build:
