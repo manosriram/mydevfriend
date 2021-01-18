@@ -5,7 +5,7 @@
     "main": "server.js",
     "scripts": {
         "dev": "nodemon server.js",
-        "start": "pm2 kill && pm2 start server.js",
+        "build": "pm2 kill && pm2 start server.js",
         "test": "mocha"
     },
     "repository": {
