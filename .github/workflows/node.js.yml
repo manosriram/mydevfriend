@@ -7,10 +7,6 @@ on:
   push:
     branches: [ master ]
     
-defaults:
-  run:
-    working-directory: /var/www/foundbug
-    
 jobs:
   build:
     runs-on: self-hosted
@@ -29,4 +25,9 @@ jobs:
     - run: sudo npm i
     - run: cd client && sudo npm run build
     - run: cd /var/www/foundbug && sudo npm run build --if-present
-      working-directory: /var/www
+      env:
+        goemail: "contact@manosriram.com"
+        gopass: "#<3web_dev"
+        host: "smtpout.secureserver.net"
+        ADDR_DEV: "localhost"
+        ADDR_PROD: "208.109.8.230"
