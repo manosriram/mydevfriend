@@ -14,7 +14,10 @@ const dotenv = require("dotenv");
 const path = require("path");
 dotenv.config();
 
-const host = process.env.NODE_ENV === "production" ? process.env.ADDR_PROD : process.env.ADDR_DEV;
+const host =
+    process.env.NODE_ENV === "production"
+        ? process.env.ADDR_PROD
+        : process.env.ADDR_DEV;
 var socketPath;
 if (process.env.NODE_ENV === "production") {
     socketPath = "/var/run/mysqld/mysqld.sock";
@@ -53,12 +56,14 @@ app.use("/user", require("./Controllers/User"));
 app.use("/match", require("./Controllers/Match"));
 
 app.get("/*", (req, res) => {
-    return res.sendFile(
-        path.join(__dirname, "client/build/index.html"),
-        err => {
-            res.status(500).send(err);
-        }
-    );
+    return res.send("foundbug");
+
+    // return res.sendFile(
+    // path.join(__dirname, "client/build/index.html"),
+    // err => {
+    // res.status(500).send(err);
+    // }
+    // );
 });
 
 app.use((req, res, next) => {
