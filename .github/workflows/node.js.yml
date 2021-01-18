@@ -22,6 +22,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: sudo rm -rf ~/actions-runner/foundbug/foundbug/foundbug
     - run: sudo npm i
     - run: cd client && sudo npm i && sudo npm run build
     - run: sudo npm run build --if-present
