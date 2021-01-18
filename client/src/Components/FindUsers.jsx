@@ -67,7 +67,6 @@ function FindUsers(props) {
             />
             {matched.map(user => {
                 const url = `/user/${user.username}`;
-                console.log(user);
                 return (
                     <div>
                         <Heading size={100} id="user">

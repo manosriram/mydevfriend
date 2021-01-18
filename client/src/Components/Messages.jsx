@@ -29,7 +29,7 @@ import Cookie from "js-cookie";
 import { Helmet } from "react-helmet";
 
 import io from "socket.io-client";
-const socket = io("http://localhost:5454", {
+const socket = io("http://208.109.8.230:5454", {
     transports: ["websocket", "polling", "flashsocket"]
 });
 

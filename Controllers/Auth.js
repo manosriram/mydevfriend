@@ -125,7 +125,7 @@ router.post("/signup", async (req, res, next) => {
                         let exists = new Error("user exists");
                         exists.status = 409;
                         next(exists);
-                    } else next(new Error("some error occured"));
+                    } else next(new Error(err));
                 }
             );
     } catch (err) {
