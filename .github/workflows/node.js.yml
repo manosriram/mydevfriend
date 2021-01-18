@@ -6,7 +6,7 @@ name: Node.js CI
 on:
   push:
     branches: [ master ]
-    
+  
 jobs:
   build:
     runs-on: self-hosted
@@ -23,8 +23,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: sudo npm i
-    - run: cd client && sudo npm run build
-    - run: cd /var/www/foundbug && sudo npm run build --if-present
+    - run: cd client && sudo npm i && sudo npm run build
+    - run: sudo npm run build --if-present
       env:
         goemail: "contact@manosriram.com"
         gopass: "#<3web_dev"
