@@ -56,7 +56,7 @@ app.use("/user", require("./Controllers/User"));
 app.use("/match", require("./Controllers/Match"));
 
 app.get("/*", (req, res) => {
-    return res.send("from foundbug");
+    return res.send("from foundbug1");
 
     // return res.sendFile(
     // path.join(__dirname, "client/build/index.html"),
