@@ -31,8 +31,8 @@ CREATE TABLE message (
     chatId bigint unsigned NOT NULL,
     message nvarchar(400) NOT NULL,
     sent TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(chatId) REFERENCES chat(chatId),
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY(chatId) REFERENCES chat(chatId)
 );
 
 CREATE TABLE friendship (

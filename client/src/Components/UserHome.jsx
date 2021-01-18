@@ -27,7 +27,9 @@ function UserHome(props) {
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
-        const res = axios.get("/match/", { headers });
+        const res = axios.get(`${process.env.REACT_APP_ADDR}/match/`, {
+            headers
+        });
         res.then(result => {
             setMatch(result.data.user);
             setSpin(false);

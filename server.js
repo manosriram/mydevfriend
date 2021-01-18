@@ -14,13 +14,19 @@ const dotenv = require("dotenv");
 const path = require("path");
 dotenv.config();
 
+const host = process.env.NODE_ENV === "production" ? process.env.ADDR_PROD : process.env.ADDR_DEV;
+var socketPath;
+if (process.env.NODE_ENV === "production") {
+    socketPath = "/var/run/mysqld/mysqld.sock";
+}
+
 const mysqlConfig = {
-    host: "208.109.8.230",
+    host: host,
     user: "root",
     port: 3306,
     password: "password",
     database: "foundbug",
-    socketPath: "/var/run/mysqld/mysqld.sock"
+    socketPath: socketPath
 };
 const connection = new Database(mysqlConfig);
 app.use((req, res, next) => {
@@ -28,7 +34,9 @@ app.use((req, res, next) => {
     next();
 });
 
-const server = app.listen(PORT, "0.0.0.0", () => console.log(`Server at ${PORT}`));
+const server = app.listen(PORT, "0.0.0.0", () =>
+    console.log(`Server at ${PORT}`)
+);
 const io = socketio(server);
 listenMessages(io, connection);
 
@@ -45,9 +53,12 @@ app.use("/user", require("./Controllers/User"));
 app.use("/match", require("./Controllers/Match"));
 
 app.get("/*", (req, res) => {
-    return res.sendFile(path.join(__dirname, "client/build/index.html"), err => {
-        res.status(500).send(err);
-    });
+    return res.sendFile(
+        path.join(__dirname, "client/build/index.html"),
+        err => {
+            res.status(500).send(err);
+        }
+    );
 });
 
 app.use((req, res, next) => {

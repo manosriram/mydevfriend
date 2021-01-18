@@ -22,7 +22,10 @@ function Signup(props) {
     const [email, setEmail] = useState("");
 
     const resendMail = () => {
-        const res = axios.post("/auth/resendMail", { email });
+        const res = axios.post(
+            `${process.env.REACT_APP_ADDR}/auth/resendMail`,
+            { email }
+        );
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
         }).catch(err => {
@@ -32,7 +35,9 @@ function Signup(props) {
     };
 
     const submitForm = async data => {
-        const res = axios.post("/auth/signup", { data });
+        const res = axios.post(`${process.env.REACT_APP_ADDR}/auth/signup`, {
+            data
+        });
         setEmail(data.email);
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);

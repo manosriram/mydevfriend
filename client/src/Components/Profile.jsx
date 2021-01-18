@@ -32,7 +32,12 @@ function Profile(props) {
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
-        const res = axios.get(`/user/${username}`, { headers });
+        const res = axios.get(
+            `${process.env.REACT_APP_ADDR}/user/${username}`,
+            {
+                headers
+            }
+        );
         res.then(result => {
             setUser(result.data.user);
         }).catch(err => {

@@ -16,6 +16,7 @@ import Cookie from "js-cookie";
 import getUser from "../getUser";
 import { Suspense, useState, useEffect } from "react";
 import sideBg from "../Assets/side-bg.png";
+require("dotenv").config();
 
 const forbiddenToast = { id: "forbidden-action" };
 
@@ -25,7 +26,9 @@ function Home(props) {
     const submitForm = data => {
         try {
             setSpin(true);
-            const res = axios.post("/auth/login", { data });
+            const res = axios.post(`${process.env.REACT_APP_ADDR}/auth/login`, {
+                data
+            });
             res.then(result => {
                 toaster.success(result.data.message, forbiddenToast);
                 Cookie.set("jtk", result.data.token);

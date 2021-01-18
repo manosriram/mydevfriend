@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.21, for osx10.15 (x86_64)
 --
--- Host: localhost    Database: meetwith
+-- Host: localhost    Database: foundbug
 -- ------------------------------------------------------
 -- Server version	8.0.21
 
@@ -26,10 +26,11 @@ CREATE TABLE `chat` (
   `chatId` bigint unsigned NOT NULL AUTO_INCREMENT,
   `user1` varchar(32) NOT NULL,
   `user2` varchar(32) NOT NULL,
+  `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`user1`,`user2`),
   UNIQUE KEY `id` (`chatId`),
   UNIQUE KEY `chat_unique` (`user1`,`user2`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=282 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `chat` (
 
 LOCK TABLES `chat` WRITE;
 /*!40000 ALTER TABLE `chat` DISABLE KEYS */;
-INSERT INTO `chat` VALUES (69,'sriram','sriram11'),(70,'mano','manosriram');
+INSERT INTO `chat` VALUES (276,'mano','mano',0),(207,'mano','manoaa',1),(204,'mano','manosriram',0),(208,'manoaa','manosriram',1);
 /*!40000 ALTER TABLE `chat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +86,7 @@ CREATE TABLE `message` (
   UNIQUE KEY `id` (`id`),
   KEY `chatId` (`chatId`),
   CONSTRAINT `message_ibfk_1` FOREIGN KEY (`chatId`) REFERENCES `chat` (`chatId`)
-) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +95,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (195,69,'hi','2020-12-18 19:13:45','sriram');
+INSERT INTO `message` VALUES (264,204,'aa','2020-12-21 05:24:43','mano'),(265,207,'dsdsd','2020-12-21 15:16:55','manoaa'),(266,208,'sdsd','2020-12-21 19:19:39','manoaa'),(267,276,'hi mano!','2020-12-22 18:47:42','mano'),(268,204,'hi!','2020-12-22 18:48:08','mano'),(269,207,'asddsddd','2021-01-17 05:47:01','mano'),(270,207,'asdsd','2021-01-17 05:47:05','mano'),(271,204,'hi mano!','2021-01-17 05:56:47','mano'),(272,207,'hey, sorry for the delay...','2021-01-17 07:31:02','manoaa'),(273,207,'its ok, how are you?','2021-01-17 07:31:52','mano'),(274,207,'good...','2021-01-17 07:31:58','manoaa'),(275,207,'nice. so still a dev?','2021-01-17 07:32:10','mano'),(276,207,'um... yup :)','2021-01-17 07:32:17','manoaa');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,10 +119,11 @@ CREATE TABLE `user` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `gender` varchar(32) NOT NULL,
   `active` tinyint(1) DEFAULT '0',
+  `bio` text,
   PRIMARY KEY (`username`),
   UNIQUE KEY `userid` (`userid`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +132,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (22,'Arivazhagan','ManoSriram','mano','mano@mail.com','mano1234','visakhapatnam','2020-12-30',NULL,'2020-12-20 05:01:24','Male',0),(20,'Arivazhagan','ManoSriram','manosriram','mano.sriram0@gmail.com','mano1234','vizag','2020-12-30',NULL,'2020-12-20 04:37:43','Male',1);
+INSERT INTO `user` VALUES (22,'Arivazhagan','ManoSriram','mano','mano@mail.com','mano1234','visakhapatnam','2020-12-30',NULL,'2020-12-20 05:01:24','visakhapatnam',0,NULL),(25,'Arivazhagan','ManoSriram','manoaa','mano124@mail.com','aaaa','asdasdad','2020-12-31',NULL,'2020-12-21 07:41:55','asdasdad',0,'something wonderful!'),(20,'Arivazhagan','ManoSriram','manosriram','mano.sriram0@gmail.com','mano1234','vizag','2020-12-30',NULL,'2020-12-20 04:37:43','Male',1,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -143,4 +145,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-20 15:23:38
+-- Dump completed on 2021-01-17 22:22:03

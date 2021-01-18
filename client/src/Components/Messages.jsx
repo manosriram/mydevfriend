@@ -29,7 +29,7 @@ import Cookie from "js-cookie";
 import { Helmet } from "react-helmet";
 
 import io from "socket.io-client";
-const socket = io("http://208.109.8.230:5454", {
+const socket = io(process.env.REACT_APP_ADDR, {
     transports: ["websocket", "polling", "flashsocket"]
 });
 
@@ -47,7 +47,12 @@ function Messages(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.get("/chat/connections", { headers });
+            const res = axios.get(
+                `${process.env.REACT_APP_ADDR}/chat/connections`,
+                {
+                    headers
+                }
+            );
             res.then(result => {
                 console.log(result);
                 setChat(result.data.friends);
@@ -73,6 +78,7 @@ function Messages(props) {
 
     const getMessages = async toUser => {
         try {
+            console.log(props.user);
             const data = {
                 from: props.user.username,
                 to: toUser
@@ -80,7 +86,11 @@ function Messages(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.post("/chat/history", { data }, { headers });
+            const res = axios.post(
+                `${process.env.REACT_APP_ADDR}/chat/history`,
+                { data },
+                { headers }
+            );
             res.then(result => {
                 setMessages(result.data.messages[0]);
                 sc();
@@ -193,7 +203,11 @@ function Messages(props) {
             user1: user.username,
             user2: deleteUserChat
         };
-        const res = axios.post("/chat/toggleChat", { data }, { headers });
+        const res = axios.post(
+            `${process.env.REACT_APP_ADDR}/chat/toggleChat`,
+            { data },
+            { headers }
+        );
         res.then(result => {
             window.location.reload();
         }).catch(err => {

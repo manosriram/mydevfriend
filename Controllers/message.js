@@ -47,6 +47,7 @@ router.get("/connections", isAuth, (req, res, next) => {
 router.post("/history", isAuth, (req, res, next) => {
     try {
         const { from, to } = req.body.data;
+        console.log(req.body.data);
         let user1 = from,
             user2 = to;
         if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];

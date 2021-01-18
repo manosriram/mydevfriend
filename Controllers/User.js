@@ -49,7 +49,8 @@ router.put("/profile", isAuth, (req, res, next) => {
         location,
         username,
         email,
-        gender
+        gender,
+        bio
     } = req.body.data;
 
     try {
@@ -57,11 +58,12 @@ router.put("/profile", isAuth, (req, res, next) => {
 
         connection
             .query(
-                "UPDATE user set firstName = ?, lastName = ?, location = ?, username = ?, gender = ? where email = ?",
-                [firstName, lastName, location, username, gender, email]
+                "UPDATE user set firstName = ?, lastName = ?, location = ?, username = ?, gender = ?, bio = ? where email = ?",
+                [firstName, lastName, location, username, gender, bio, email]
             )
             .then(
                 rows => {
+                    console.log(rows);
                     const userPayload = {
                         firstName,
                         lastName,

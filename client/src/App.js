@@ -15,6 +15,8 @@ import {
     Home
 } from "./Components";
 import { PrivateRoute } from "./PrivateRoute";
+const dotenv = require("dotenv");
+dotenv.config();
 
 export const appHistory = createBrowserHistory();
 function App() {

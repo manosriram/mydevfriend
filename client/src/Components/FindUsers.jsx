@@ -5,12 +5,15 @@ import "../Styles/Find.css";
 import { Spinner, SearchInput, Pane, Heading, Text } from "evergreen-ui";
 import { Link } from "react-router-dom";
 import moment from "moment";
+require("dotenv").config();
 
 function FindUsers(props) {
     const [currentPage, setCurrentPage] = useState(0);
     const [users, setUsers] = useState([]);
     const [matched, setMatched] = useState([]);
     const [spin, setSpin] = useState(false);
+    const ADDR = process.env.ADDR;
+    console.log(ADDR);
 
     const getFirstPage = () => {
         try {
@@ -18,7 +21,11 @@ function FindUsers(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.post("/user/all", { currentPage }, { headers });
+            const res = axios.post(
+                `${process.env.REACT_APP_ADDR}/user/all`,
+                { currentPage },
+                { headers }
+            );
             res.then(result => {
                 setUsers(result.data.users);
                 setMatched(result.data.users);

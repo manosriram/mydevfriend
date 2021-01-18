@@ -38,7 +38,7 @@ function Profile(props) {
             authorization: "Bearer " + Cookie.get("jtk")
         };
         const res = axios.put(
-            "/user/profile",
+            `${process.env.REACT_APP_ADDR}/user/profile`,
             { data: updatedData },
             { headers }
         );
@@ -73,7 +73,7 @@ function Profile(props) {
                     lastName: props.user.lastName,
                     username: props.user.username,
                     location: props.user.location,
-                    gender: props.user.location,
+                    gender: props.user.gender,
                     bio: props.user.bio
                 }}
                 onSubmit={async (data, { setSubmitting, resetForm }) => {
@@ -129,9 +129,10 @@ function Profile(props) {
                             placeholder={props.user.username}
                         />
                         {"  "}
+                        {console.log(props)}
                         <Select name="gender" onChange={handleChange}>
                             <option selected disabled value={props.user.gender}>
-                                {props.user.gender}
+                                {values.gender}
                             </option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
