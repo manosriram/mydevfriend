@@ -220,7 +220,7 @@ function Messages(props) {
         <>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>Messages - foundbug</title>
+                <title>Messages - mydevfriend</title>
                 <meta
                     name="description"
                     content="Find a pair-programming partner"

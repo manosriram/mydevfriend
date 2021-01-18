@@ -9,8 +9,8 @@ function About(props) {
         <div id="container">
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>About - foundbug</title>
-                <meta name="description" content="About Page - foundbug" />
+                <title>About - mydevfriend</title>
+                <meta name="description" content="About Page - mydevfriend" />
                 <link
                     rel="apple-touch-icon"
                     sizes="57x57"
@@ -90,10 +90,10 @@ function About(props) {
 
             <img id="side-bg" src={yourImage} alt="" />
             <Heading className="head" size={100}>
-                foundbug uses cookies to persist and manage sessions. By
+                mydevfriend uses cookies to persist and manage sessions. By
                 signing-up, you agree with the cookie policy of
                 {"  "}
-                <span id="title">foundbug.</span>
+                <span id="title">mydevfriend.</span>
             </Heading>
             <Heading size={500}>
                 <Link to="/">Home</Link>

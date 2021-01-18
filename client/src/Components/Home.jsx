@@ -75,8 +75,8 @@ function Home(props) {
                     <img src={sideBg} alt="" id="sidebg" />
                     <Heading id="intro-text" size={100}>
                         <strong>
-                            foundbug connects you with developers all around the
-                            world.
+                            mydevfriend connects you with developers all around
+                            the world.
                         </strong>
                     </Heading>
                 </div>

@@ -1,5 +1,5 @@
 {
-    "name": "foundbug",
+    "name": "mydevfriend",
     "version": "1.0.0",
     "description": "Platform to find pair-programming partners.",
     "main": "server.js",
@@ -10,14 +10,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/manosriram/foundbug.git"
+        "url": "git+https://github.com/manosriram/mydevfriend.git"
     },
     "author": "Mano Sriram",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/manosriram/foundbug/issues"
+        "url": "https://github.com/manosriram/mydevfriend/issues"
     },
-    "homepage": "https://github.com/manosriram/foundbug#readme",
+    "homepage": "https://github.com/manosriram/mydevfriend#readme",
     "dependencies": {
         "body-parser": "^1.19.0",
         "chai": "^4.2.0",

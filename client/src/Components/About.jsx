@@ -9,8 +9,8 @@ function About(props) {
         <div id="container">
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>About - foundbug</title>
-                <meta name="description" content="About Page - foundbug" />
+                <title>About - mydevfriend</title>
+                <meta name="description" content="About Page - mydevfriend" />
                 <link
                     rel="apple-touch-icon"
                     sizes="57x57"
@@ -90,7 +90,7 @@ function About(props) {
 
             <img id="side-bg" src={yourImage} alt="" />
             <Heading className="head" size={100}>
-                <span id="title">foundbug</span>
+                <span id="title">mydevfriend</span>
                 {"  "} lets you meet and pair up with like minded developers.
             </Heading>
             <Heading size={100} id="about-description">

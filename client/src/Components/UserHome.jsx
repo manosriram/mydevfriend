@@ -70,7 +70,7 @@ function UserHome(props) {
         <div id="user-home-container">
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>foundbug</title>
+                <title>mydevfriend</title>
                 <meta
                     name="description"
                     content="Find a pair-programming partner"

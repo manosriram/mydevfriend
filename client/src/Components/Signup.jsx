@@ -52,10 +52,10 @@ function Signup(props) {
         <>
             <Helmet>
                 <meta charSet="utf-8" />
-                <title>Create a free account - foundbug</title>
+                <title>Create a free account - mydevfriend</title>
                 <meta
                     name="description"
-                    content="Create a free account - foundbug"
+                    content="Create a free account - mydevfriend"
                 />
                 <link
                     rel="apple-touch-icon"
