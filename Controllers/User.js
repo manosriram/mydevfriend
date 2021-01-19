@@ -33,7 +33,21 @@ router.post("/all", (req, res, next) => {
         ])
         .then(
             rows => {
-                return res.status(200).json({ success: true, users: rows });
+                connection
+                    .query("SELECT username, language from user_language")
+                    .then(
+                        rows2 => {
+                            console.log(rows2);
+                            return res.status(200).json({
+                                success: true,
+                                users: rows,
+                                user_languages: rows2
+                            });
+                        },
+                        err => {
+                            console.log(err);
+                        }
+                    );
             },
             err => {
                 next(err);

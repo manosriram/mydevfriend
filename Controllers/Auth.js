@@ -84,6 +84,8 @@ router.post("/signup", async (req, res, next) => {
             gender,
             bio
         } = req.body.data;
+        const { languages } = req.body;
+
         signUpSchema.validateSync({
             username,
             password,
@@ -114,6 +116,12 @@ router.post("/signup", async (req, res, next) => {
             )
             .then(
                 rows => {
+                    for (let t = 0; t < languages.length; ++t) {
+                        connection.query(
+                            "INSERT INTO user_language(username, language) VALUES(?, ?)",
+                            [username, languages[t]]
+                        );
+                    }
                     // sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,

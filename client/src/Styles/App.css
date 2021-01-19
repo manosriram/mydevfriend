@@ -3,6 +3,12 @@
     padding: 0;
 }
 
+#lang {
+    min-height: 10vh;
+    max-height: 10vh;
+    overflow-y: scroll;
+}
+
 #left-home {
     width: 20vw;
     float: left;
