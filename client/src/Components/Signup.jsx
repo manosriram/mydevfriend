@@ -943,6 +943,7 @@ function Signup(props) {
                                         />
                                         {"  "}
                                         <Button
+                                            type=""
                                             onClick={() => {
                                                 if (
                                                     !selectedLanguages.includes(
@@ -1042,7 +1043,7 @@ function Signup(props) {
                         <br />
                         <br />
                         <Button
-                            type="submit"
+                            type="button"
                             onClick={handleSubmit}
                             value="Create"
                             intent="success"
