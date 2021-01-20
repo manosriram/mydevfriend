@@ -4,9 +4,19 @@
 }
 
 #lang {
-    min-height: 10vh;
+    max-width: 15vw;
     max-height: 10vh;
     overflow-y: scroll;
+    margin: auto;
+    text-align: left;
+}
+
+#close:hover {
+    cursor: pointer;
+}
+
+#badge {
+    display: inline-flex;
 }
 
 #left-home {
