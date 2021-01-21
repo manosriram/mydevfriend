@@ -24,29 +24,29 @@ function App() {
         <>
             <Router history={appHistory}>
                 <Switch>
-                    <Route path="/" exact>
+                    <Route exact path="/" exact>
                         <Home />
                     </Route>
-                    <Route path="/create" exact>
+                    <Route exact path="/create" exact>
                         <Signup />
                     </Route>
-                    <Route path="/user/:username" exact>
+                    <Route exact path="/user/:username" exact>
                         <>
                             <Navbar user={null} />
                             <Profile />
                         </>
                     </Route>
-                    <PrivateRoute path="/home" component={UserHome} />
-                    <PrivateRoute path="/messages" component={Messages} />
-                    <PrivateRoute path="/account" component={Account} />
-                    <PrivateRoute path="/find" component={FindUsers} />
-                    <Route path="/about">
+                    <PrivateRoute exact path="/home" component={UserHome} />
+                    <PrivateRoute exact path="/messages" component={Messages} />
+                    <PrivateRoute exact path="/account" component={Account} />
+                    <PrivateRoute exact path="/find" component={FindUsers} />
+                    <Route exact path="/about">
                         <About />
                     </Route>
-                    <Route path="/cookie">
+                    <Route exact path="/cookie">
                         <Cookie />
                     </Route>
-                    <Route path="/">
+                    <Route exact path="/">
                         <NotFound />
                     </Route>
                 </Switch>
