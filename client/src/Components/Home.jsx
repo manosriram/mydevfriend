@@ -98,7 +98,7 @@ function Home(props) {
                                 id="welcome"
                                 size={100}
                             >
-                                foundbug
+                                mydevfriend
                             </Heading>
                             <Formik
                                 initialValues={{

@@ -59,7 +59,7 @@ app.get("/*", (req, res) => {
     return res.sendFile(
         path.join(__dirname, "client/build/index.html"),
         err => {
-            res.status(500).send(err);
+            return res.status(500).send(err);
         }
     );
 });
