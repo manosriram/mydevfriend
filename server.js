@@ -28,7 +28,7 @@ const mysqlConfig = {
     user: "root",
     port: 3306,
     password: "password",
-    database: "foundbug",
+    database: "mydevfriend",
     socketPath: socketPath
 };
 const connection = new Database(mysqlConfig);
