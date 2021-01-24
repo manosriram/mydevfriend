@@ -40,7 +40,9 @@ app.use((req, res, next) => {
 const server = app.listen(PORT, "0.0.0.0", () =>
     console.log(`Server at ${PORT}`)
 );
-const io = socketio(server);
+const io = socketio(server, {
+    path: "/socket"
+});
 listenMessages(io, connection);
 
 app.use(express.static(path.join(__dirname, "client/build")));

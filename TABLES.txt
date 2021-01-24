@@ -20,7 +20,7 @@ CREATE TABLE user_language (
 );
 
 CREATE TABLE chat (
-    id SERIAL,
+    chatId SERIAL,
     user1 varchar(32),
     user2 varchar(32),
     PRIMARY KEY(user1, user2)

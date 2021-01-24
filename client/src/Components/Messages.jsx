@@ -30,7 +30,7 @@ import { Helmet } from "react-helmet";
 
 import io from "socket.io-client";
 const socket = io(process.env.REACT_APP_ADDR, {
-    transports: ["websocket", "polling", "flashsocket"]
+    path: "/socket"
 });
 
 function Messages(props) {
