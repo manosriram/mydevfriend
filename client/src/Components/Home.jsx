@@ -26,7 +26,7 @@ function Home(props) {
     const submitForm = data => {
         try {
             setSpin(true);
-            const res = axios.post(`${process.env.REACT_APP_ADDR}/auth/login`, {
+            const res = axios.post("/auth/login", {
                 data
             });
             res.then(result => {

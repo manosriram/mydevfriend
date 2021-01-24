@@ -739,11 +739,7 @@ function FindUsers(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.post(
-                `${process.env.REACT_APP_ADDR}/user/all`,
-                { currentPage },
-                { headers }
-            );
+            const res = axios.post("/user/all", { currentPage }, { headers });
             res.then(result => {
                 setUsers(result.data.users);
                 setUserLanguages(result.data.user_languages);

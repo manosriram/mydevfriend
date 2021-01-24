@@ -47,12 +47,9 @@ function Messages(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.get(
-                `${process.env.REACT_APP_ADDR}/chat/connections`,
-                {
-                    headers
-                }
-            );
+            const res = axios.get("/chat/connections", {
+                headers
+            });
             res.then(result => {
                 console.log(result);
                 setChat(result.data.friends);
@@ -86,11 +83,7 @@ function Messages(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.post(
-                `${process.env.REACT_APP_ADDR}/chat/history`,
-                { data },
-                { headers }
-            );
+            const res = axios.post("/chat/history", { data }, { headers });
             res.then(result => {
                 setMessages(result.data.messages[0]);
                 sc();
