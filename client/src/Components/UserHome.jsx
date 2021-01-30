@@ -27,7 +27,7 @@ function UserHome(props) {
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
-        const res = axios.get("/match/", {
+        const res = axios.get("/api/match/", {
             headers
         });
         res.then(result => {

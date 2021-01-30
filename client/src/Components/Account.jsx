@@ -38,7 +38,7 @@ function Profile(props) {
             authorization: "Bearer " + Cookie.get("jtk")
         };
         const res = axios.put(
-            "/user/profile",
+            "/api/user/profile",
             { data: updatedData },
             { headers }
         );

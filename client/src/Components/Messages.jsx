@@ -47,7 +47,7 @@ function Messages(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.get("/chat/connections", {
+            const res = axios.get("/api/chat/connections", {
                 headers
             });
             res.then(result => {
@@ -83,7 +83,7 @@ function Messages(props) {
             const headers = {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
-            const res = axios.post("/chat/history", { data }, { headers });
+            const res = axios.post("/api/chat/history", { data }, { headers });
             res.then(result => {
                 setMessages(result.data.messages[0]);
                 sc();
@@ -112,7 +112,7 @@ function Messages(props) {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
             const res = axios.post(
-                "/chat/createChat",
+                "/api/chat/createChat",
                 {
                     user1: u_user1,
                     user2: props.user.username || u_user2
@@ -196,11 +196,7 @@ function Messages(props) {
             user1: user.username,
             user2: deleteUserChat
         };
-        const res = axios.post(
-            `${process.env.REACT_APP_ADDR}/chat/toggleChat`,
-            { data },
-            { headers }
-        );
+        const res = axios.post(`/api/chat/toggleChat`, { data }, { headers });
         res.then(result => {
             window.location.reload();
         }).catch(err => {

@@ -738,7 +738,7 @@ function Signup(props) {
     };
 
     const resendMail = () => {
-        const res = axios.post("/auth/resendMail", { email });
+        const res = axios.post("/api/auth/resendMail", { email });
         res.then(result => {
             toaster.success(result.data.message, forbiddenToast);
         }).catch(err => {
@@ -748,7 +748,7 @@ function Signup(props) {
     };
 
     const submitForm = async data => {
-        const res = axios.post("/auth/signup", {
+        const res = axios.post("/api/auth/signup", {
             data,
             languages: selectedLanguages
         });
