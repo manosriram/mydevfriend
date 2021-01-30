@@ -52,10 +52,10 @@ app.use(morgan("dev"));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
-app.use("/auth", require("./Controllers/Auth"));
-app.use("/chat", require("./Controllers/message"));
-app.use("/user", require("./Controllers/User"));
-app.use("/match", require("./Controllers/Match"));
+app.use("/api/auth", require("./Controllers/Auth"));
+app.use("/api/chat", require("./Controllers/message"));
+app.use("/api/user", require("./Controllers/User"));
+app.use("/api/match", require("./Controllers/Match"));
 
 app.use((req, res, next) => {
     const error = new Error("Not Found");
