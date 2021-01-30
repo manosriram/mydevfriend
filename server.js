@@ -57,6 +57,21 @@ app.use("/chat", require("./Controllers/message"));
 app.use("/user", require("./Controllers/User"));
 app.use("/match", require("./Controllers/Match"));
 
+app.use((req, res, next) => {
+    const error = new Error("Not Found");
+    error.status = 404;
+    next(error);
+});
+
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(err.status || 500);
+    return res.json({
+        success: false,
+        message: err.message
+    });
+});
+
 app.get("/*", (req, res) => {
     return res.sendFile(
         path.join(__dirname, "client/build/index.html"),
@@ -65,20 +80,5 @@ app.get("/*", (req, res) => {
         }
     );
 });
-
-// app.use((req, res, next) => {
-// const error = new Error("Not Found");
-// error.status = 404;
-// next(error);
-// });
-
-// app.use((err, req, res, next) => {
-// console.log(err);
-// res.status(err.status || 500);
-// return res.json({
-// success: false,
-// message: err.message
-// });
-// });
 
 module.exports = app;
