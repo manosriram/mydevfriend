@@ -17,6 +17,7 @@ import getUser from "../getUser";
 import { Suspense, useState, useEffect } from "react";
 import sideBg from "../Assets/side-bg.png";
 require("dotenv").config();
+import { Helmet } from "react-helmet";
 
 const forbiddenToast = { id: "forbidden-action" };
 

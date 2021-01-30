@@ -17,6 +17,7 @@ import {
 import { PrivateRoute } from "./PrivateRoute";
 const dotenv = require("dotenv");
 dotenv.config();
+import { Helmet } from "react-helmet";
 
 export const appHistory = createBrowserHistory();
 function App() {
