@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet";
 import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
@@ -17,7 +18,6 @@ import {
 import { PrivateRoute } from "./PrivateRoute";
 const dotenv = require("dotenv");
 dotenv.config();
-import { Helmet } from "react-helmet";
 
 export const appHistory = createBrowserHistory();
 function App() {
