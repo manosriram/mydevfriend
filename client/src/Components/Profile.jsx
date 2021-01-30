@@ -32,7 +32,7 @@ function Profile(props) {
         const headers = {
             authorization: "Bearer " + Cookie.get("jtk")
         };
-        const res = axios.get("/api/user/${username}", {
+        const res = axios.get(`/api/user/${username}`, {
             headers
         });
         res.then(result => {
