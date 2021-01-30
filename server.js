@@ -66,19 +66,19 @@ app.get("/*", (req, res) => {
     );
 });
 
-app.use((req, res, next) => {
-    const error = new Error("Not Found");
-    error.status = 404;
-    next(error);
-});
+// app.use((req, res, next) => {
+// const error = new Error("Not Found");
+// error.status = 404;
+// next(error);
+// });
 
-app.use((err, req, res, next) => {
-    console.log(err);
-    res.status(err.status || 500);
-    return res.json({
-        success: false,
-        message: err.message
-    });
-});
+// app.use((err, req, res, next) => {
+// console.log(err);
+// res.status(err.status || 500);
+// return res.json({
+// success: false,
+// message: err.message
+// });
+// });
 
 module.exports = app;
