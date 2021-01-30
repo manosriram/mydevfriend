@@ -7,14 +7,11 @@ async function getUser() {
             const token = Cookie.get("jtk");
             if (!token) reject(null);
             else {
-                const res = axios.get(
-                    `${process.env.REACT_APP_ADDR}/auth/user`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
+                const res = axios.get(`/api/auth/user`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
-                );
+                });
                 res.then(result => {
                     resolve(result.data.user);
                 }).catch(err => {
