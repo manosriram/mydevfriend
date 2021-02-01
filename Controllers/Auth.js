@@ -162,16 +162,16 @@ router.post("/login", (req, res, next) => {
                             message: "Account not verified"
                         });
                     }
-                    const match = bcrypt.compareSync(
-                        rows[0].password,
-                        password
-                    );
-                    if (!match || rows[0].password !== password) {
-                        return res.status(403).json({
-                            success: false,
-                            message: "Password incorrect"
-                        });
-                    }
+                    // const match = bcrypt.compareSync(
+                    // rows[0].password,
+                    // password
+                    // );
+                    // if (!match) {
+                    // return res.status(403).json({
+                    // success: false,
+                    // message: "Password incorrect"
+                    // });
+                    // }
 
                     const {
                         firstName,
@@ -198,8 +198,8 @@ router.post("/login", (req, res, next) => {
 
                     connection
                         .query(
-                            "update user set status = 'online' where username = ?",
-                            [username]
+                            "update user set status = 'online' where username = ? and password = ?",
+                            [username, password]
                         )
                         .then(
                             row2 => {
