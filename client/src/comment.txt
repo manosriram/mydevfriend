@@ -1,0 +1,10 @@
+                                            <div
+                                                style={{
+                                                    background:
+                                                        userStat[showUser] ===
+                                                        "online"
+                                                            ? onlineBackground
+                                                            : offlineBackground
+                                                }}
+                                                id="status"
+                                            ></div>

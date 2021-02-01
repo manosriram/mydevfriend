@@ -1,6 +1,5 @@
 const listenMessages = (io, connection) => {
     io.on("connection", socket => {
-        //
         socket.on("message", ({ from, to, message }) => {
             console.log(from, to);
             const sentBy = from;

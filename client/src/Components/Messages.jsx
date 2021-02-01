@@ -30,7 +30,8 @@ import { Helmet } from "react-helmet";
 
 import io from "socket.io-client";
 const socket = io(process.env.REACT_APP_ADDR, {
-    path: "/socket"
+    path: "/socket",
+    transports: ["websocket"]
 });
 
 function Messages(props) {
@@ -40,6 +41,7 @@ function Messages(props) {
     const [selectedUser, setSelectedUser] = useState("");
     const [messages, setMessages] = useState([]);
     const [chat, setChat] = useState([]);
+    const [userStat, setUserStat] = useState({});
 
     const getChat = () => {
         try {
@@ -62,20 +64,27 @@ function Messages(props) {
         }
     };
 
-    useEffect(() => {
-        socket.on("message-to", (message, sentBy) => {
-            addMessage(message);
-        });
-
-        getChat();
-        return () => {
-            socket.off();
-        };
-    }, []);
+    const getUserStatus = async () => {
+        try {
+            const headers = {
+                authorization: "Bearer " + Cookie.get("jtk")
+            };
+            const res = axios.get("/api/chat/status", { headers });
+            res.then(data => {
+                const arr = data.data.userStatus;
+                var result = arr.reduce(function(map, obj) {
+                    map[obj.username] = obj.status;
+                    return map;
+                }, {});
+                setUserStat(result);
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const getMessages = async toUser => {
         try {
-            console.log(props.user);
             const data = {
                 from: props.user.username,
                 to: toUser
@@ -138,6 +147,7 @@ function Messages(props) {
 
     useEffect(() => {
         setSpin(true);
+        getUserStatus();
         getUser()
             .then(res => {
                 setUser(res);
@@ -153,6 +163,25 @@ function Messages(props) {
                     setSelectedUser(props.location.state.matchData.match);
                 }
             });
+    }, []);
+
+    useEffect(() => {
+        socket.on("message-to", (message, sentBy) => {
+            addMessage(message);
+        });
+
+        socket.on("online", username => {
+            setUserStat(prevUserState => ({
+                ...prevUserState,
+                [username]: "online"
+            }));
+        });
+        socket.on("offline", username => {});
+
+        getChat();
+        return () => {
+            socket.off();
+        };
     }, []);
 
     const addMessage = message => {
@@ -295,11 +324,14 @@ function Messages(props) {
                 <div id="left">
                     <Heading size={700}>Messages</Heading>
                     <hr />
+                    {console.log(userStat)}
                     {chat.map(chatUser => {
                         const showUser =
                             chatUser.user1 === user.username
                                 ? chatUser.user2
                                 : chatUser.user1;
+                        const onlineBackground = "#47B881",
+                            offlineBackground = "#66788A";
                         return (
                             <>
                                 <Heading id="user" size={500}>
@@ -313,6 +345,7 @@ function Messages(props) {
                                             onClick={() => selectUser(showUser)}
                                         >
                                             {showUser}
+                                            {"  "}
                                         </h4>
                                         <Text
                                             id="delete-right"

@@ -1,6 +1,19 @@
 const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 
+router.get("/status", isAuth, (req, res, next) => {
+    const { connection } = req;
+
+    connection.query("select username, status from user").then(
+        rows => {
+            res.status(200).json({ success: true, userStatus: rows });
+        },
+        err => {
+            next(err);
+        }
+    );
+});
+
 router.post("/toggleChat", isAuth, (req, res, next) => {
     let { activeValue, user1, user2 } = req.body.data;
     if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];

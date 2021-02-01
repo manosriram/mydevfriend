@@ -31,6 +31,7 @@ function Home(props) {
                 data
             });
             res.then(result => {
+                console.log(result);
                 toaster.success(result.data.message, forbiddenToast);
                 Cookie.set("jtk", result.data.token);
                 props.history.push({

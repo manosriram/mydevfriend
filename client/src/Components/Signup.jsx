@@ -924,7 +924,7 @@ function Signup(props) {
                             items={languages}
                         >
                             {props => {
-                                const {
+                                let {
                                     getInputProps,
                                     getRef,
                                     inputValue
@@ -940,14 +940,15 @@ function Signup(props) {
                                         />
                                         {"  "}
                                         <Button
-                                            type=""
+                                            type="button"
                                             onClick={() => {
                                                 if (
                                                     !selectedLanguages.includes(
                                                         inputValue
                                                     )
-                                                )
+                                                ) {
                                                     updateLanguages(inputValue);
+                                                }
                                             }}
                                         >
                                             Add

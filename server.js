@@ -28,25 +28,26 @@ const mysqlConfig = {
     user: "root",
     port: 3306,
     password: "password",
-    database: "mydevfriend",
+    database: "foundbug",
     socketPath: socketPath
 };
 const connection = new Database(mysqlConfig);
-app.use((req, res, next) => {
-    req.connection = connection;
-    next();
-});
-
 const server = app.listen(PORT, "0.0.0.0", () =>
     console.log(`Server at ${PORT}`)
 );
 const io = socketio(server, {
     path: "/socket"
 });
+app.set("io", io);
 listenMessages(io, connection);
+app.use((req, res, next) => {
+    req.connection = connection;
+    req.io = io;
+    next();
+});
 
-app.use(express.static(path.join(__dirname, "client/build")));
 app.use(cors());
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use(helmet());
 app.use(morgan("dev"));
 app.use(bodyparser.json());

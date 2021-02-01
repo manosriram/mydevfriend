@@ -19,6 +19,7 @@ import {
 import { useEffect } from "react";
 import Cookie from "js-cookie";
 import { Link, withRouter } from "react-router-dom";
+import axios from "axios";
 
 const customDefaultStyles = {
     padding: "5px",
@@ -26,9 +27,25 @@ const customDefaultStyles = {
 };
 
 function Navbar(props) {
-    const handleLogout = () => {
-        Cookie.remove("jtk");
-        props.history.push("/");
+    const handleLogout = async () => {
+        try {
+            Cookie.remove("jtk");
+            const headers = {
+                authorization: "Bearer " + Cookie.get("jtk")
+            };
+            const res = axios.post(
+                "/api/auth/logout",
+                {
+                    username: props.user.username
+                },
+                headers
+            );
+            res.then(() => {
+                props.history.push("/");
+            });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (

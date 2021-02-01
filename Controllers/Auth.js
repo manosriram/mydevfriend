@@ -50,9 +50,10 @@ const loginSchema = yup.object().shape({
 
 const sendMailWithEmail = email => {
     const id = encryptBuffer(email, "mano1234");
-    const url = `http://localhost:5454/auth/verifyUser/${id}/`;
+    const url = `Click to verify: http://www.mydevfriend/api/auth/verifyUser/${id}/`;
 
-    sendMail("Activate Account - Codealone", url, email);
+    sendMail("Activate Account - mydevfriend", url, email);
+    console.log(`Sent mail: ${email}`);
     return;
 };
 
@@ -122,7 +123,7 @@ router.post("/signup", async (req, res, next) => {
                             [username, languages[t]]
                         );
                     }
-                    // sendMailWithEmail(email);
+                    sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,
                         message: "Check your mail for an activation link"
@@ -155,14 +156,12 @@ router.post("/login", (req, res, next) => {
         .then(
             rows => {
                 if (rows[0]) {
-                    // if (!rows[0].active) {
-                    // return res
-                    // .status(403)
-                    // .json({
-                    // success: false,
-                    // message: "Account not verified"
-                    // });
-                    // }
+                    if (!rows[0].active) {
+                        return res.status(403).json({
+                            success: false,
+                            message: "Account not verified"
+                        });
+                    }
 
                     const {
                         firstName,
@@ -187,11 +186,25 @@ router.post("/login", (req, res, next) => {
                         expiresIn: "1d"
                     });
 
-                    return res.status(200).json({
-                        success: true,
-                        message: "Logged-In successfully",
-                        token
-                    });
+                    connection
+                        .query(
+                            "update user set status = 'online' where username = ?",
+                            [username]
+                        )
+                        .then(
+                            row2 => {
+                                // req.io.emit("online", "asdasd");
+                                return res.status(200).json({
+                                    success: true,
+                                    message: "Logged-In successfully",
+                                    token
+                                });
+                            },
+                            err2 => {
+                                console.log(err2);
+                                next(err);
+                            }
+                        );
                 } else {
                     next(new Error("incorrect credentials"));
                 }
@@ -213,7 +226,7 @@ router.get("/verifyUser/:id", (req, res, next) => {
             rows => {
                 res.status(201).json({
                     success: true,
-                    message: "Account verified"
+                    message: "Account verified, you can now login."
                 });
             },
             err => {
@@ -235,6 +248,25 @@ router.post("/resendMail", (req, res, next) => {
     } catch (err) {
         next(err);
     }
+});
+
+router.post("/logout", async (req, res) => {
+    const { connection } = req;
+    const { username } = req.body;
+    connection.query(
+        "update user set status = 'offline' where username = ?",
+        [username],
+        row2 => {
+            return res.status(200).json({
+                success: true,
+                message: "Logged-Out successfully",
+                token
+            });
+        },
+        err2 => {
+            next(err);
+        }
+    );
 });
 
 module.exports = router;
