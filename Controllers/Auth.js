@@ -4,6 +4,7 @@ const yup = require("yup");
 const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const { encryptBuffer, decryptBuffer } = require("../utils/encdec");
+const bcrypt = require("bcryptjs");
 
 const signUpSchema = yup.object().shape({
     username: yup
@@ -99,6 +100,8 @@ router.post("/signup", async (req, res, next) => {
             bio
         });
         const connection = req.connection;
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
 
         connection
             .query(
@@ -106,7 +109,7 @@ router.post("/signup", async (req, res, next) => {
                 [
                     username,
                     email,
-                    password,
+                    hash,
                     location,
                     dob,
                     firstName,
@@ -149,10 +152,7 @@ router.post("/login", (req, res, next) => {
 
     const connection = req.connection;
     connection
-        .query("select * from user where username = ? and password = ?", [
-            username,
-            password
-        ])
+        .query("select * from user where username = ?", [username, password])
         .then(
             rows => {
                 if (rows[0]) {
@@ -160,6 +160,16 @@ router.post("/login", (req, res, next) => {
                         return res.status(403).json({
                             success: false,
                             message: "Account not verified"
+                        });
+                    }
+                    const match = bcrypt.compareSync(
+                        rows[0].password,
+                        password
+                    );
+                    if (!match) {
+                        return res.status(403).json({
+                            success: false,
+                            message: "Password incorrect"
                         });
                     }
 
@@ -202,7 +212,7 @@ router.post("/login", (req, res, next) => {
                             },
                             err2 => {
                                 console.log(err2);
-                                next(err);
+                                next(err2);
                             }
                         );
                 } else {
