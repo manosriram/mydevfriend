@@ -42,7 +42,7 @@ router.get("/connections", isAuth, (req, res, next) => {
     const { connection } = req;
     connection
         .query(
-            "select * from chat where (user1 = ? or user2 = ?) and active = 1",
+            "select * from chat where (user1 = ? or user2 = ?) and active = 1 order by last_message_at desc",
             [username, username]
         )
         .then(
@@ -125,4 +125,5 @@ router.post("/createChat", isAuth, (req, res, next) => {
     }
 });
 
+module.exports = router;
 module.exports = router;

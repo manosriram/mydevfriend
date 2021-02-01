@@ -13,6 +13,16 @@ const listenMessages = (io, connection) => {
                     .then(
                         rows => {
                             io.emit("message-to", { message, sentBy });
+                            const now = new Date()
+                                .toISOString()
+                                .slice(0, 19)
+                                .replace("T", " ");
+                            connection
+                                .query(
+                                    "UPDATE chat set last_message_at = ? where user1 = ? and user2 = ?",
+                                    [now, from, to]
+                                )
+                                .then(() => {});
                         },
                         err => {
                             console.log(err);
