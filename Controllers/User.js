@@ -12,11 +12,27 @@ router.get("/:username", (req, res, next) => {
             username
         )
         .then(
-            rows => {
-                return res.status(200).json({ success: true, user: rows[0] });
+            row1 => {
+                connection
+                    .query(
+                        "select language from user_language where username = ?",
+                        username
+                    )
+                    .then(
+                        row2 => {
+                            return res.status(200).json({
+                                success: true,
+                                user: row1[0],
+                                languages: row2
+                            });
+                        },
+                        err1 => {
+                            next(err1);
+                        }
+                    );
             },
-            err => {
-                next(err);
+            err2 => {
+                next(err2);
             }
         );
 });

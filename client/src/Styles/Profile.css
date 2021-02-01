@@ -1,3 +1,11 @@
+#badge-container {
+    margin-bottom: 0.5vh;
+}
+
+#badges {
+    display: inline-block;
+}
+
 img {
     width: 20%;
     border-radius: 50%;

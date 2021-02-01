@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import {
+    Badge,
     Spinner,
     GlobeNetworkIcon,
     Icon,
@@ -24,6 +25,7 @@ import { Helmet } from "react-helmet";
 function Profile(props) {
     const location = useLocation();
     const [user, setUser] = useState({});
+    const [languages, setLanguages] = useState([]);
     const [loggedInUser, setLoggedInUser] = useState({});
     const [spin, setSpin] = useState(false);
 
@@ -37,6 +39,7 @@ function Profile(props) {
         });
         res.then(result => {
             setUser(result.data.user);
+            setLanguages(result.data.languages);
         }).catch(err => {
             console.log(err);
         });
@@ -172,6 +175,24 @@ function Profile(props) {
                                 <Text size={50}>{user.bio}</Text>
                             </div>
                         </div>
+
+                        <div id="badge-container">
+                        {languages.map(lang => {
+                            return (
+                                <div id="badges">
+                                    <Badge
+                                        color="yellow"
+                                        isSolid
+                                        marginRight={8}
+                                    >
+                                        {lang.language}
+                                    </Badge>
+                                </div>
+                            );
+                        })}
+                        </div>
+                        <br />
+                        {"  "}
                         <Icon id="joined-icon" icon={CalendarIcon} />
                         {"  "}
                         <Text id="joined">

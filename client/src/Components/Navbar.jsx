@@ -40,9 +40,7 @@ function Navbar(props) {
                 },
                 headers
             );
-            res.then(() => {
-                props.history.push("/");
-            });
+            props.history.push("/");
         } catch (err) {
             console.log(err);
         }
@@ -77,6 +75,15 @@ function Navbar(props) {
                                 content={
                                     <Menu>
                                         <Menu.Group>
+                                            <Menu.Item
+                                                onClick={() =>
+                                                    props.history.push(
+                                                        `/user/${props.user.username}`
+                                                    )
+                                                }
+                                            >
+                                                Profile
+                                            </Menu.Item>
                                             <Menu.Item
                                                 onClick={() =>
                                                     props.history.push(
