@@ -126,10 +126,11 @@ router.post("/signup", async (req, res, next) => {
                             [username, languages[t]]
                         );
                     }
-                    sendMailWithEmail(email);
+                    // sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,
-                        message: "Check your mail for an activation link"
+                        message: "Account created"
+                        // message: "Check your mail for an activation link"
                     });
                 },
                 err => {
