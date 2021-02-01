@@ -24,6 +24,7 @@ CREATE TABLE chat (
     chatId SERIAL,
     user1 varchar(32),
     user2 varchar(32),
+    last_message_at timestamp,
     PRIMARY KEY(user1, user2)
 );
 
