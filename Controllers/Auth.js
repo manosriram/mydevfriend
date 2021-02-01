@@ -38,7 +38,7 @@ const signUpSchema = yup.object().shape({
 const loginSchema = yup.object().shape({
     username: yup
         .string()
-        .matches(/^[A-Za-z0-9]*$/, "Special characters not allowed")
+        .matches(/^[A-Za-z0-9_.]*$/, "Special characters not allowed")
         .min(4, "Username must atleast be of length 4")
         .max(32, "Username should not exceed length 32")
         .required(),
