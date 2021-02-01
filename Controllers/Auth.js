@@ -166,7 +166,7 @@ router.post("/login", (req, res, next) => {
                         rows[0].password,
                         password
                     );
-                    if (!match) {
+                    if (!match || rows[0].password !== password) {
                         return res.status(403).json({
                             success: false,
                             message: "Password incorrect"
