@@ -27,6 +27,7 @@ import "../Styles/Messages.css";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { Helmet } from "react-helmet";
+import moment from "moment";
 
 import io from "socket.io-client";
 const socket = io(process.env.REACT_APP_ADDR, {
@@ -53,7 +54,6 @@ function Messages(props) {
                 headers
             });
             res.then(result => {
-                console.log(result);
                 setChat(result.data.friends);
                 setSpin(false);
             }).catch(err => {
@@ -95,6 +95,7 @@ function Messages(props) {
             const res = axios.post("/api/chat/history", { data }, { headers });
             res.then(result => {
                 setMessages(result.data.messages[0]);
+                console.log(result.data.messages[0]);
                 sc();
             }).catch(err => {
                 console.log(err);
@@ -164,6 +165,15 @@ function Messages(props) {
                 }
             });
     }, []);
+
+    const msgElement = document.querySelector("body");
+    if (msgElement) {
+        msgElement.addEventListener("keypress", function(event) {
+            if (event.keyCode !== 13) {
+                document.querySelector("#msg").focus();
+            }
+        });
+    }
 
     useEffect(() => {
         socket.on("message-to", (message, sentBy) => {
@@ -324,7 +334,6 @@ function Messages(props) {
                 <div id="left">
                     <Heading size={700}>Messages</Heading>
                     <hr />
-                    {console.log(userStat)}
                     {chat.map(chatUser => {
                         const showUser =
                             chatUser.user1 === user.username
@@ -405,6 +414,11 @@ function Messages(props) {
                                         <div id="now-own">
                                             <Text id="msg-text">
                                                 {msg.message}
+                                                <span id="sent">
+                                                    {moment(msg.sent).format(
+                                                        "DD/MM/YY, hh:mm a"
+                                                    )}
+                                                </span>
                                             </Text>
                                         </div>
                                         <div id="nov">
@@ -426,12 +440,20 @@ function Messages(props) {
                                 name="message"
                                 placeholder="message"
                                 type="textarea"
+                                autocomplete="off"
                                 onChange={e =>
                                     setInputMessage({
                                         ...inputMessage,
                                         [e.target.name]: e.target.value
                                     })
                                 }
+                                onKeyUp={e => {
+                                    if (e.keyCode === 13) {
+                                        document
+                                            .querySelector("#send-button")
+                                            .click();
+                                    }
+                                }}
                             />
                             {"   "}
                             <Button

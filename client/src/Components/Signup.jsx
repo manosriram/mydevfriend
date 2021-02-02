@@ -945,7 +945,8 @@ function Signup(props) {
                                                 if (
                                                     !selectedLanguages.includes(
                                                         inputValue
-                                                    )
+                                                    ) &&
+                                                    inputValue.length > 0
                                                 ) {
                                                     updateLanguages(inputValue);
                                                 }
