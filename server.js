@@ -12,6 +12,7 @@ const listenMessages = require("./Controllers/Messages");
 const Database = require("./Controllers/Query");
 const dotenv = require("dotenv");
 const path = require("path");
+const bcrypt = require("bcryptjs");
 dotenv.config();
 
 const host =
@@ -28,7 +29,7 @@ const mysqlConfig = {
     user: "root",
     port: 3306,
     password: "password",
-    database: "mydevfriend",
+    database: "foundbug",
     socketPath: socketPath
 };
 const connection = new Database(mysqlConfig);
@@ -57,6 +58,31 @@ app.use("/api/auth", require("./Controllers/Auth"));
 app.use("/api/chat", require("./Controllers/message"));
 app.use("/api/user", require("./Controllers/User"));
 app.use("/api/match", require("./Controllers/Match"));
+
+app.get("/script", (req, res, next) => {
+    const { connection } = req;
+
+    connection.query("select * from user").then(
+        rows => {
+            rows.map(row => {
+                const salt = bcrypt.genSaltSync(10);
+                const hash = bcrypt.hashSync(row.password, salt);
+                connection
+                    .query("update user set password = ? where username = ?", [
+                        hash,
+                        row.username
+                    ])
+                    .then(result => {
+                        console.log(result);
+                        res.send("done");
+                    });
+            });
+        },
+        err => {
+            next(err);
+        }
+    );
+});
 
 app.use((req, res, next) => {
     const error = new Error("Not Found");
