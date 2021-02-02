@@ -27,10 +27,7 @@ const signUpSchema = yup.object().shape({
         .string()
         .required()
         .max(32, "First Name should not exceed length 32"),
-    lastName: yup
-        .string()
-        .required()
-        .max(32, "Last Name should not exceed length 32"),
+    lastName: yup.string().max(32, "Last Name should not exceed length 32"),
     dob: yup.string().required(),
     bio: yup.string().max(264, "Bio must be less than 264 characters")
 });
@@ -51,7 +48,7 @@ const loginSchema = yup.object().shape({
 
 const sendMailWithEmail = email => {
     const id = encryptBuffer(email, "mano1234");
-    const url = `Click to verify: http://www.mydevfriend/api/auth/verifyUser/${id}/`;
+    const url = `Click to verify: http://www.mydevfriend.com/api/auth/verifyUser/${id}/`;
 
     sendMail("Activate Account - mydevfriend", url, email);
     console.log(`Sent mail: ${email}`);
@@ -129,8 +126,7 @@ router.post("/signup", async (req, res, next) => {
                     sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,
-                        message: "Account created"
-                        // message: "Check your mail for an activation link"
+                        message: "Check your mail for an activation link"
                     });
                 },
                 err => {
@@ -163,16 +159,16 @@ router.post("/login", (req, res, next) => {
                             message: "Account not verified"
                         });
                     }
-                    // const match = bcrypt.compareSync(
-                    // rows[0].password,
-                    // password
-                    // );
-                    // if (!match) {
-                    // return res.status(403).json({
-                    // success: false,
-                    // message: "Password incorrect"
-                    // });
-                    // }
+                    const match = bcrypt.compareSync(
+                        password,
+                        rows[0].password
+                    );
+                    if (!match) {
+                        return res.status(403).json({
+                            success: false,
+                            message: "Password incorrect"
+                        });
+                    }
 
                     const {
                         firstName,
@@ -194,7 +190,7 @@ router.post("/login", (req, res, next) => {
                         active: active
                     };
                     const token = jwt.sign(userPayload, "secret", {
-                        expiresIn: "1d"
+                        expiresIn: "3d"
                     });
 
                     connection

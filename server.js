@@ -59,31 +59,6 @@ app.use("/api/chat", require("./Controllers/message"));
 app.use("/api/user", require("./Controllers/User"));
 app.use("/api/match", require("./Controllers/Match"));
 
-app.get("/script", (req, res, next) => {
-    const { connection } = req;
-
-    connection.query("select * from user").then(
-        rows => {
-            rows.map(row => {
-                const salt = bcrypt.genSaltSync(10);
-                const hash = bcrypt.hashSync(row.password, salt);
-                connection
-                    .query("update user set password = ? where username = ?", [
-                        hash,
-                        row.username
-                    ])
-                    .then(result => {
-                        console.log(result);
-                        res.send("done");
-                    });
-            });
-        },
-        err => {
-            next(err);
-        }
-    );
-});
-
 app.use((req, res, next) => {
     const error = new Error("Not Found");
     error.status = 404;
