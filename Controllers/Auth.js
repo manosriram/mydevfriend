@@ -126,7 +126,7 @@ router.post("/signup", async (req, res, next) => {
                             [username, languages[t]]
                         );
                     }
-                    sendMailWithEmail(email);
+                    // sendMailWithEmail(email);
                     return res.status(201).json({
                         success: true,
                         message: "Account created"
@@ -157,12 +157,12 @@ router.post("/login", (req, res, next) => {
         .then(
             rows => {
                 if (rows[0]) {
-                    if (!rows[0].active) {
-                        return res.status(403).json({
-                            success: false,
-                            message: "Account not verified"
-                        });
-                    }
+                    // if (!rows[0].active) {
+                    // return res.status(403).json({
+                    // success: false,
+                    // message: "Account not verified"
+                    // });
+                    // }
                     // const match = bcrypt.compareSync(
                     // rows[0].password,
                     // password
