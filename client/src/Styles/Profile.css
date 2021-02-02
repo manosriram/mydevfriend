@@ -1,3 +1,7 @@
+#find-devs {
+    margin-top: 10px;
+}
+
 #badge-container {
     margin-bottom: 0.5vh;
 }
@@ -15,9 +19,11 @@ img:hover {
     cursor: pointer;
 }
 
-#left {
+#left-prof {
     float: left;
     text-align: left;
+    width: 20vw;
+    height: 80vh;
 }
 
 #bio {
@@ -39,7 +45,7 @@ img:hover {
 }
 
 @media (min-width: 320px) {
-    #left {
+    #left-prof {
         width: 100%;
         float: none;
     }

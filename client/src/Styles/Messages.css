@@ -1,3 +1,24 @@
+#cover-bg {
+    border-radius: 5px;
+    width: 60%;
+    height: 50%;
+    margin: auto;
+}
+
+#founded {
+    margin-top: 3vh;
+    text-align: left;
+}
+
+#about #cover-bg {
+    text-align: center;
+}
+
+#about {
+    float: left;
+    text-align: left;
+}
+
 #sent {
     float: right;
 }
@@ -55,6 +76,7 @@
     bottom: 0;
     left: 0;
     margin: 10px;
+    margin-left: 25vw;
     background: white;
 }
 
@@ -63,7 +85,7 @@
 }
 .messages {
     padding: 2vw;
-    height: 70vh;
+    height: 90vh;
     overflow-y: auto;
 }
 
@@ -79,8 +101,8 @@ hr {
     opacity: 0.2;
     margin: 5px 0;
 }
-#you-user,
-.not-own-name {
+#you-user {
+    font-size: 0.4vw;
 }
 #sentBy {
     vertical-align: super;
@@ -90,6 +112,7 @@ hr {
         Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji",
         "Segoe UI Emoji", "Segoe UI Symbol";
     color: #2d3436;
+    font-size: 20px;
 }
 
 #msg-text {
@@ -105,9 +128,32 @@ hr {
     cursor: pointer;
 }
 
-@media (min-width: 320px) {
+@media (max-width: 480px) {
+    #left {
+        width: auto;
+        height: auto;
+    }
+    #down-down,
+    #delete-right {
+        display: none;
+    }
+    #msg {
+        width: 70%;
+        height: 4.4vh;
+    }
+
     #user-link {
         font-size: 6vw;
+    }
+    #sentBy {
+        font-size: 4vw;
+    }
+    .message-send {
+        width: 100%;
+        margin: 15px;
+    }
+    .messages {
+        width: max-content;
     }
 }
 

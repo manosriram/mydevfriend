@@ -254,7 +254,7 @@ li a.active {
     bottom: 5vh;
     float: left;
 }
-@media (min-width: 320px) {
+@media (max-width: 480px) {
     #sidebg,
     #welcome {
         display: none;

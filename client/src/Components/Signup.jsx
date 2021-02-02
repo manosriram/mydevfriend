@@ -873,6 +873,7 @@ function Signup(props) {
                             Create a free account
                         </Heading>
                         <TextInput
+                            id="fn"
                             value={values.firstName}
                             onChange={handleChange}
                             onBlur={handleBlur}

@@ -375,6 +375,7 @@ function Messages(props) {
                         <Text>Select any user to show conversations.</Text>
                     </div>
                 )}
+                <div id="messageboxright">
                 {selectedUser && (
                     <div id="right">
                         <div class="messages">
@@ -428,47 +429,44 @@ function Messages(props) {
                                 );
                             })}
                         </div>
-                        <div class="message-send">
-                            <i
-                                onClick={() => sc()}
-                                id="down-down"
-                                class="fas fa-chevron-down fa-2x"
-                            ></i>
-                            <TextInput
-                                width="50vw"
-                                id="msg"
-                                name="message"
-                                placeholder="message"
-                                type="textarea"
-                                autocomplete="off"
-                                onChange={e =>
-                                    setInputMessage({
-                                        ...inputMessage,
-                                        [e.target.name]: e.target.value
-                                    })
-                                }
-                                onKeyUp={e => {
-                                    if (e.keyCode === 13) {
-                                        document
-                                            .querySelector("#send-button")
-                                            .click();
-                                    }
-                                }}
-                            />
-                            {"   "}
-                            <Button
-                                id="send-button"
-                                iconAfter={DoubleChevronUpIcon}
-                                onClick={() =>
-                                    sendMessage(inputMessage, undefined)
-                                }
-                            >
-                                Send
-                            </Button>
-                            {"   "}
-                        </div>
                     </div>
                 )}
+                <div class="message-send">
+                    <i
+                        onClick={() => sc()}
+                        id="down-down"
+                        class="fas fa-chevron-down fa-2x"
+                    ></i>
+                    <TextInput
+                        width="50vw"
+                        id="msg"
+                        name="message"
+                        placeholder="message"
+                        type="textarea"
+                        autocomplete="off"
+                        onChange={e =>
+                            setInputMessage({
+                                ...inputMessage,
+                                [e.target.name]: e.target.value
+                            })
+                        }
+                        onKeyUp={e => {
+                            if (e.keyCode === 13) {
+                                document.querySelector("#send-button").click();
+                            }
+                        }}
+                    />
+                    {"   "}
+                    <Button
+                        id="send-button"
+                        iconAfter={DoubleChevronUpIcon}
+                        onClick={() => sendMessage(inputMessage, undefined)}
+                    >
+                        Send
+                    </Button>
+                    {"   "}
+                </div>
+                </div>
             </div>
         </>
     );

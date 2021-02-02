@@ -1,6 +1,6 @@
 import "../Styles/Messages.css";
-import { Heading, Paragraph } from "evergreen-ui";
-import yourImage from "../Assets/about-build.png";
+import { Pane, Text, Heading, Paragraph } from "evergreen-ui";
+import coverImage from "../Assets/Cover.png";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
@@ -88,19 +88,36 @@ function About(props) {
                 />
             </Helmet>
 
-            <img id="side-bg" src={yourImage} alt="" />
-            <Heading className="head" size={100}>
-                <span id="title">mydevfriend</span>
-                {"  "} lets you meet and pair up with like minded developers.
-            </Heading>
-            <Heading size={100} id="about-description">
-                Find yourself a project-buddy, a dev friend, or even a
-                co-founder for your upcoming startup.
-            </Heading>
-            <Heading size={100}></Heading>
-            <Heading size={500}>
-                <Link to="/">Home</Link>
-            </Heading>
+            <div id="about">
+                <img
+                    id="cover-bg"
+                    src={coverImage}
+                    alt="mydevfriend-cover-image"
+                />
+
+                <br />
+                <Pane padding="10px" elevation={2}>
+                    <Text size={600}>
+                        <strong>mydevfriend</strong> is a platform to find pair
+                        programming partners. Explore different possibilities of
+                        connecting with like-minded developers and build awesome
+                        products together!
+                    </Text>
+                    <br />
+                    <Text size={600}>
+                        Find yourself a project-buddy, a dev friend, or even a
+                        co-founder for your upcoming startup!
+                    </Text>
+                    <br />
+                    <Text size={600}>
+                        Create a free account to get started, No ADS, No FEE,
+                        Just Developers.
+                    </Text>
+                    <Heading size={500} id="founded">
+                        Built by <a href="//www.manosriram.com">Mano Sriram</a>
+                    </Heading>
+                </Pane>
+            </div>
         </div>
     );
 }

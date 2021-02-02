@@ -125,7 +125,10 @@ function App() {
                     <PrivateRoute path="/account" component={Account} />
                     <PrivateRoute path="/find" component={FindUsers} />
                     <Route path="/about">
-                        <About />
+                        <>
+                            <Navbar user={null} />
+                            <About />
+                        </>
                     </Route>
                     <Route path="/cookie">
                         <Cookie />

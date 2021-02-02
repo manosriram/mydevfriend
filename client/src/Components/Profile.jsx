@@ -1,4 +1,4 @@
-import { withRouter, useLocation } from "react-router-dom";
+import { Link, withRouter, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
@@ -59,6 +59,7 @@ function Profile(props) {
             .catch(err => {
                 console.log(err);
             });
+        setSpin(false);
     }, []);
 
     if (spin) {
@@ -77,10 +78,10 @@ function Profile(props) {
             <>
                 <Helmet>
                     <meta charSet="utf-8" />
-                    <title>{user.username}</title>
+                    <title>About - mydevfriend</title>
                     <meta
                         name="description"
-                        content="Find a pair-programming partner"
+                        content="About Page - mydevfriend"
                     />
                     <link
                         rel="apple-touch-icon"
@@ -159,7 +160,7 @@ function Profile(props) {
                     />
                 </Helmet>
                 <div id="container">
-                    <div id="left">
+                    <div id="left-prof">
                         <div id="avatar">
                             <Avatar
                                 id="avatar"
@@ -213,22 +214,30 @@ function Profile(props) {
                         <Icon id="joined-icon" icon={GlobeNetworkIcon} />
                         {"  "}
                         <Text>{user.location}</Text>
-                        <Button
-                            onClick={() => {
-                                props.history.push({
-                                    pathname: "/messages",
-                                    state: {
-                                        matchData: {
-                                            match: user.username
+                        {console.log(loggedInUser)}
+                        {loggedInUser.username ? (
+                            <Button
+                                onClick={() => {
+                                    props.history.push({
+                                        pathname: "/messages",
+                                        state: {
+                                            matchData: {
+                                                match: user.username
+                                            }
                                         }
-                                    }
-                                });
-                            }}
-                            id="message-user"
-                            intent="success"
-                        >
-                            Message {user.username}
-                        </Button>
+                                    });
+                                }}
+                                id="message-user"
+                                intent="success"
+                            >
+                                Message {user.username}
+                            </Button>
+                        ) : (
+                            <Heading size={600} id="find-devs">
+                                <Link to="/create">Create</Link> an account to
+                                find more developers!
+                            </Heading>
+                        )}
                     </div>
                 </div>
             </>
