@@ -819,7 +819,7 @@ function FindUsers(props) {
                 return (
                     <div>
                         <Heading size={100} id="user">
-                            <Link to={url}>{user.username}</Link>
+                            <Link id="user-link" to={url}>{user.username}</Link>
                             {"  "}
                         </Heading>
                         <Text>

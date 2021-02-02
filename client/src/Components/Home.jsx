@@ -160,14 +160,15 @@ function Home(props) {
                     <img src={sideBg} alt="" id="sidebg" />
                     <Heading id="intro-text" size={100}>
                         <strong>
-                            mydevfriend connects you with developers all around
-                            the world.
+                            my<span id="green">dev</span>friend connects you
+                            with developers all around the world.
                         </strong>
                     </Heading>
                 </div>
                 <div className="home-container" id="home-container">
                     <Pane clearfix>
                         <Pane
+                            id="pane-wrapper"
                             elevation={0}
                             float="left"
                             width="40vw"
@@ -185,73 +186,83 @@ function Home(props) {
                             >
                                 mydevfriend
                             </Heading>
-                            <Formik
-                                initialValues={{
-                                    username: "",
-                                    password: ""
-                                }}
-                                onSubmit={async (
-                                    data,
-                                    { setSubmitting, resetForm }
-                                ) => {
-                                    setSubmitting(true);
-                                    submitForm(data);
-                                    setSubmitting(false);
-                                }}
-                            >
-                                {({
-                                    values,
-                                    handleChange,
-                                    handleSubmit,
-                                    handleBlur
-                                }) => (
-                                    <Form onSubmit={handleSubmit}>
-                                        <TextInput
-                                            name="username"
-                                            placeholder="username"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        <br />
-                                        <br />
-                                        <TextInput
-                                            name="password"
-                                            type="password"
-                                            placeholder="password"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        <br />
-                                        <br />
-                                        <Button
-                                            name="login"
-                                            iconBefore={LogInIcon}
-                                            appearance="primary"
-                                            type="submit"
-                                        >
-                                            Login
-                                        </Button>
-                                        <br />
-                                        <br />
-                                        <NavLink
-                                            to="/create"
-                                            style={{ textDecoration: "none" }}
-                                        >
-                                            <Button intent="success">
-                                                Create a free account
+                            <div id="frm">
+                                <Formik
+                                    initialValues={{
+                                        username: "",
+                                        password: ""
+                                    }}
+                                    onSubmit={async (
+                                        data,
+                                        { setSubmitting, resetForm }
+                                    ) => {
+                                        setSubmitting(true);
+                                        submitForm(data);
+                                        setSubmitting(false);
+                                    }}
+                                >
+                                    {({
+                                        values,
+                                        handleChange,
+                                        handleSubmit,
+                                        handleBlur
+                                    }) => (
+                                        <Form onSubmit={handleSubmit}>
+                                            <TextInput
+                                                name="username"
+                                                placeholder="username"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
+                                            <br />
+                                            <br />
+                                            <TextInput
+                                                name="password"
+                                                type="password"
+                                                placeholder="password"
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                            />
+                                            <br />
+                                            <br />
+                                            <Button
+                                                name="login"
+                                                iconBefore={LogInIcon}
+                                                appearance="primary"
+                                                type="submit"
+                                            >
+                                                Login
                                             </Button>
                                             <br />
                                             <br />
-                                            <Link id="about-link" to="/about">
-                                                <Text>About</Text>
-                                            </Link>
-                                            <Link id="about-link" to="/cookie">
-                                                <Text>Cookie Policy</Text>
-                                            </Link>
-                                        </NavLink>
-                                    </Form>
-                                )}
-                            </Formik>
+                                            <NavLink
+                                                to="/create"
+                                                style={{
+                                                    textDecoration: "none"
+                                                }}
+                                            >
+                                                <Button intent="success">
+                                                    Create a free account
+                                                </Button>
+                                                <br />
+                                                <br />
+                                                <Link
+                                                    id="about-link"
+                                                    to="/about"
+                                                >
+                                                    <Text>About</Text>
+                                                </Link>
+                                                <Link
+                                                    id="about-link"
+                                                    to="/cookie"
+                                                >
+                                                    <Text>Cookie Policy</Text>
+                                                </Link>
+                                            </NavLink>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
                         </Pane>
                     </Pane>
                 </div>

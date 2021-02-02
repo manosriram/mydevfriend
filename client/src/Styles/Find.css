@@ -19,3 +19,20 @@
     font-size: 1vw;
     text-transform: lowercase;
 }
+
+@media (min-width: 320px) {
+    #user-link {
+        font-size: 6vw;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* big landscape tablets, laptops, and desktops */
+    #bio {
+        margin: 2px;
+        width: 40%;
+    }
+    #user-link {
+        font-size: 1vw;
+    }
+}

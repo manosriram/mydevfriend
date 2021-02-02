@@ -104,3 +104,13 @@ hr {
 #down-down:hover {
     cursor: pointer;
 }
+
+@media (min-width: 320px) {
+    #user-link {
+        font-size: 6vw;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* big landscape tablets, laptops, and desktops */
+}

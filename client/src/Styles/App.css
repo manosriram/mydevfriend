@@ -10,6 +10,9 @@
     margin: auto;
     text-align: left;
 }
+#green {
+    color: green;
+}
 
 #close:hover {
     cursor: pointer;
@@ -250,4 +253,87 @@ li a.active {
     position: absolute;
     bottom: 5vh;
     float: left;
+}
+@media (min-width: 320px) {
+    #sidebg,
+    #welcome {
+        display: none;
+    }
+
+    #sidebg-wrapper {
+        text-align: center;
+        margin: auto;
+    }
+
+    #pane-wrapper {
+        width: 0;
+    }
+
+    #welcome {
+        font-size: 5vw;
+        padding: 1vw;
+        text-transform: lowercase;
+        color: black;
+    }
+
+    #intro-text {
+        font-size: 5vw;
+        outline: none;
+        margin: auto;
+        width: 100%;
+        text-align: center;
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+
+    #frm {
+        outline: none;
+        margin: auto;
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+    }
+
+    #left-home {
+        width: 60vw;
+    }
+    #right-home {
+        width: 60vw;
+    }
+
+    #link-home {
+        font-size: 5vw;
+    }
+
+    /* smartphones, iPhone, portrait 480x320 phones */
+}
+@media (min-width: 481px) {
+    /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+}
+@media (min-width: 641px) {
+    /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+}
+@media (min-width: 961px) {
+    /* tablet, landscape iPad, lo-res laptops ands desktops */
+}
+@media (min-width: 1025px) {
+    /* big landscape tablets, laptops, and desktops */
+    #link-home {
+        font-size: 2vw;
+    }
+}
+@media (min-width: 1281px) {
+    /* hi-res laptops and desktops */
 }

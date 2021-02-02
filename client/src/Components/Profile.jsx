@@ -160,9 +160,19 @@ function Profile(props) {
                 </Helmet>
                 <div id="container">
                     <div id="left">
-                        <Avatar id="avatar" name={user.username} size={100} />
+                        <div id="avatar">
+                            <Avatar
+                                id="avatar"
+                                name={user.username}
+                                size={100}
+                            />
+                        </div>
                         <br />
-                        <Heading float="left" size={100} id="intro-text">
+                        <Heading
+                            id="user-profile-title"
+                            float="left"
+                            size={100}
+                        >
                             {user.firstName} {"  "} {user.lastName}
                         </Heading>
                         <br />
@@ -177,19 +187,19 @@ function Profile(props) {
                         </div>
 
                         <div id="badge-container">
-                        {languages.map(lang => {
-                            return (
-                                <div id="badges">
-                                    <Badge
-                                        color="yellow"
-                                        isSolid
-                                        marginRight={8}
-                                    >
-                                        {lang.language}
-                                    </Badge>
-                                </div>
-                            );
-                        })}
+                            {languages.map(lang => {
+                                return (
+                                    <div id="badges">
+                                        <Badge
+                                            color="yellow"
+                                            isSolid
+                                            marginRight={8}
+                                        >
+                                            {lang.language}
+                                        </Badge>
+                                    </div>
+                                );
+                            })}
                         </div>
                         <br />
                         {"  "}

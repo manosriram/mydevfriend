@@ -155,7 +155,7 @@ function UserHome(props) {
             <div id="inner-container">
                 <div id="left-home">
                     <Link id="link-home" onClick={matchNow}>
-                        find random user
+                        match random user
                     </Link>
                     <br />
                 </div>

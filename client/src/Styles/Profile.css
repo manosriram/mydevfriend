@@ -37,3 +37,24 @@ img:hover {
     margin: 15px 0 15px 0;
     display: block;
 }
+
+@media (min-width: 320px) {
+    #left {
+        width: 100%;
+        float: none;
+    }
+    #user-profile-title {
+        margin: auto;
+        text-align: center;
+        font-size: 5vw;
+        color: #34495e;
+    }
+}
+@media (min-width: 1025px) {
+    #user-profile-title {
+        margin: auto;
+        text-align: center;
+        font-size: 1vw;
+        color: #34495e;
+    }
+}
