@@ -32,7 +32,8 @@ import moment from "moment";
 import io from "socket.io-client";
 const socket = io(process.env.REACT_APP_ADDR, {
     path: "/socket",
-    transports: ["websocket"]
+    transports: ["websocket"],
+    upgrade: false
 });
 
 function Messages(props) {
@@ -190,7 +191,7 @@ function Messages(props) {
 
         getChat();
         return () => {
-            socket.off();
+            socket.disconnect();
         };
     }, []);
 
@@ -207,7 +208,7 @@ function Messages(props) {
         const from = user.username || message.from,
             to = selectedUser || props.location.state.matchData.match;
 
-        socket.emit("message", { from, to, message: message.message });
+        socket.emit("_message", { from, to, message: message.message });
         const msgElement = document.querySelector("#msg");
         if (msgElement) msgElement.value = "";
         setInputMessage("");
@@ -376,96 +377,106 @@ function Messages(props) {
                     </div>
                 )}
                 <div id="messageboxright">
-                {selectedUser && (
-                    <div id="right">
-                        <div class="messages">
-                            {!messages.length && (
-                                <div id="no">
-                                    <Text>No conversations yet :(</Text>
-                                </div>
-                            )}
-                            {messages.map((msg, msgIndex) => {
-                                return (
-                                    <>
-                                        {last !== msg.sentBy &&
-                                            user.username === msg.sentBy && (
-                                                <div id="you-user">
-                                                    {msgIndex != 0 && <hr />}
-                                                    <Avatar
-                                                        name={user.username}
-                                                        margin-right="2px"
-                                                    />
-                                                    <h4 id="sentBy">You</h4>
-                                                </div>
-                                            )}
-                                        {last !== msg.sentBy &&
-                                            user.username !== msg.sentBy && (
-                                                <div className="not-own-name">
-                                                    {msgIndex != 0 && <hr />}
-                                                    <Avatar
-                                                        name={msg.sentBy}
-                                                        vertical-align="middle"
-                                                    />
-                                                    {"   "}
-                                                    <h4 id="sentBy">
-                                                        {msg.sentBy}
-                                                    </h4>
-                                                </div>
-                                            )}
-                                        <div id="now-own">
-                                            <Text id="msg-text">
-                                                {msg.message}
-                                                <span id="sent">
-                                                    {moment(msg.sent).format(
-                                                        "DD/MM/YY, hh:mm a"
-                                                    )}
-                                                </span>
-                                            </Text>
-                                        </div>
-                                        <div id="nov">
-                                            {(last = msg.sentBy)}
-                                        </div>
-                                    </>
-                                );
-                            })}
+                    {selectedUser && (
+                        <div id="right">
+                            <div class="messages">
+                                {!messages.length && (
+                                    <div id="no">
+                                        <Text>No conversations yet :(</Text>
+                                    </div>
+                                )}
+                                {messages.map((msg, msgIndex) => {
+                                    return (
+                                        <>
+                                            {last !== msg.sentBy &&
+                                                user.username ===
+                                                    msg.sentBy && (
+                                                    <div id="you-user">
+                                                        {msgIndex != 0 && (
+                                                            <hr />
+                                                        )}
+                                                        <Avatar
+                                                            name={user.username}
+                                                            margin-right="2px"
+                                                        />
+                                                        <h4 id="sentBy">You</h4>
+                                                    </div>
+                                                )}
+                                            {last !== msg.sentBy &&
+                                                user.username !==
+                                                    msg.sentBy && (
+                                                    <div className="not-own-name">
+                                                        {msgIndex != 0 && (
+                                                            <hr />
+                                                        )}
+                                                        <Avatar
+                                                            name={msg.sentBy}
+                                                            vertical-align="middle"
+                                                        />
+                                                        {"   "}
+                                                        <h4 id="sentBy">
+                                                            {msg.sentBy}
+                                                        </h4>
+                                                    </div>
+                                                )}
+                                            <div id="now-own">
+                                                <Text id="msg-text">
+                                                    {msg.message}
+                                                    <span id="sent">
+                                                        {moment(
+                                                            msg.sent
+                                                        ).format(
+                                                            "DD/MM/YY, hh:mm a"
+                                                        )}
+                                                    </span>
+                                                </Text>
+                                            </div>
+                                            <div id="nov">
+                                                {(last = msg.sentBy)}
+                                            </div>
+                                        </>
+                                    );
+                                })}
+                            </div>
                         </div>
-                    </div>
-                )}
-                <div class="message-send">
-                    <i
-                        onClick={() => sc()}
-                        id="down-down"
-                        class="fas fa-chevron-down fa-2x"
-                    ></i>
-                    <TextInput
-                        width="50vw"
-                        id="msg"
-                        name="message"
-                        placeholder="message"
-                        type="textarea"
-                        autocomplete="off"
-                        onChange={e =>
-                            setInputMessage({
-                                ...inputMessage,
-                                [e.target.name]: e.target.value
-                            })
-                        }
-                        onKeyUp={e => {
-                            if (e.keyCode === 13) {
-                                document.querySelector("#send-button").click();
+                    )}
+                    <div class="message-send">
+                        <i
+                            onClick={() => sc()}
+                            id="down-down"
+                            class="fas fa-chevron-down fa-2x"
+                        ></i>
+                        <TextInput
+                            width="50vw"
+                            id="msg"
+                            name="message"
+                            placeholder="message"
+                            type="textarea"
+                            autocomplete="off"
+                            onChange={e =>
+                                setInputMessage({
+                                    ...inputMessage,
+                                    [e.target.name]: e.target.value
+                                })
                             }
-                        }}
-                    />
-                    {"   "}
-                    <Button
-                        id="send-button"
-                        iconAfter={DoubleChevronUpIcon}
-                        onClick={() => sendMessage(inputMessage, undefined)}
-                    >
-                        Send
-                    </Button>
-                    {"   "}
-                </div>
+                            onKeyUp={e => {
+                                if (e.keyCode === 13) {
+                                    document
+                                        .querySelector("#send-button")
+                                        .click();
+                                }
+                            }}
+                        />
+                        {"   "}
+                        <Button
+                            id="send-button"
+                            iconAfter={DoubleChevronUpIcon}
+                            onClick={() => sendMessage(inputMessage, undefined)}
+                        >
+                            Send
+                        </Button>
+                        {"   "}
+                    </div>
                 </div>
             </div>
         </>

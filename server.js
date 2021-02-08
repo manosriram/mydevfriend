@@ -12,8 +12,10 @@ const listenMessages = require("./Controllers/Messages");
 const Database = require("./Controllers/Query");
 const dotenv = require("dotenv");
 const path = require("path");
-const bcrypt = require("bcryptjs");
+const redis = require("redis");
+const isAuth = require("./utils/isAuth");
 dotenv.config();
+process.setMaxListeners(0);
 
 const host =
     process.env.NODE_ENV === "production"
@@ -23,6 +25,8 @@ var socketPath;
 if (process.env.NODE_ENV === "production") {
     socketPath = "/var/run/mysqld/mysqld.sock";
 }
+
+const client = redis.createClient();
 
 const mysqlConfig = {
     host: host,
@@ -39,13 +43,15 @@ const server = app.listen(PORT, "0.0.0.0", () =>
 const io = socketio(server, {
     path: "/socket"
 });
-app.set("io", io);
-listenMessages(io, connection);
+app.use(isAuth);
 app.use((req, res, next) => {
-    req.connection = connection;
     req.io = io;
+    req.connection = connection;
+    req.client = client;
+    listenMessages(req, io, connection);
     next();
 });
+app.set("io", io);
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "client/build")));
