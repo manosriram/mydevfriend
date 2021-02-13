@@ -100,7 +100,8 @@ function Messages(props) {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
             const res = axios.post("/api/chat/history", { data }, { headers });
-            readUnread.set(toUser, "read");
+            const readUnreadName = `run:${data.from}:${data.to}`;
+            readUnread.set(readUnreadName, "read");
             res.then(result => {
                 setMessages(result.data.messages);
                 sc();
@@ -365,6 +366,14 @@ function Messages(props) {
                                             {showUser}
                                             {"  "}
                                         </h4>
+                                        {readUnread.get(chatUser.user2) ===
+                                            "unread" && (
+                                            <Badge
+                                                color="blue"
+                                                isSolid
+                                                marginRight={8}
+                                            ></Badge>
+                                        )}
                                         <Text
                                             id="delete-right"
                                             onClick={() =>

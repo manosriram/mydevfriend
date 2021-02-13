@@ -60,7 +60,7 @@ io.on("connection", socket => {
                 to1 = to;
             if (from.localeCompare(to) === 1) to = [from, (from = to)][0];
             const redisUsername = `conversation:${from}:${to}`;
-            const redisReadUnread = `run:${from}:${to}`;
+            const redisReadUnread = `run:${from1}:${to1}`;
 
             const messageMetadata = JSON.stringify({
                 message,
@@ -76,7 +76,6 @@ io.on("connection", socket => {
                 [redisUsername, messageMetadata],
                 (err, redisResponse) => {
                     if (err) console.log(err);
-                    else console.log(redisResponse);
                 }
             );
             io.emit("message-to", {

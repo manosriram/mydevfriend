@@ -82,7 +82,7 @@ router.post("/history", isAuth, (req, res, next) => {
             user2 = to;
         if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
         const redisUsername = `conversation:${user1}:${user2}`;
-        const readUnread = `run:${user1}:${user2}`;
+        const readUnread = `run:${from}:${to}`;
 
         redis.set(readUnread, "read");
 
