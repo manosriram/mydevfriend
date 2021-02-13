@@ -95,8 +95,8 @@ function Messages(props) {
             };
             const res = axios.post("/api/chat/history", { data }, { headers });
             res.then(result => {
-                setMessages(result.data.messages[0]);
-                console.log(result.data.messages[0]);
+                setMessages(result.data.messages);
+                console.log(result.data);
                 sc();
             }).catch(err => {
                 console.log(err);
@@ -177,7 +177,7 @@ function Messages(props) {
     }
 
     useEffect(() => {
-        socket.on("message-to", (message, sentBy) => {
+        socket.on("message-to", (message, from) => {
             addMessage(message);
         });
 
@@ -190,8 +190,10 @@ function Messages(props) {
         socket.on("offline", username => {});
 
         getChat();
+
         return () => {
-            socket.disconnect();
+            socket.off();
+            socket.removeAllListeners();
         };
     }, []);
 
@@ -210,6 +212,7 @@ function Messages(props) {
 
         socket.emit("_message", { from, to, message: message.message });
         const msgElement = document.querySelector("#msg");
+        console.log(msgElement);
         if (msgElement) msgElement.value = "";
         setInputMessage("");
     };
@@ -388,9 +391,8 @@ function Messages(props) {
                                 {messages.map((msg, msgIndex) => {
                                     return (
                                         <>
-                                            {last !== msg.sentBy &&
-                                                user.username ===
-                                                    msg.sentBy && (
+                                            {last !== msg.from &&
+                                                user.username === msg.from && (
                                                     <div id="you-user">
                                                         {msgIndex != 0 && (
                                                             <hr />
@@ -402,20 +404,19 @@ function Messages(props) {
                                                         <h4 id="sentBy">You</h4>
                                                     </div>
                                                 )}
-                                            {last !== msg.sentBy &&
-                                                user.username !==
-                                                    msg.sentBy && (
+                                            {last !== msg.from &&
+                                                user.username !== msg.from && (
                                                     <div className="not-own-name">
                                                         {msgIndex != 0 && (
                                                             <hr />
                                                         )}
                                                         <Avatar
-                                                            name={msg.sentBy}
+                                                            name={msg.from}
                                                             vertical-align="middle"
                                                         />
                                                         {"   "}
                                                         <h4 id="sentBy">
-                                                            {msg.sentBy}
+                                                            {msg.from}
                                                         </h4>
                                                     </div>
                                                 )}
@@ -424,7 +425,7 @@ function Messages(props) {
                                                     {msg.message}
                                                     <span id="sent">
                                                         {moment(
-                                                            msg.sent
+                                                            msg.created_at
                                                         ).format(
                                                             "DD/MM/YY, hh:mm a"
                                                         )}
@@ -432,7 +433,7 @@ function Messages(props) {
                                                 </Text>
                                             </div>
                                             <div id="nov">
-                                                {(last = msg.sentBy)}
+                                                {(last = msg.from)}
                                             </div>
                                         </>
                                     );

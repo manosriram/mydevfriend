@@ -8,7 +8,6 @@ var mysql = require("mysql");
 const socketio = require("socket.io");
 const http = require("http");
 const cors = require("cors");
-const listenMessages = require("./Controllers/Messages");
 const Database = require("./Controllers/Query");
 const dotenv = require("dotenv");
 const path = require("path");
@@ -43,16 +42,39 @@ const server = app.listen(PORT, "0.0.0.0", () =>
 const io = socketio(server, {
     path: "/socket"
 });
-app.use(isAuth);
+// app.use(isAuth);
 app.use((req, res, next) => {
     req.io = io;
     req.connection = connection;
-    req.client = client;
-    listenMessages(req, io, connection);
+    req.redis = client;
     next();
 });
 app.set("io", io);
 
+io.on("connection", socket => {
+    socket.on("_message", ({ from, to, message }) => {
+        if (from && to) {
+            if (from.localeCompare(to) === 1) to = [from, (from = to)][0];
+            const redisUsername = `conversation:${from}:${to}`;
+
+            const messageMetadata = JSON.stringify({
+                message,
+                from,
+                to,
+                created_at: new Date()
+            });
+
+            client.rpush(
+                [redisUsername, messageMetadata],
+                (err, redisResponse) => {
+                    if (err) console.log(err);
+                    else console.log(redisResponse);
+                }
+            );
+            io.emit("message-to", { message, from });
+        }
+    });
+});
 app.use(cors());
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(helmet());

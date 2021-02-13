@@ -60,27 +60,19 @@ router.get("/connections", isAuth, (req, res, next) => {
 router.post("/history", isAuth, (req, res, next) => {
     try {
         const { from, to } = req.body.data;
-        console.log(req.body.data);
+        const { redis } = req;
         let user1 = from,
             user2 = to;
         if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
+        const redisUsername = `conversation:${user1}:${user2}`;
 
-        const { connection } = req;
-        connection
-            .query(
-                "select message, sentBy, sent from message m inner join chat c on (m.sentBy = ? or m.sentBy = ?) and (c.chatId = m.chatId) where c.user1=? and c.user2=?",
-                [from, to, user1, user2]
-            )
-            .then(
-                rows => {
-                    return res
-                        .status(200)
-                        .json({ success: true, messages: [rows] });
-                },
-                err => {
-                    next(err);
-                }
-            );
+        redis.lrange(redisUsername, 0, -1, (err, redisResponse) => {
+            let messages = [];
+            redisResponse.map(message => {
+                messages.push(JSON.parse(message));
+            });
+            return res.status(200).json({ success: true, messages });
+        });
     } catch (er) {
         next(er);
     }
@@ -125,5 +117,4 @@ router.post("/createChat", isAuth, (req, res, next) => {
     }
 });
 
-module.exports = router;
 module.exports = router;

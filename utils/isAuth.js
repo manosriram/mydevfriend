@@ -7,12 +7,10 @@ const isAuth = (req, res, next) => {
         jwt.verify(token, "secret", (err, user) => {
             if (user) {
                 if (user.active === false)
-                    return res
-                        .status(401)
-                        .json({
-                            success: false,
-                            message: "Account not activated"
-                        });
+                    return res.status(401).json({
+                        success: false,
+                        message: "Account not activated"
+                    });
                 req.user = user;
                 next();
             } else {
