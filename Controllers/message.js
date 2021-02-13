@@ -36,6 +36,18 @@ router.post("/toggleChat", isAuth, (req, res, next) => {
         });
 });
 
+const setReadUnread = (rows, redis) => {
+    const promises = rows.map(async row => {
+        const redisName = `run:${row.user1}:${row.user2}`;
+        const readStatus = await redis.get(redisName);
+        return {
+            user: row.user2,
+            status: readStatus === "read" ? "read" : "unread"
+        };
+    });
+    return Promise.all(promises);
+};
+
 router.get("/connections", isAuth, (req, res, next) => {
     const { username } = req.user;
 
@@ -46,10 +58,15 @@ router.get("/connections", isAuth, (req, res, next) => {
             [username, username]
         )
         .then(
-            rows => {
-                if (rows[0]) {
-                }
-                res.status(200).json({ success: true, friends: rows });
+            async rows => {
+                const { redis } = req;
+                const readUnread = await setReadUnread(rows, redis);
+
+                res.status(200).json({
+                    success: true,
+                    friends: rows,
+                    readUnread: readUnread
+                });
             },
             err => {
                 next(err);
@@ -65,6 +82,9 @@ router.post("/history", isAuth, (req, res, next) => {
             user2 = to;
         if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
         const redisUsername = `conversation:${user1}:${user2}`;
+        const readUnread = `run:${user1}:${user2}`;
+
+        redis.set(readUnread, "read");
 
         redis.lrange(redisUsername, 0, -1, (err, redisResponse) => {
             let messages = [];
@@ -84,6 +104,9 @@ router.post("/createChat", isAuth, (req, res, next) => {
         const connection = req.connection;
         console.log(user1, user2);
         if (user1.localeCompare(user2) === 1) [user1, user2] = [user2, user1];
+        const { redis } = req;
+        const readUnread = `run:${user1}:${user2}`;
+        redis.set(readUnread, "unread");
         connection
             .query("INSERT INTO chat(user1, user2) VALUES(?, ?)", [
                 user1,

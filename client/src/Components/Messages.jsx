@@ -2,6 +2,8 @@ import { withRouter } from "react-router-dom";
 import { useState, useEffect } from "react";
 import getUser from "../getUser";
 import {
+    Badge,
+    Pill,
     CrossIcon,
     Spinner,
     Tab,
@@ -35,6 +37,7 @@ const socket = io(process.env.REACT_APP_ADDR, {
     transports: ["websocket"],
     upgrade: false
 });
+let readUnread = new Map();
 
 function Messages(props) {
     const [spin, setSpin] = useState(false);
@@ -55,6 +58,9 @@ function Messages(props) {
                 headers
             });
             res.then(result => {
+                result.data.readUnread.map(run => {
+                    readUnread.set(run.user, run.status);
+                });
                 setChat(result.data.friends);
                 setSpin(false);
             }).catch(err => {
@@ -94,9 +100,9 @@ function Messages(props) {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
             const res = axios.post("/api/chat/history", { data }, { headers });
+            readUnread.set(toUser, "read");
             res.then(result => {
                 setMessages(result.data.messages);
-                console.log(result.data);
                 sc();
             }).catch(err => {
                 console.log(err);
@@ -177,7 +183,8 @@ function Messages(props) {
     }
 
     useEffect(() => {
-        socket.on("message-to", (message, from) => {
+        socket.on("message-to", message => {
+            console.log(message);
             addMessage(message);
         });
 
@@ -190,10 +197,9 @@ function Messages(props) {
         socket.on("offline", username => {});
 
         getChat();
-
         return () => {
+            socket.disconnect();
             socket.off();
-            socket.removeAllListeners();
         };
     }, []);
 
@@ -207,12 +213,11 @@ function Messages(props) {
     const sendMessage = message => {
         if (!message) return;
 
-        const from = user.username || message.from,
-            to = selectedUser || props.location.state.matchData.match;
+        const from = user.username || message.from;
+        const to = selectedUser || props.location.state.matchData.match;
 
         socket.emit("_message", { from, to, message: message.message });
         const msgElement = document.querySelector("#msg");
-        console.log(msgElement);
         if (msgElement) msgElement.value = "";
         setInputMessage("");
     };
@@ -391,8 +396,9 @@ function Messages(props) {
                                 {messages.map((msg, msgIndex) => {
                                     return (
                                         <>
-                                            {last !== msg.from &&
-                                                user.username === msg.from && (
+                                            {last !== msg.sentBy &&
+                                                user.username ===
+                                                    msg.sentBy && (
                                                     <div id="you-user">
                                                         {msgIndex != 0 && (
                                                             <hr />
@@ -404,19 +410,20 @@ function Messages(props) {
                                                         <h4 id="sentBy">You</h4>
                                                     </div>
                                                 )}
-                                            {last !== msg.from &&
-                                                user.username !== msg.from && (
+                                            {last !== msg.sentBy &&
+                                                user.username !==
+                                                    msg.sentBy && (
                                                     <div className="not-own-name">
                                                         {msgIndex != 0 && (
                                                             <hr />
                                                         )}
                                                         <Avatar
-                                                            name={msg.from}
+                                                            name={msg.sentBy}
                                                             vertical-align="middle"
                                                         />
                                                         {"   "}
                                                         <h4 id="sentBy">
-                                                            {msg.from}
+                                                            {msg.sentBy}
                                                         </h4>
                                                     </div>
                                                 )}
@@ -425,7 +432,7 @@ function Messages(props) {
                                                     {msg.message}
                                                     <span id="sent">
                                                         {moment(
-                                                            msg.created_at
+                                                            msg.sent
                                                         ).format(
                                                             "DD/MM/YY, hh:mm a"
                                                         )}
@@ -433,7 +440,7 @@ function Messages(props) {
                                                 </Text>
                                             </div>
                                             <div id="nov">
-                                                {(last = msg.from)}
+                                                {(last = msg.sentBy)}
                                             </div>
                                         </>
                                     );

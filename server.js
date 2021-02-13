@@ -13,6 +13,7 @@ const dotenv = require("dotenv");
 const path = require("path");
 const redis = require("redis");
 const isAuth = require("./utils/isAuth");
+const util = require("util");
 dotenv.config();
 process.setMaxListeners(0);
 
@@ -26,6 +27,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const client = redis.createClient();
+client.get = util.promisify(client.get);
 
 const mysqlConfig = {
     host: host,
@@ -54,15 +56,21 @@ app.set("io", io);
 io.on("connection", socket => {
     socket.on("_message", ({ from, to, message }) => {
         if (from && to) {
+            const from1 = from,
+                to1 = to;
             if (from.localeCompare(to) === 1) to = [from, (from = to)][0];
             const redisUsername = `conversation:${from}:${to}`;
+            const redisReadUnread = `run:${from}:${to}`;
 
             const messageMetadata = JSON.stringify({
                 message,
-                from,
-                to,
+                from: from1,
+                to: to1,
+                sentBy: from1,
                 created_at: new Date()
             });
+
+            client.set(redisReadUnread, "unread");
 
             client.rpush(
                 [redisUsername, messageMetadata],
@@ -71,7 +79,12 @@ io.on("connection", socket => {
                     else console.log(redisResponse);
                 }
             );
-            io.emit("message-to", { message, from });
+            io.emit("message-to", {
+                message,
+                from: from1,
+                to: to1,
+                sentBy: from1
+            });
         }
     });
 });
