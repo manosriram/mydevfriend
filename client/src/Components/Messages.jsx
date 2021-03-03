@@ -37,7 +37,6 @@ const socket = io(process.env.REACT_APP_ADDR, {
     transports: ["websocket"],
     upgrade: false
 });
-let readUnread = new Map();
 
 function Messages(props) {
     const [spin, setSpin] = useState(false);
@@ -58,9 +57,6 @@ function Messages(props) {
                 headers
             });
             res.then(result => {
-                result.data.readUnread.map(run => {
-                    readUnread.set(run.user, run.status);
-                });
                 setChat(result.data.friends);
                 setSpin(false);
             }).catch(err => {
@@ -100,8 +96,6 @@ function Messages(props) {
                 authorization: "Bearer " + Cookie.get("jtk")
             };
             const res = axios.post("/api/chat/history", { data }, { headers });
-            const readUnreadName = `run:${data.from}:${data.to}`;
-            readUnread.set(readUnreadName, "read");
             res.then(result => {
                 setMessages(result.data.messages);
                 sc();
@@ -217,6 +211,7 @@ function Messages(props) {
         const from = user.username || message.from;
         const to = selectedUser || props.location.state.matchData.match;
 
+        const readUnreadName = `run:${from}:${to}`;
         socket.emit("_message", { from, to, message: message.message });
         const msgElement = document.querySelector("#msg");
         if (msgElement) msgElement.value = "";
@@ -366,14 +361,6 @@ function Messages(props) {
                                             {showUser}
                                             {"  "}
                                         </h4>
-                                        {readUnread.get(chatUser.user2) ===
-                                            "unread" && (
-                                            <Badge
-                                                color="blue"
-                                                isSolid
-                                                marginRight={8}
-                                            ></Badge>
-                                        )}
                                         <Text
                                             id="delete-right"
                                             onClick={() =>
@@ -403,6 +390,7 @@ function Messages(props) {
                                     </div>
                                 )}
                                 {messages.map((msg, msgIndex) => {
+                                    console.log(msg);
                                     return (
                                         <>
                                             {last !== msg.sentBy &&
@@ -441,7 +429,7 @@ function Messages(props) {
                                                     {msg.message}
                                                     <span id="sent">
                                                         {moment(
-                                                            msg.sent
+                                                            msg.created_at
                                                         ).format(
                                                             "DD/MM/YY, hh:mm a"
                                                         )}
