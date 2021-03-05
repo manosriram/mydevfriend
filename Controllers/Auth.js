@@ -48,12 +48,22 @@ const loginSchema = yup.object().shape({
 
 const sendMailWithEmail = email => {
     const id = encryptBuffer(email, "mano1234");
-    const url = `Click to verify: http://www.mydevfriend.com/api/auth/verifyUser/${id}/`;
+    const url = `Click to verify: http://localhost:5454/api/auth/verifyUser/${id}/`;
 
     sendMail("Activate Account - mydevfriend", url, email);
-    console.log(`Sent mail: ${email}`);
     return;
 };
+
+router.post("/mail", async (req, res) => {
+    if (!req.body.email)
+        return res
+            .status(200)
+            .json({ success: false, message: "email required" });
+    sendMailWithEmail(req.body.email);
+    return res
+        .status(200)
+        .json({ success: true, message: "Activation email sent" });
+});
 
 router.get("/user", (req, res, next) => {
     try {

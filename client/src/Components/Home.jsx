@@ -23,6 +23,19 @@ const forbiddenToast = { id: "forbidden-action" };
 
 function Home(props) {
     const [spin, setSpin] = useState(false);
+    const [resendEmail, setResendEmail] = useState("");
+
+    const resendEmailFunc = () => {
+        const res = axios
+            .post("/api/auth/mail", {
+                email: resendEmail
+            })
+            .then(data => {
+                if (data.data.success === true)
+                    toaster.success(data.data.message, forbiddenToast);
+                else toaster.danger(data.data.message, forbiddenToast);
+            });
+    };
 
     const submitForm = data => {
         try {
@@ -263,6 +276,29 @@ function Home(props) {
                                     )}
                                 </Formik>
                             </div>
+                        </Pane>
+                        <hr />
+                        <Pane
+                            id="pane-wrapper"
+                            elevation={0}
+                            float="left"
+                            width="40vw"
+                            margin={24}
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            flexDirection="column"
+                        >
+                            <TextInput
+                                onChange={e => setResendEmail(e.target.value)}
+                                name="resend_email"
+                                type="email"
+                                placeholder="email"
+                            />
+                            <br />
+                            <Button onClick={resendEmailFunc}>
+                                Resend confirmation email
+                            </Button>
                         </Pane>
                     </Pane>
                 </div>
