@@ -59,10 +59,30 @@ router.post("/mail", async (req, res) => {
         return res
             .status(200)
             .json({ success: false, message: "email required" });
-    sendMailWithEmail(req.body.email);
-    return res
-        .status(200)
-        .json({ success: true, message: "Activation email sent" });
+
+    const { connection } = req;
+    connection
+        .query("select active, username from user where email = ?", [
+            req.body.email
+        ])
+        .then(rows => {
+            if (rows[0] && rows[0].active === 1) {
+                return res.status(200).json({
+                    success: false,
+                    message: "Email already confirmed"
+                });
+            } else {
+                if (!rows[0])
+                    return res.status(200).json({
+                        success: false,
+                        message: "User with email doesn't exist"
+                    });
+                sendMailWithEmail(req.body.email);
+                return res
+                    .status(200)
+                    .json({ success: true, message: "Activation email sent" });
+            }
+        });
 });
 
 router.get("/user", (req, res, next) => {

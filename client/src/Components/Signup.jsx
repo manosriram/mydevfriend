@@ -754,7 +754,9 @@ function Signup(props) {
         });
         setEmail(data.email);
         res.then(result => {
-            toaster.success(result.data.message, forbiddenToast);
+            if (result.data.data.success === false)
+                toaster.danger(result.data.message, forbiddenToast);
+            else toaster.success(result.data.message, forbiddenToast);
             setResend(true);
             // props.history.push("/");
         }).catch(err => {

@@ -55,8 +55,6 @@
     padding: 50 50;
     border-radius: 5px;
 
-    display: -webkit-flex;
-    display: flex;
     align-items: left;
 }
 

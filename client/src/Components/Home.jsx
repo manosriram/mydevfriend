@@ -293,10 +293,10 @@ function Home(props) {
                                 onChange={e => setResendEmail(e.target.value)}
                                 name="resend_email"
                                 type="email"
-                                placeholder="email"
+                                placeholder="email address"
                             />
                             <br />
-                            <Button onClick={resendEmailFunc}>
+                            <Button intent="warning" onClick={resendEmailFunc}>
                                 Resend confirmation email
                             </Button>
                         </Pane>

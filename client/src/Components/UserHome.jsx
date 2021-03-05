@@ -169,6 +169,7 @@ function UserHome(props) {
             </Helmet>
             <div id="left-home">
                 <LinkComponent href="/find">Find users</LinkComponent>
+                <hr />
                 <LinkComponent onClick={matchNow}>
                     Match with a random user
                 </LinkComponent>
