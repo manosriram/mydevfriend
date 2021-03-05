@@ -16,11 +16,27 @@ import getUser from "../getUser";
 import axios from "axios";
 import Cookie from "js-cookie";
 import { Helmet } from "react-helmet";
+import {
+    UserLink,
+    LinkComponent
+} from "../Styles/StyledComponents/UserHome.js";
+import moment from "moment";
 
 function UserHome(props) {
     const [spin, setSpin] = useState(false);
     const [match, setMatch] = useState("");
     const [submitMessage, setSubmitMessage] = useState(false);
+    const [newUsers, setNewUsers] = useState([]);
+
+    const getNewUsers = () => {
+        axios.get("/api/user/latest").then(data => {
+            setNewUsers(data.data.latestUsers);
+        });
+    };
+
+    useEffect(() => {
+        getNewUsers();
+    }, []);
 
     const matchNow = () => {
         setSpin(true);
@@ -151,19 +167,37 @@ function UserHome(props) {
                     content="./favicons/ms-icon-144x144.png"
                 />
             </Helmet>
-
-            <div id="inner-container">
-                <div id="left-home">
-                    <Link id="link-home" onClick={matchNow}>
-                        match random user
-                    </Link>
-                    <br />
-                </div>
-                <div id="right-home">
-                    <Link id="link-home" to="/find">
-                        find users
-                    </Link>
-                </div>
+            <div id="left-home">
+                <LinkComponent href="/find">Find users</LinkComponent>
+                <LinkComponent onClick={matchNow}>
+                    Match with a random user
+                </LinkComponent>
+            </div>
+            <div id="right-home">
+                <Heading size={500} color="black">
+                    New users
+                </Heading>
+                <hr />
+                {newUsers.map(user => {
+                    const url = `http://localhost:3000/user/${user.username}`;
+                    return (
+                        <div id="latest">
+                            <Heading size={100} id="user">
+                                <UserLink href={url}>{user.username}</UserLink>
+                            </Heading>
+                            <Text>
+                                joined{" "}
+                                {moment(user.created).format("MMMM Do, YYYY")}
+                            </Text>
+                            <br />
+                        </div>
+                    );
+                })}
+            </div>
+            <div id="below-home">
+                <Heading id="update" size={100}>
+                    Stay tuned for more updates.
+                </Heading>
             </div>
         </div>
     );

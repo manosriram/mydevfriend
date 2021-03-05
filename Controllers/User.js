@@ -2,6 +2,16 @@ const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 const jwt = require("jsonwebtoken");
 
+router.get("/latest", async (req, res) => {
+    const { connection } = req;
+    connection.query(
+        "SELECT username, created from user ORDER BY created DESC LIMIT 5",
+        (err, rows) => {
+            return res.status(200).json({ success: true, latestUsers: rows });
+        }
+    );
+});
+
 router.get("/:username", (req, res, next) => {
     const { username } = req.params;
     const { connection } = req;
