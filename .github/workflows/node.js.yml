@@ -24,6 +24,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: sudo npm i
-    - run: cd client && sudo npm i && sudo npm run build
+    - run: cd client && npm i && npm run build
     - run: sudo npm run build --if-present
     - run: sudo cp ~/.env /home/manosriram/actions-runner/mydevfriend/mydevfriend/mydevfriend
