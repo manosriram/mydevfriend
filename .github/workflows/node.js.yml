@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: sudo npm i
+    - run: npm i
     - run: cd client && npm i && npm run build
-    - run: sudo npm run build --if-present
-    - run: sudo cp ~/.env /home/manosriram/actions-runner/mydevfriend/mydevfriend/mydevfriend
+    - run: npm run build --if-present
+    - run: cp ~/.env /home/manosriram/actions-runner/mydevfriend/mydevfriend/mydevfriend
