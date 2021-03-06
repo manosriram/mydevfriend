@@ -26,5 +26,4 @@ jobs:
     - run: pwd
     - run: cd client && npm install && npm run build
     - run: cp ~/.env /home/mano/actions-runner/mydevfriend/mydevfriend/mydevfriend
-    - run: pm2 kill
-    - run: pm2 start server.js
+    - run: pm2 restart 0
