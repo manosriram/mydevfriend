@@ -17,13 +17,13 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - run: sudo chown -R $USER:$USER ~/actions-runner/mydevfriend/mydevfriend
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: sudo npm i
-    - run: cd client && sudo npm i && sudo npm run build
-    - run: sudo npm run build --if-present
-    - run: sudo cp ~/.env /home/manosriram/actions-runner/mydevfriend/mydevfriend/mydevfriend
+    - run: npm install
+    - run: pwd
+    - run: cd client && npm install && npm run build
+    - run: npm run build --if-present
+    - run: cp ~/.env /home/mano/actions-runner/mydevfriend/mydevfriend/mydevfriend
