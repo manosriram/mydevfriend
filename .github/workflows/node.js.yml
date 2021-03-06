@@ -17,7 +17,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - run: sudo chown -R $USER:$USER ~/actions-runner/mydevfriend/mydevfriend
+    - run: su - mano
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
