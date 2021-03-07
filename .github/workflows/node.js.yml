@@ -25,5 +25,5 @@ jobs:
     - run: npm install
     - run: pwd
     - run: cd client && npm install && npm run build
-    - run: npm run build --if-present
     - run: cp ~/.env /home/mano/actions-runner/mydevfriend/mydevfriend/mydevfriend
+    - run: pm2 restart 0
