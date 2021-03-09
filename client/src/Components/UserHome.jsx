@@ -180,7 +180,7 @@ function UserHome(props) {
                 </Heading>
                 <hr />
                 {newUsers.map(user => {
-                    const url = `http://localhost:3000/user/${user.username}`;
+                    const url = `/user/${user.username}`;
                     return (
                         <div id="latest">
                             <Heading size={100} id="user">
