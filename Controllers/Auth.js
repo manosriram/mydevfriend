@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const sendMail = require("../utils/sendMail");
 const { encryptBuffer, decryptBuffer } = require("../utils/encdec");
 const bcrypt = require("bcryptjs");
+var crypto = require("crypto");
 
 const signUpSchema = yup.object().shape({
     username: yup
@@ -48,11 +49,103 @@ const loginSchema = yup.object().shape({
 
 const sendMailWithEmail = email => {
     const id = encryptBuffer(email, "mano1234");
-    const url = `Click to verify: http://localhost:5454/api/auth/verifyUser/${id}/`;
+    const url = `Click to verify: ${process.env.URL}/api/auth/verifyUser/${id}/`;
 
     sendMail("Activate Account - mydevfriend", url, email);
     return;
 };
+
+const forgotEmail = (email, connection) => {
+    crypto.randomBytes(28, function(err, token) {
+        if (err) console.log(err);
+        var token = token.toString("hex");
+        const url = `Click to verify: ${process.env.REACT_URL}/forgot/${token}?email=${email}`;
+        sendMail("Forgot password - mydevfriend", url, email);
+        connection
+            .query("update user set reset_token = ? where email = ?", [
+                token,
+                email
+            ])
+            .then(
+                rows => {
+                    console.log(rows);
+                },
+                err => {
+                    console.log(err);
+                }
+            );
+    });
+    return;
+};
+
+router.post("/forgot/:token", (req, res, next) => {
+    const { password } = req.body.data;
+    const { token } = req.params;
+    const { email } = req.query;
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    const { connection } = req;
+    connection
+        .query("select reset_token from user where email = ?", email)
+        .then(
+            rows => {
+                if (!rows[0].reset_token) {
+                    return res.status(200).json({
+                        success: false,
+                        message: "Link expired"
+                    });
+                }
+                if (rows[0] && rows[0].reset_token === token) {
+                    connection
+                        .query(
+                            "update user set password = ?, reset_token=NULL where email = ?",
+                            [hash, email]
+                        )
+                        .then(
+                            rows2 => {
+                                return res.status(201).json({
+                                    success: true,
+                                    message: "Password successfully reset."
+                                });
+                            },
+                            err2 => {
+                                console.log(err2);
+                                next(err2);
+                            }
+                        );
+                }
+            },
+            err => {
+                next(err);
+            }
+        );
+});
+
+router.post("/forgot", (req, res, next) => {
+    const { email } = req.body.data;
+
+    const { connection } = req;
+    connection.query("select username from user where email = ?", email).then(
+        rows => {
+            if (!rows.length) {
+                return res.json({
+                    success: false,
+                    message: "User with email not found"
+                });
+            } else {
+                forgotEmail(email, req.connection);
+                return res.json({
+                    success: true,
+                    message: "Confirmation Link sent to your email"
+                });
+            }
+        },
+        err => {
+            next(err);
+        }
+    );
+});
 
 router.post("/mail", async (req, res) => {
     if (!req.body.email)
@@ -83,6 +176,30 @@ router.post("/mail", async (req, res) => {
                     .json({ success: true, message: "Activation email sent" });
             }
         });
+});
+
+router.get("/forgot/:id", (req, res, next) => {
+    const { connection } = req;
+    const { id } = req.params;
+    const decrypted = decryptBuffer(id, "mano1234");
+});
+
+router.put("/user", (req, res, next) => {
+    const { connection } = req;
+    const { email, password } = req.body;
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+
+    connection
+        .query("update user set password = ? where email = ?", [hash, email])
+        .then(
+            data => {
+                console.log(data);
+            },
+            err => {
+                next(err);
+            }
+        );
 });
 
 router.get("/user", (req, res, next) => {
@@ -234,6 +351,7 @@ router.post("/login", (req, res, next) => {
                                 return res.status(200).json({
                                     success: true,
                                     message: "Logged-In successfully",
+                                    username: username,
                                     token
                                 });
                             },

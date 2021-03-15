@@ -79,6 +79,7 @@ function Messages(props) {
                     map[obj.username] = obj.status;
                     return map;
                 }, {});
+                console.log(result);
                 setUserStat(result);
             });
         } catch (err) {
@@ -178,18 +179,16 @@ function Messages(props) {
     }
 
     useEffect(() => {
+        socket.on("logged-out", () => {
+            getUser().then(res => {
+                socket.emit("offline", { username: res.username });
+            });
+        });
+
         socket.on("message-to", message => {
             console.log(message);
             addMessage(message);
         });
-
-        socket.on("online", username => {
-            setUserStat(prevUserState => ({
-                ...prevUserState,
-                [username]: "online"
-            }));
-        });
-        socket.on("offline", username => {});
 
         getChat();
         return () => {
@@ -360,6 +359,16 @@ function Messages(props) {
                                         >
                                             {showUser}
                                             {"  "}
+                                            <span
+                                                id="status"
+                                                style={{
+                                                    background:
+                                                        chatUser.status ===
+                                                        "online"
+                                                            ? onlineBackground
+                                                            : offlineBackground
+                                                }}
+                                            ></span>
                                         </h4>
                                         <Text
                                             id="delete-right"
@@ -386,7 +395,10 @@ function Messages(props) {
                             <div class="messages">
                                 {!messages.length && (
                                     <div id="no">
-                                        <Text>No conversations yet :(</Text>
+                                        <Text>
+                                            No conversations with {selectedUser}{" "}
+                                            yet :(
+                                        </Text>
                                     </div>
                                 )}
                                 {messages.map((msg, msgIndex) => {

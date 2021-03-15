@@ -10,3 +10,5 @@ export { default as About } from "./About";
 export { default as Cookie } from "./Cookie";
 export { default as FindUsers } from "./FindUsers";
 export { default as Profile } from "./Profile";
+export { default as Forgot } from "./Forgot";
+export { default as Reset } from "./Reset";

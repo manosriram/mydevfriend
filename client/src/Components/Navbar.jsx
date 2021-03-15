@@ -21,6 +21,13 @@ import Cookie from "js-cookie";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 
+import io from "socket.io-client";
+const socket = io(process.env.REACT_APP_ADDR, {
+    path: "/socket",
+    transports: ["websocket"],
+    upgrade: false
+});
+
 const customDefaultStyles = {
     padding: "5px",
     margin: "5px"
@@ -40,6 +47,9 @@ function Navbar(props) {
                 },
                 headers
             );
+
+            socket.emit("offline", { username: props.user.username });
+
             props.history.push("/");
         } catch (err) {
             console.log(err);

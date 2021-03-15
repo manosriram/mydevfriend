@@ -11,6 +11,10 @@
     margin-bottom: 20px;
 }
 
+#about-link:hover {
+    text-decoration: underline;
+}
+
 #lang {
     max-width: 15vw;
     max-height: 10vh;

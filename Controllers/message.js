@@ -2,7 +2,7 @@ const router = require("express").Router();
 const isAuth = require("../utils/isAuth");
 
 router.get("/status", isAuth, (req, res, next) => {
-    const { connection } = req;
+    const { connection, redis } = req;
 
     connection.query("select username, status from user").then(
         rows => {
@@ -39,7 +39,7 @@ router.post("/toggleChat", isAuth, (req, res, next) => {
 router.get("/connections", isAuth, (req, res, next) => {
     const { username } = req.user;
 
-    const { connection } = req;
+    const { redis, connection } = req;
     connection
         .query(
             "select * from chat where (user1 = ? or user2 = ?) and active = 1 order by last_message_at desc",
@@ -47,9 +47,17 @@ router.get("/connections", isAuth, (req, res, next) => {
         )
         .then(
             async rows => {
-                res.status(200).json({
-                    success: true,
-                    friends: rows
+                const ws = rows.map(async row => {
+                    const statusString = `status:${row.user1}`;
+                    const status = await redis.get(statusString);
+                    row.status = status;
+                    return row;
+                });
+                Promise.all(ws).then(data => {
+                    return res.status(200).json({
+                        success: true,
+                        friends: data
+                    });
                 });
             },
             err => {
@@ -118,4 +126,5 @@ router.post("/createChat", isAuth, (req, res, next) => {
     }
 });
 
+module.exports = router;
 module.exports = router;

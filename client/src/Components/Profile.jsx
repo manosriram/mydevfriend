@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookie from "js-cookie";
 import {
+    UserIcon,
     Badge,
     Spinner,
     GlobeNetworkIcon,
@@ -210,6 +211,10 @@ function Profile(props) {
                             Joined{" "}
                             {moment(user.created).format("MMMM Do, YYYY")}
                         </Text>
+                        <br />
+                        <Icon id="joined-icon" icon={UserIcon} />
+                        {"  "}
+                        <Text id="joined">{user.email}</Text>
                         <br />
                         <Icon id="joined-icon" icon={GlobeNetworkIcon} />
                         {"  "}

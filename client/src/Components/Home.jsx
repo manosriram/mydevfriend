@@ -1,3 +1,4 @@
+import io from "socket.io-client";
 import { Helmet } from "react-helmet";
 import "../Styles/App.css";
 import {
@@ -18,6 +19,12 @@ import getUser from "../getUser";
 import { Suspense, useState, useEffect } from "react";
 import sideBg from "../Assets/side-bg.png";
 require("dotenv").config();
+
+const socket = io(process.env.REACT_APP_ADDR, {
+    path: "/socket",
+    transports: ["websocket"],
+    upgrade: false
+});
 
 const forbiddenToast = { id: "forbidden-action" };
 
@@ -44,7 +51,10 @@ function Home(props) {
                 data
             });
             res.then(result => {
-                console.log(result);
+                socket.emit("logged", {
+                    username: result.data.username,
+                    status: "online"
+                });
                 toaster.success(result.data.message, forbiddenToast);
                 Cookie.set("jtk", result.data.token);
                 props.history.push({
@@ -66,6 +76,7 @@ function Home(props) {
         setSpin(true);
         getUser().then(res => {
             if (res.username) {
+                socket.emit("logged", { username: res.username });
                 props.history.push("/home");
             }
         });
@@ -246,6 +257,11 @@ function Home(props) {
                                             >
                                                 Login
                                             </Button>
+                                            {"  "}
+                                            <Text size={100}>or</Text>
+                                            <Link id="about-link" to="/forgot">
+                                                <Text>forgot password</Text>
+                                            </Link>
                                             <br />
                                             <br />
                                             <NavLink

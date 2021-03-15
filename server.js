@@ -54,13 +54,19 @@ app.use((req, res, next) => {
 app.set("io", io);
 
 io.on("connection", socket => {
+    socket.on("logged", ({ username }) => {
+        socket.username = username;
+        const userOnline = `status:${username}`;
+        client.set(userOnline, "online");
+        io.emit("status-change", { username: username, status: "online" });
+    });
+
     socket.on("_message", ({ from, to, message }) => {
         if (from && to) {
             const from1 = from,
                 to1 = to;
             if (from.localeCompare(to) === 1) to = [from, (from = to)][0];
             const redisUsername = `conversation:${from}:${to}`;
-            const redisReadUnread = `run:${from1}:${to1}`;
 
             const messageMetadata = JSON.stringify({
                 message,
@@ -69,8 +75,6 @@ io.on("connection", socket => {
                 sentBy: from1,
                 created_at: new Date()
             });
-
-            client.set(redisReadUnread, "unread");
 
             client.rpush(
                 [redisUsername, messageMetadata],
@@ -85,6 +89,21 @@ io.on("connection", socket => {
                 sentBy: from1
             });
         }
+    });
+
+    socket.on("disconnect", () => {
+        const userOffline = `status:${socket.username}`;
+        client.set(userOffline, "offline");
+        io.emit("status-change", {
+            username: socket.username,
+            status: "offline"
+        });
+    });
+
+    socket.on("offline", username => {
+        const userOffline = `status:${username.username}`;
+        console.log(userOffline);
+        client.set(userOffline, "offline");
     });
 });
 app.use(cors());

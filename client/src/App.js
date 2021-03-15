@@ -3,6 +3,8 @@ import "./Styles/App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import {
+    Reset,
+    Forgot,
     Profile,
     FindUsers,
     Cookie,
@@ -113,6 +115,18 @@ function App() {
                     </Route>
                     <Route path="/create" exact>
                         <Signup />
+                    </Route>
+                    <Route path="/forgot/:token" exact>
+                        <>
+                            <Navbar user={null} />
+                            <Reset />
+                        </>
+                    </Route>
+                    <Route path="/forgot" exact>
+                        <>
+                            <Navbar user={null} />
+                            <Forgot />
+                        </>
                     </Route>
                     <Route path="/user/:username" exact>
                         <>
