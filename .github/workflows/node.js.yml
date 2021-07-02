@@ -24,6 +24,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: pwd
-    - run: cd client && sudo npm install && sudo npm run build
+    - run: cd client && npm install && npm run build
     - run: cp ~/.env /home/mano/actions-runner/mydevfriend/mydevfriend/mydevfriend
     - run: pm2 restart 0
